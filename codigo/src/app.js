@@ -6,7 +6,12 @@ import { RC, rcGuarda, rcBorra, rcCarga, rcLeeSb3, rcCargaMusicas, RANURAS } fro
 import { stCorre, initPublicidad, CADENA, ANUNCIOS_ST, CORTINILLAS } from './publicidad.js';
 import TXT from './preguntas.txt';
 import { VOZ } from './gen.js';
-const VERSION = '1.1';
+import { camaraLibre, instalaV12, lucesEspecial, sting, filaTitulo, filaVideo3D, cabVideo3D, regidor, menuEscenas, esGen, escenaGen, bannerDe, tituloTexto, especialActual, K as K12 } from './v12.js';
+import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras12.js';
+import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
+const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
+let regOn = false;
+const VERSION = '1.2';
 const en = (id) => document.getElementById(id);
 const az = (a) => a[Math.floor(Math.random() * a.length)];
 const mezcla = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -17,7 +22,7 @@ export const PREGUNTAS = [];
 { let nivel = 1; for (const l of TXT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim() || l.startsWith('#')) continue; const [q, c, ...inc] = l.split('|'); PREGUNTAS.push({ nivel, q, c, inc }); } }
 const nivelDe = (i) => i < 3 ? 1 : i < 6 ? 2 : i < 10 ? 3 : i < 13 ? 4 : 5;
 // ---------------- ajustes ----------------
-const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', plato: '2020', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
+const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', regidor: true, vcab3d: false, plato: '2020', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
 const guarda = () => localStorage.setItem('mm_opts', JSON.stringify(it));
 const escaleraPropia = () => JSON.parse(localStorage.getItem('mm_escalera') || 'null');
 // ---------------- audio sintetizado ----------------
@@ -83,9 +88,9 @@ class Cancel extends Error {}
 const sesion = () => { if (jt) jt.alive = false; callaVoz(); const s = { alive: true }; s.espera = (ms) => new Promise((r, x) => setTimeout(() => s.alive ? r() : x(new Cancel()), ms)); s.ok = () => { if (!s.alive) throw new Cancel(); }; jt = s; return s; };
 async function di(s, quien, texto, planoCam) { s.ok(); if (planoCam) plato.plano(planoCam); yn.bocadillo(quien, texto); await hablar(texto, quien); s.ok(); await s.espera(250); }
 function ii(modo, sub) {
-  en('menu').classList.add('hidden'); en('topbar').classList.remove('hidden'); yn.limpia(); Mi = false; F.stopMusic();
+  en('menu').classList.add('hidden'); en('topbar').classList.remove('hidden'); yn.limpia(); Mi = false; F.stopMusic(); K12.EX && K12.EX.ocioMenu(false); if (K12.EX && (modo === 'programa' || modo === 'promos' || modo === 'promosleo' || modo === 'promocadena')) K12.EX.bugMostrar();
   const s = sesion();
-  const M = { programa: modoPrograma, entrenamiento: modoPrograma, clasico: modoClasico, explorar: modoExplorar, paseo: modoExplorar, monologos: modoMonologo, oculta: modoEscena, tomas: modoEscena, fuera: modoEscena, promos: modoPromo, promosleo: modoPromo, promocadena: modoPromo, publicidad: modoPublicidad, historia: modoHistoria };
+  const M = { programa: modoPrograma, entrenamiento: modoPrograma, clasico: modoClasico, explorar: modoExplorar, paseo: modoExplorar, monologos: modoMonologo, camlibre: async (s) => { en('topbar').classList.add('hidden'); await camaraLibre(s); Lt('main'); }, oculta: modoEscena, tomas: modoEscena, fuera: modoEscena, promos: modoPromo, promosleo: modoPromo, promocadena: modoPromo, publicidad: modoPublicidad, historia: modoHistoria };
   if (modo !== 'programa' && modo !== 'entrenamiento') { plato.sentar(plato.figuras.conc, plato.sillas[0]); plato.sentar(plato.figuras.leo, plato.sillas[1]); for (const k of ['pili', 'chema', 'marga', 'ramon', 'encarna']) plato.figuras[k].visible = false; }
   (M[modo] || modoPrograma)(s, modo, sub).catch((e) => { if (!(e instanceof Cancel)) console.error(e); });
 }
@@ -102,9 +107,10 @@ async function videoPropio(s) {
 async function cabecera(s) {
   F.playMusic('cabecera'); s.saltar = false;
   const esperaS = async (ms) => { const t0 = performance.now(); while (performance.now() - t0 < ms && !s.saltar) await s.espera(80); };
+  if (it.vcab3d && await cabVideo3D(s)) { sting(especialActual().id); return; }
   if (it.cabecera === 'video' && await videoPropio(s)) { F.stopMusic(); return; }
-  if (it.cabecera === 'plato3d') { plato.orbita(9, 3); yn.rotulo('¿QUIÉN QUIERE SER MILLONARIO?'); await esperaS(6000); yn.rotulo(); return; }
-  plato.plano('cenital', .1); F.play('Golpe'); yn.rotulo('¿QUIÉN QUIERE SER MILLONARIO?');
+  if (it.cabecera === 'plato3d') { plato.orbita(9, 3); yn.rotulo(tituloTexto().toUpperCase()); await esperaS(6000); yn.rotulo(); return; }
+  plato.plano('cenital', .1); F.play('Golpe'); sting(especialActual().id); yn.rotulo(tituloTexto().toUpperCase());
   await esperaS(1200); plato.plano('logo', 2.5); await esperaS(2600);
   const m = en('mq'); const c = dibujaLogo(500); c.className = 'cablogo'; m.appendChild(c); F.play('Golpe'); await esperaS(2200); c.remove();
   plato.plano('wide', 2.5); await esperaS(2600); yn.rotulo();
@@ -121,19 +127,22 @@ async function modoPrograma(s, modo, sub) {
   const entreno = modo === 'entrenamiento';
   const propia = escaleraPropia(); let era = (sub === 'propia' || (it.escaleraSiempre && !sub)) && propia ? Object.assign({}, ERAS[it.era], { escalera: propia, nombre: 'Escalera propia' }) : ERAS[(sub && ERAS[sub]) ? sub : it.era];
   const esp = ESPECIALES.find(e => e.id === it.especial) || ESPECIALES[0];
-  const cast = castingDe(); const nombre = (cast ? cast.nombre : nombreJugador());
+  const cast = castingDe(); const nombre = (cast ? cast.nombre : esp.id === 'youtube' ? az(YT_CONCURSANTES) : nombreJugador()); regOn = !entreno;
   aspectoConcursante(cast);
   let seguros = era.seguros.slice(); coproProg = null;
   const leo = plato.figuras.leo, conc = plato.figuras.conc;
   plato.sentar(conc, plato.sillas[0]); plato.sentar(leo, plato.sillas[1]);
   for (const k of ['pili', 'chema', 'marga', 'ramon', 'encarna']) plato.figuras[k].visible = false;
   if (!entreno) {
+    await regidor(s, 'aire');
     yn.actions([{ label: 'Saltar ⏭', fn: () => s.saltar = true }]);
     if (it.apertura) await cabecera(s);
     yn.actions([]); F.stopMusic();
     if (it.apertura) { conc.visible = false; await apertura(s); }
     if (esp.banner) yn.rotulo(esp.banner, era.cadena);
     await di(s, 'leo', az(FRASES.saludo), 'pres2'); F.aplauso();
+    if (esp.saludo) { await di(s, 'leo', esp.saludo, 'pres2'); F.aplauso(); }
+    await regidor(s, 'aplausos', .8);
     if (it.monologo && Math.random() < .5) { const mo = az(MONOLOGOS); for (const l of mo.lineas) await di(s, 'leo', l, 'pres2'); F.aplauso(); }
     if (it.copro || it.presSorpresa) { const c = az(['pili', 'chema', 'marga', 'ramon', 'encarna']); plato.dePie(plato.figuras[c], 1.3, .25, 2.2, -.4); plato.figuras[c].userData.gesto = 1; await di(s, c, `¡Hola! Soy ${PERSONAJES[c].nombre}, ${PERSONAJES[c].rol.toLowerCase()} del programa, y hoy acompaño a Leo en la presentación.`, 'copro'); if (it.presSorpresa) coproProg = c; else plato.figuras[c].visible = false; }
     if (it.apertura) { await di(s, 'leo', FRASES2.entraConc, 'wide'); await anda(s, conc, [-9, 0, 3], [-2.3, 0, .6], 3); }
@@ -149,10 +158,11 @@ async function modoPrograma(s, modo, sub) {
   }
   await di(s, 'leo', FRASES.empezamos, 'consola');
   const usados = {}, comods = era.comodines.slice(); let ganado = 0;
-  const pool = {}; const todas = PREGUNTAS.concat(it.misPreguntas ? misPreguntas() : []); for (let n = 1; n <= 5; n++) pool[n] = mezcla(todas.filter(p => p.nivel === n));
+  const pool = {}; const todas = PREGUNTAS.concat(it.misPreguntas ? misPreguntas() : []); for (let n = 1; n <= 5; n++) pool[n] = mezcla(todas.filter(p => p.nivel === n)).concat(esp.id === 'youtube' ? mezcla(PREG_YT.filter(p => p.nivel === n)) : []);
   for (let i = 0; i < 15; i++) {
     const p = pool[nivelDe(i)].pop(), resp = mezcla([p.c, ...p.inc]), correcta = resp.indexOf(p.c);
     if (coproProg) await comentaCopro(s, 'coproPregunta');
+    if (!entreno) { if (i === 14) await regidor(s, 'final'); else if (i >= 5) await regidor(s, 'silencio', .25); }
     const r = await juegaPregunta(s, { p, resp, correcta, i, era, seguros, usados, comods });
     if (r === 'planta') { await di(s, 'leo', FRASES.planta, 'pres'); return final(s, ganado, era, true); }
     if (r === 'mal') {
@@ -164,8 +174,9 @@ async function modoPrograma(s, modo, sub) {
     if (coproProg) await comentaCopro(s, 'coproBien');
     if (i === 14) { F.play('Fanfarria'); F.aplauso(4); await di(s, 'leo', FRASES.millon, 'dos'); return final(s, ganado, era, true); }
     if (seguros.includes(i + 1)) await di(s, 'leo', FRASES.seguroOk, 'pres');
+    if (!entreno && i === 7) { await K12.EX.aleatoriaReproduce(.25); s.ok(); K12.EX.bugMostrar(); }
     if (it.chistes && !entreno && Math.random() < .18) { await di(s, 'leo', az(FRASES2.chistes), 'pres'); F.aplauso(1); }
-    if (it.publicidad && !entreno && (i === 4 || i === 9)) { await di(s, 'leo', FRASES2.pubSale, 'wide'); await stCorre(i === 4 ? 'corta' : 'pausa', s); s.ok(); F.snd('publicidad'); plato.plano('wide', .1); await di(s, 'leo', FRASES2.pubVuelve, 'pres2'); }
+    if (it.publicidad && !entreno && (i === 4 || i === 9)) { await di(s, 'leo', FRASES2.pubSale, 'wide'); await regidor(s, 'pub'); await stCorre(i === 4 ? 'corta' : 'pausa', s); s.ok(); await K12.EX.aleatoriaReproduce(.6); s.ok(); F.snd('publicidad'); plato.plano('wide', .1); await regidor(s, 'vuelta'); await di(s, 'leo', FRASES2.pubVuelve, 'pres2'); }
   }
 }
 const fmt = (v, era, largo) => String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (era.moneda === 'ptas' ? (largo ? ' pesetas' : ' ptas') : ' €');
@@ -227,6 +238,7 @@ async function final(s, premio, era, bueno) {
   F.stopMusic(); const cast = castingDe(); const m = en('mq'); m.innerHTML = `<div class="cheque"><small>PÁGUESE A ${esc((cast ? cast.nombre : nombreJugador()).toUpperCase())}</small>${fmt(premio, era, true)}<small>¿Quién quiere ser millonario? · ${esc(era.nombre)}</small></div>`;
   plato.plano('dos', 2); if (bueno) F.aplauso(3); await di(s, 'leo', `Te llevas ${fmt(premio, era, true)}. ¡Enhorabuena!`);
   F.playMusic('despedida'); await di(s, 'leo', FRASES.despedida, 'wide'); m.innerHTML = '';
+  if (regOn) { regOn = false; await regidor(s, 'fin'); }
   await creditos(s); plato.orbita(); F.playMusic('menu');
   yn.actions([{ label: 'Jugar otra vez', cls: 'gold', fn: () => ii('programa') }, { label: 'Menú', fn: () => Lt('play') }]);
 }
@@ -247,16 +259,17 @@ async function modoMonologo(s, modo, sub) {
 }
 async function modoEscena(s, a, id) {
   const L = EXTRAS[a], ids = id === 'todas' ? L.map(x => x.id) : [id || L[0].id]; let d;
-  for (const x of ids) { d = L.find(e => e.id === x); for (const id2 of new Set(d.pasos.map(p => p[0]))) colocaPersonaje(id2); yn.rotulo(d.titulo, { oculta: 'Cámara oculta', tomas: 'Tomas falsas', fuera: 'Fuera de cámaras' }[a]); for (const [q, t, c] of d.pasos) await di(s, q, t, c); if (/Inocente|Corten/.test(d.pasos.at(-1)[1])) F.aplauso(); await s.espera(800); }
-  const sig = L[(L.indexOf(d) + 1) % L.length]; yn.bocadillo();
+  for (const x of ids) { d = esGen(x) ? escenaGen(a, x) : L.find(e => e.id === x); for (const id2 of new Set(d.pasos.map(p => p[0]))) colocaPersonaje(id2); yn.rotulo(d.titulo, { oculta: 'Cámara oculta', tomas: 'Tomas falsas', fuera: 'Fuera de cámaras' }[a]); for (const [q, t, c] of d.pasos) await di(s, q, t, c); if (/Inocente|Corten/.test(d.pasos.at(-1)[1])) F.aplauso(); await s.espera(800); }
+  const sig = d.gen ? { id: 'g' + (d.n % 9600 + 1) } : L[(L.indexOf(d) + 1) % L.length]; yn.bocadillo();
   yn.actions([{ label: 'Siguiente ▶', cls: 'gold', fn: () => ii(a, sig.id) }, { label: 'Repetir', fn: () => ii(a, d.id) }, { label: 'Lista', fn: () => Lt(a) }]);
 }
 function colocaPersonaje(id) {
   const f = plato.figuras[id]; if (!f || id === 'leo' || id === 'conc') return; const pos = { pili: [3.5, 0, 3], chema: [-3.5, 0, 3], marga: [1.2, .25, 1.2], ramon: [0, 0, 3.5], encarna: [12, 1.2, 3] }[id] || [0, 0, 3];
   plato.dePie(f, ...pos, Math.atan2(-pos[0], -pos[2]));
 }
-async function modoPublicidad(s, a, que) { await stCorre(que || 'pausa', s); s.ok(); F.snd('publicidad'); yn.actions([{ label: 'Otra pausa ▶', cls: 'gold', fn: () => ii('publicidad', 'pausa') }, { label: 'Lista', fn: () => Lt('publicidad') }]); }
+async function modoPublicidad(s, a, que) { await stCorre(que || 'pausa', s); s.ok(); if ((que || 'pausa') === 'pausa') { await K12.EX.aleatoriaReproduce(.7); s.ok(); } F.snd('publicidad'); yn.actions([{ label: 'Otra pausa ▶', cls: 'gold', fn: () => ii('publicidad', 'pausa') }, { label: 'Lista', fn: () => Lt('publicidad') }]); }
 async function modoPromo(s, tipo, id) {
+  if (id === 'videocab') { s.saltar = false; yn.actions([{ label: 'Saltar ⏭', fn: () => s.saltar = true }]); if (!await cabVideo3D(s)) yn.toast('Primero elige un vídeo en Opciones › ELEGIR VÍDEO PARA LA CABECERA 3D', 3500); yn.actions([{ label: 'Lista', fn: () => Lt('promos') }]); return; }
   if (id === 'cabecera' || id === 'apertura') { it.cabecera === 'video' || (s.saltar = false); yn.actions([{ label: 'Saltar ⏭', fn: () => s.saltar = true }]); if (id === 'cabecera') await cabecera(s); else { plato.figuras.conc.visible = false; await apertura(s); await di(s, 'leo', FRASES2.entraConc, 'wide'); await anda(s, plato.figuras.conc, [-9, 0, 3], [-2.3, 0, .6], 3); plato.sentar(plato.figuras.conc, plato.sillas[0]); plato.plano('dos'); } F.stopMusic(); yn.actions([{ label: 'Repetir', cls: 'gold', fn: () => ii('promos', id) }, { label: 'Lista', fn: () => Lt('promos') }]); return; }
   const L = tipo === 'promos' ? PROMOS : tipo === 'promosleo' ? PROMOS_LEO : ANUNCIOS; const p = L.find(x => x.id === id) || L[0];
   if (tipo === 'promosleo') plato.dePie(plato.figuras.leo, 0, .25, 3.4, 0);
@@ -330,7 +343,7 @@ function optMisPreguntas() { const a = document.createElement('div'); a.classNam
 function aplicaLogo() { const b = RC.cache.logo; if (!b) return; const img = new Image(); img.onload = () => plato.ponLogo(img); img.src = URL.createObjectURL(b); }
 function logoMenu(size) { const b = RC.cache.logo; if (b) { const i = new Image(); i.src = URL.createObjectURL(b); i.style.cssText = 'max-width:100%;max-height:60vh;border-radius:50%'; return i; } return dibujaLogo(size); }
 function Lt(a = 'main') {
-  Gr = a; XA(); en('topbar').classList.add('hidden');
+  Gr = a; XA(); en('topbar').classList.add('hidden'); K12.EX && (K12.EX.bugOcultar(), K12.EX.ocioMenu(a === 'main'));
   const e = en('menu'); e.classList.remove('hidden'); e.innerHTML = ''; e.style.background = 'transparent';
   const t = ESPECIALES.find(x => x.id === it.especial) || ESPECIALES[0];
   if (a === 'title') {
@@ -340,18 +353,18 @@ function Lt(a = 'main') {
     e.addEventListener('pointerup', p); addEventListener('keydown', p); return;
   }
   const n = document.createElement('div'); n.className = 'mbox'; const i = document.createElement('div'); i.className = 'logo'; const s = logoMenu(560); s.className = 'mlogo'; i.appendChild(s);
-  const o = document.createElement('div'); o.className = 'mtag'; o.textContent = t.id === 'normal' ? 'EL JUEGO · 3D' : t.emoji + ' ' + t.banner; i.appendChild(o);
+  const o = document.createElement('div'); o.className = 'mtag'; o.textContent = t.id === 'normal' ? 'EL JUEGO · 3D' : t.emoji + ' ' + bannerDe(t); i.appendChild(o);
   const r = document.createElement('div'); r.className = 'col ui';
   if (a === 'main') {
     r.append(ei('Jugar', 'Programa completo, entrenamiento, clásico…', 'gold', () => Lt('play')), ei('Promos', 'Promos 3D con Leo Arrieta: cabecera, apertura, casting, esta noche…', '', () => Lt('promos')), ei('Promos de Leo', `${me.presentador} presenta ¿Quién quiere ser millonario? en el plató: próximo programa, seguro, consola`, '', () => Lt('promosleo')),
       ei('Publicidad', `Pausa de ${CADENA}: anuncios inventados, cortinillas y promos de la cadena`, '', () => Lt('publicidad')), ei('Cámara oculta', 'Bromas a Leo en el plató… ¡Inocente, inocente!', '', () => Lt('oculta')), ei('Tomas falsas', 'Lapsus, comodines rebeldes y «¡Corten!»', '', () => Lt('tomas')), ei('Fuera de cámaras', 'Maquillaje, ensayos, técnicos y la pausa', '', () => Lt('fuera')),
-      ei('Paseo', 'Pasea por el plató y sube a la grada', '', () => ii('paseo')), ei('Casting', 'Apúntate y sal como concursante en las partidas', '', () => Lt('casting')), ei('Elige el valor de cada pregunta', 'Coloca los 15 premios de la escalera', '', () => Lt('escalera')),
+      ei('Cámara libre', 'Vuela por el plató 3D, marca puntos y graba tu propia cabecera', '', () => ii('camlibre')), ei('Paseo', 'Pasea por el plató y sube a la grada', '', () => ii('paseo')), ei('Casting', 'Apúntate y sal como concursante en las partidas', '', () => Lt('casting')), ei('Elige el valor de cada pregunta', 'Coloca los 15 premios de la escalera', '', () => Lt('escalera')),
       ei('Opciones', 'Sonido, calidad gráfica, pantalla completa', '', () => Lt('options')), ei('La historia de ¿Quién quiere ser millonario?', `${me.presentador} te cuenta la historia del programa`, 'hist', () => Lt('historia')), ei('Cómo se juega', 'Las reglas del concurso', '', () => Lt('help')), ei('Créditos', '', '', () => Lt('credits')));
     if (!APP) r.append(ei('Instalar app', 'Juega sin conexión desde tu pantalla de inicio', 'inst', () => { yc ? yc.prompt() : yn.toast('Usa «Añadir a pantalla de inicio» en el menú del navegador', 3000); }));
   } else if (a === 'play') {
     r.append(ei('Programa completo', 'Cabecera, apertura, 15 preguntas, comodines, cheque y despedida', 'gold', () => ii('programa')), ei('Entrenamiento', 'Juega sin cabecera ni publicidad, elige la escalera', '', () => Lt('train')), ei('Clásico', 'El juego original de Scratch', '', () => ii('clasico')), ei('Explorar el plató', 'Pasea libremente por el plató 3D', '', () => ii('explorar')), ei('Monólogos del presentador', 'Sus números de humor: con el público, al teléfono y las normas', '', () => Lt('monologos')));
     r.appendChild(Pa('Programa especial')); const u = document.createElement('div'); u.className = 'themes';
-    for (const h of ESPECIALES) { const d = document.createElement('button'); d.className = 'tbtn' + (h.id === it.especial ? ' sel' : ''); d.innerHTML = `<span>${h.emoji}</span>${h.name}`; d.onclick = (f) => { f.stopPropagation(); F.play('Tecla'); it.especial = h.id; guarda(); Lt('play'); }; u.appendChild(d); }
+    for (const h of ESPECIALES) { const d = document.createElement('button'); d.className = 'tbtn' + (h.id === it.especial ? ' sel' : ''); d.innerHTML = `<span>${h.emoji}</span>${h.name}`; d.onclick = (f) => { f.stopPropagation(); F.play('Tecla'); it.especial = h.id; guarda(); lucesEspecial(); sting(h.id); Lt('play'); }; u.appendChild(d); }
     r.append(u, Ia('main'));
   } else if (a === 'train') {
     r.appendChild(Pa('Entrenamiento (sin cabecera)')); const u = (p, v, g, m = '') => ei(v, g, m, () => ii('entrenamiento', p));
@@ -360,11 +373,12 @@ function Lt(a = 'main') {
   } else if (a === 'oculta' || a === 'tomas' || a === 'fuera') {
     const MN = { oculta: ['📹', 'Cámara oculta', 'Bromas a Leo en el plató… ¡Inocente, inocente!'], tomas: ['🎬', 'Tomas falsas', 'Lapsus, comodines rebeldes y «¡Corten!»'], fuera: ['🎥', 'Fuera de cámaras', 'Maquillaje, ensayos, técnicos y la pausa'] }[a];
     r.appendChild(Pa(MN[0] + ' ' + MN[1])); r.appendChild(caja(MN[2] + '. Personajes virtuales inventados; todo es ficción.'));
-    r.appendChild(ei('▶ Ver todas seguidas', EXTRAS[a].length + ' escenas', 'gold', () => ii(a, 'todas'))); for (const x of EXTRAS[a]) r.appendChild(ei(x.titulo, x.pasos.length + ' frases', '', () => ii(a, x.id))); r.appendChild(Ia('main'));
+    menuEscenas(a, r); r.appendChild(ei('▶ Ver todas seguidas', EXTRAS[a].length + ' escenas', 'gold', () => ii(a, 'todas'))); for (const x of EXTRAS[a]) r.appendChild(ei(x.titulo, x.pasos.length + ' frases', '', () => ii(a, x.id))); r.appendChild(Ia('main'));
   } else if (a === 'promos') {
     r.appendChild(Pa('Promos')); r.appendChild(caja(`Promos de ¿Quién quiere ser millonario? en 3D, en tiempo real, con nuestro presentador virtual <b>${esc(me.presentador)}</b> (personajes virtuales, sin personas reales).`));
-    r.append(ei('🎬 Cabecera del programa', 'La cabecera de cada programa', '', () => ii('promos', 'cabecera')), ei('🎬 Apertura del programa', 'Plató, público, Leo entra y el concursante a la silla', '', () => ii('promos', 'apertura')));
+    r.append(ei('🎬 Cabecera del programa', 'La cabecera de cada programa', '', () => ii('promos', 'cabecera')), ei('🎬 Apertura del programa', 'Plató, público, Leo entra y el concursante a la silla', '', () => ii('promos', 'apertura')), ei('🎥 Cabecera 3D con tu vídeo', 'Tu vídeo en las pantallas, la pared curva y el panel flotante del plató', '', () => ii('promos', 'videocab')));
     for (const x of PROMOS) r.appendChild(ei('📺 ' + x.titulo, x.lineas[0], x.id === 'estanoche' ? 'gold' : '', () => ii('promos', x.id)));
+    const zp = document.createElement('div'); zp.className = 'col'; r.appendChild(zp); entradasPromos(ei, ii).then(L => zp.append(...L));
     r.appendChild(Ia('main'));
   } else if (a === 'promosleo') {
     r.appendChild(Pa('Promos de Leo')); r.appendChild(caja(`Promos en 3D en el plató: nuestro presentador virtual <b>${esc(me.presentador)}</b> presenta ¿Quién quiere ser millonario? en ${CADENA}. (Personaje virtual, voz sintética.)`));
@@ -407,6 +421,7 @@ function Lt(a = 'main') {
     const f2 = document.createElement('div'); f2.className = 'mrow'; f2.append(boton((it.escaleraSiempre ? '✅' : '⬜') + ' Usar mi escalera en todos los programas', b => { it.escaleraSiempre = !it.escaleraSiempre; guarda(); b.innerHTML = (it.escaleraSiempre ? '✅' : '⬜') + ' Usar mi escalera en todos los programas'; }), Ia('main')); r.appendChild(f2);
   } else if (a === 'options') {
     r.classList.add('opts'); r.appendChild(Pa('Opciones'));
+    r.append(filaTitulo(), filaVideo3D(), ...filasExtras(), filaSiNo('🎬 La regidora (Pili) habla en el Programa completo', 'regidor'));
     r.append(filaVol('🎵 Música', 'music', 'musicVol'), filaOpc('🎬 Cabecera', 'cabecera', [['cab3d', 'Cabecera 3D'], ['video', RC.cache.video_cabecera ? 'Vídeo propio' : 'Vídeo propio (cárgalo)'], ['plato3d', 'Plató 3D']], async v => { if (v === 'video' && !RC.cache.video_cabecera) { const f = await pideArchivo('video/*'); if (f) { await rcGuarda('video_cabecera', f); Lt('options'); } } }, 'rowCabecera', true),
       optCabeceraMusica(), filaVol('🔊 Efectos', 'sfx', 'sfxVol'), optPublico(), filaSi('🎤 Voz del presentador', 'voz'), filaSi('📖 El presentador lee las preguntas', 'lee'), filaOpc('⏩ Velocidad de lectura', 'leeVel', [['normal', 'Normal'], ['rapida', 'Rápida']], null, 'rowLeeVel'), filaSi('😄 Chistes del presentador', 'chistes'), filaSi('🎭 Monólogo del presentador', 'monologo'),
       optConcursantes(), filaEtapa(), filaRecursos(), filaSiNo('📺 Publicidad en el Programa completo', 'publicidad'), filaSiNo('🎤 Copresentador sorpresa', 'copro'), filaSiNo('🎙️ Presentador sorpresa (todo el programa)', 'presSorpresa'), filaSiNo('🎬 Cabecera 3D y apertura larga en el Programa completo', 'apertura'), filaPlato(), optMisPreguntas(),
@@ -453,7 +468,10 @@ async function arranca() {
   if (typeof it.cabecera === 'boolean') it.cabecera = 'cab3d';
   await Promise.all([rcCarga(), castingCarga()]); initPublicidad(F, hablar);
   const mq = document.createElement('div'); mq.id = 'mq'; en('hud').appendChild(mq);
-  plato = creaPlato(en('c3d'), it.quality, it.plato); plato.gradas(it.gradas); aplicaLogo();
+  for (const e of ESPECIALES) { if (SALUDOS_EXISTENTES[e.id]) e.saludo = SALUDOS_EXISTENTES[e.id]; if (LUCES_EXISTENTES[e.id]) e.luz = LUCES_EXISTENTES[e.id]; }
+  instalaV12({ ESPECIALES, extra: ESP_EXTRA, temasLogo: TEMAS_LOGO, it, guarda, F, plato: null, RC, rcGuarda, rcBorra, pideArchivo, boton, nota, caja, ei, ii, Lt, yn, di, colocaPersonaje, dibujaLogo, pref: 'mm', colorCss: '#e8b830', colorFondo: '#1a0a4a', hashtagDef: '#QuienQuiereSerMillonario', ledHT: { pos: [0, 6.2, -9], w: 7 }, musicas: [['menu', 'Tema principal'], ['cabecera', 'Cabecera'], ['pregunta', 'Pregunta'], ['tension', 'Tensión'], ['despedida', 'Despedida']], enMenu: () => Mi && Gr === 'main' && !en('menu').classList.contains('hidden'), tituloOriginal: '¿Quién quiere ser millonario?', regidor: REGIDORA, colorMarco: 0x8a4aff,
+    escenas: { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' }, cam: { P: 'pres', C: 'silla' }, camDef: 'wide' } });
+  plato = creaPlato(en('c3d'), it.quality, it.plato); K12.plato = plato; K12.yn = yn; instalaExtras(); lucesEspecial(); plato.gradas(it.gradas); aplicaLogo();
   let last = performance.now(); let fr = 0, ft = performance.now(); const loop = (t) => { fr++; if (t - ft > 1000) { fps = fr * 1000 / (t - ft); fr = 0; ft = t; } plato.frame(Math.min(.05, (t - last) / 1000)); last = t; requestAnimationFrame(loop); }; requestAnimationFrame(loop);
   en('btnMenu').onclick = (s) => { s.stopPropagation(); if (jt && jt.alive && !confirm('¿Volver al menú? Se perderá la partida.')) return; document.getElementById('showtime')?.remove(); Lt('main'); };
   en('btnLuces').onclick = (s) => { s.stopPropagation(); yn.toast(plato.toggleLuces() ? 'Haces de luz encendidos' : 'Haces de luz apagados', 1000); };

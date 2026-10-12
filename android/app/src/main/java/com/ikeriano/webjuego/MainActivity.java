@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setTextZoom(100);
         WebView.setWebContentsDebuggingEnabled(false);
+        web.addJavascriptInterface(new Puente(), "AppNativo");
+        if (Build.VERSION.SDK_INT < 29) try { requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"}, 7); } catch (Throwable ignored) { }
 
         web.setWebViewClient(new WebViewClient() {
             @Override
@@ -250,4 +252,41 @@ public class MainActivity extends Activity {
     @Override protected void onResume() { super.onResume(); if (web != null) web.onResume(); ocultarBarras(); }
     @Override protected void onSaveInstanceState(Bundle o) { super.onSaveInstanceState(o); if (web != null) web.saveState(o); }
     @Override protected void onDestroy() { if (web != null) web.destroy(); super.onDestroy(); }
+
+    /** Puente JS → Android: guarda archivos (logos PNG, vídeos de promos) en Descargas/Imágenes/Películas. */
+    public class Puente {
+        @android.webkit.JavascriptInterface
+        public String guardarArchivo(String nombre, String mime, String b64, String carpeta) {
+            try {
+                byte[] d = android.util.Base64.decode(b64, android.util.Base64.DEFAULT);
+                String dir = "Pictures".equals(carpeta) ? android.os.Environment.DIRECTORY_PICTURES
+                        : "Movies".equals(carpeta) ? android.os.Environment.DIRECTORY_MOVIES : android.os.Environment.DIRECTORY_DOWNLOADS;
+                String sub = getApplicationInfo().loadLabel(getPackageManager()).toString().replaceAll("[^A-Za-z0-9 ñÑáéíóúÁÉÍÓÚ¡!¿?]", "").trim();
+                if (Build.VERSION.SDK_INT >= 29) {
+                    android.content.ContentValues cv = new android.content.ContentValues();
+                    cv.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, nombre);
+                    cv.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, mime);
+                    cv.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, dir + "/" + sub);
+                    Uri col = "Pictures".equals(carpeta) ? android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            : "Movies".equals(carpeta) ? android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                            : android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+                    Uri u = getContentResolver().insert(col, cv);
+                    if (u == null) return "error: sin destino";
+                    java.io.OutputStream o = getContentResolver().openOutputStream(u);
+                    o.write(d); o.close();
+                    return "ok:" + dir + "/" + sub + "/" + nombre;
+                } else {
+                    java.io.File f = new java.io.File(android.os.Environment.getExternalStoragePublicDirectory(dir), sub);
+                    f.mkdirs();
+                    java.io.File g = new java.io.File(f, nombre);
+                    java.io.FileOutputStream o = new java.io.FileOutputStream(g);
+                    o.write(d); o.close();
+                    android.media.MediaScannerConnection.scanFile(MainActivity.this, new String[]{g.getAbsolutePath()}, null, null);
+                    return "ok:" + g.getAbsolutePath();
+                }
+            } catch (Throwable t) { return "error: " + t; }
+        }
+        @android.webkit.JavascriptInterface
+        public boolean disponible() { return true; }
+    }
 }

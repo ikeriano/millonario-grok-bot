@@ -18,5 +18,10 @@ for (const c of ['pili', 'chema', 'marga', 'ramon', 'encarna']) add(`¡Hola! Soy
 for (const c of []) add(`¡Hola! Soy ${D.PERSONAJES[c].nombre}, ${D.PERSONAJES[c].rol.toLowerCase()} del programa, y hoy acompaño a Leo en la presentación.`, c);
 for (const era of Object.values(D.ERAS)) { era.escalera.forEach((v, i) => { add(`Pregunta ${i + 1}, por ${fmt(v, era, true)}.`); add(`Te llevas ${fmt(v, era, true)}. ¡Enhorabuena!`); if (era.eligeSeguro && i >= 5 && i <= 13) add(`Segundo seguro en la pregunta ${i + 1}: ${fmt(v, era, true)}.`); }); add(`Te llevas ${fmt(0, era, true)}. ¡Enhorabuena!`); }
 for (const l of fs.readFileSync(new URL('../src/preguntas.txt', import.meta.url), 'utf8').split('\n')) if (l.includes('|')) add(l.split('|')[0]);
+const M12 = await import('../src/m12.js'); const { EscenasGen } = await import('../src/escenas_gen.js');
+for (const e of M12.ESP_EXTRA) add(e.saludo); for (const t of Object.values(M12.SALUDOS_EXISTENTES)) add(t);
+for (const L of Object.values(M12.REGIDORA.lineas)) L.forEach(t => add(t, 'pili'));
+for (const l of M12.PREGUNTAS_YT.split('\n')) if (l.includes('|')) add(l.split('|')[0]);
+{ const G = EscenasGen(JSON.parse(fs.readFileSync(new URL('../src/escenas_pool.json', import.meta.url), 'utf8')), { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' } }); for (const [q, t] of G.textos()) add(t, q); }
 const out = [...T].map(x => JSON.parse(x)).map(([q, t]) => [q, t.replace(/[«»]/g, '')]);
 fs.writeFileSync(new URL('frases.json', import.meta.url), JSON.stringify(out, null, 0)); console.log(out.length, 'frases');
