@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import { dibujaLogo } from './logo.js';
 import { PERSONAJES } from './datos.js';
+import { creaPersonaje } from './personajes.js';
 // Plató 2020: azul oscuro, haces de luz, suelo dorado en espiral, consola en V, dos sillas, gradas y logo al fondo
-export function creaPlato(canvas, calidad = 'media') {
+export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: calidad !== 'baja', preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, calidad === 'alta' ? 2 : 1)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x01030e); scene.fog = new THREE.Fog(0x01030e, 22, 48);
@@ -51,7 +52,7 @@ export function creaPlato(canvas, calidad = 'media') {
   // ---------- gradas con público a ambos lados ----------
   const persona = new THREE.CapsuleGeometry(.16, .3, 3, 6), cabeza = new THREE.SphereGeometry(.12, 8, 6);
   const nPub = calidad === 'baja' ? 160 : 360; const cuerpos = new THREE.InstancedMesh(persona, new THREE.MeshStandardMaterial({ roughness: .8 }), nPub), cabezas = new THREE.InstancedMesh(cabeza, new THREE.MeshStandardMaterial({ color: 0xd8a888, roughness: .8 }), nPub);
-  scene.add(cuerpos, cabezas); const m4 = new THREE.Matrix4(), col = new THREE.Color(); let np = 0; const publico = [];
+  scene.add(cuerpos, cabezas); const gradasPub = [cuerpos, cabezas]; const m4 = new THREE.Matrix4(), col = new THREE.Color(); let np = 0; const publico = [];
   for (const lado of [-1, 1]) for (let fila = 0; fila < 6; fila++) {
     const r = 12 + fila * 1.1, h = .4 + fila * .55;
     const grada = new THREE.Mesh(new THREE.CylinderGeometry(r + .55, r + .55, h, 48, 1, true, lado > 0 ? Math.PI * .18 : Math.PI * 1.18, Math.PI * .64), new THREE.MeshStandardMaterial({ color: 0x0b1230, side: THREE.DoubleSide, metalness: .4, roughness: .5 }));
@@ -83,25 +84,18 @@ export function creaPlato(canvas, calidad = 'media') {
   // ---------- personajes (figuras inventadas, sin parecido con nadie real) ----------
   const figuras = {};
   const creaFigura = (id) => {
-    const p = PERSONAJES[id], f = new THREE.Group(); const tm = new THREE.MeshStandardMaterial({ color: p.traje, roughness: .55 }), pm = new THREE.MeshStandardMaterial({ color: p.piel, roughness: .7 });
-    const cuerpo = new THREE.Mesh(new THREE.CapsuleGeometry(.22, .6, 4, 10), tm); cuerpo.position.y = 1.05; f.add(cuerpo);
-    for (const s of [-1, 1]) { const pierna = new THREE.Mesh(new THREE.CapsuleGeometry(.08, .55, 3, 8), new THREE.MeshStandardMaterial({ color: 0x111118 })); pierna.position.set(s * .1, .4, 0); f.add(pierna); const brazo = new THREE.Mesh(new THREE.CapsuleGeometry(.065, .5, 3, 8), tm); brazo.position.set(s * .3, 1.1, 0); brazo.rotation.z = s * .12; f.add(brazo); }
-    const cab = new THREE.Mesh(new THREE.SphereGeometry(.17, 16, 12), pm); cab.position.y = 1.62; f.add(cab);
-    const pelo = new THREE.Mesh(new THREE.SphereGeometry(.18, 16, 8, 0, Math.PI * 2, 0, Math.PI * .5), new THREE.MeshStandardMaterial({ color: p.pelo })); pelo.position.y = 1.65; f.add(pelo);
-    const boca = new THREE.Mesh(new THREE.BoxGeometry(.07, .015, .02), new THREE.MeshBasicMaterial({ color: 0x4a1010 })); boca.position.set(0, 1.56, .16); f.add(boca);
-    for (const s of [-1, 1]) { const ojo = new THREE.Mesh(new THREE.SphereGeometry(.018, 6, 6), new THREE.MeshBasicMaterial({ color: 0x111111 })); ojo.position.set(s * .06, 1.65, .155); f.add(ojo); }
-    if (id === 'leo') { const corb = new THREE.Mesh(new THREE.BoxGeometry(.05, .25, .02), new THREE.MeshStandardMaterial({ color: 0x2a5aff })); corb.position.set(0, 1.25, .21); f.add(corb); }
-    f.userData = { boca, habla: false }; f.visible = false; scene.add(f); figuras[id] = f; return f;
+    const p = PERSONAJES[id], P = creaPersonaje(p.aspecto || {}); P.root.userData = P; P.root.visible = false; scene.add(P.root); figuras[id] = P.root; return P.root;
   };
   Object.keys(PERSONAJES).forEach(creaFigura);
-  const sentar = (f, silla) => { f.position.copy(silla.position).add(new THREE.Vector3(0, .55, 0)); f.rotation.y = silla.rotation.y + Math.PI; f.visible = true; };
+  const recreaFigura = (id, aspecto) => { const v = figuras[id]; const pos = v.position.clone(), rot = v.rotation.y, vis = v.visible, sen = v.userData.sentado; scene.remove(v); const P = creaPersonaje(aspecto || PERSONAJES[id].aspecto); P.root.userData = P; scene.add(P.root); figuras[id] = P.root; P.root.position.copy(pos); P.root.rotation.y = rot; P.root.visible = vis; P.sentado = sen; return P.root; };
+  const sentar = (f, silla) => { f.position.copy(silla.position).add(new THREE.Vector3(0, .24, 0)); f.rotation.y = silla.rotation.y; f.visible = true; f.userData.sentado = true; };
+  const dePie = (f, x, y, z, ry) => { f.position.set(x, y, z); f.rotation.y = ry; f.visible = true; f.userData.sentado = false; };
   sentar(figuras.leo, sillas[1]); sentar(figuras.conc, sillas[0]);
-  figuras.leo.rotation.y = -Math.PI / 2; figuras.conc.rotation.y = Math.PI / 2;
   // ---------- cámaras ----------
   const PLANOS = {
     wide: [new THREE.Vector3(0, 4.5, 13), new THREE.Vector3(0, 1.8, -2)], pres: [new THREE.Vector3(-.6, 2, 2.6), new THREE.Vector3(2.3, 1.95, 0)],
     silla: [new THREE.Vector3(.6, 2, 2.6), new THREE.Vector3(-2.3, 1.85, 0)], consola: [new THREE.Vector3(0, 2.8, 3.2), new THREE.Vector3(0, 1.4, 0)],
-    grada: [new THREE.Vector3(3, 2.5, 4), new THREE.Vector3(12, 2, 4)], logo: [new THREE.Vector3(0, 4, -6), new THREE.Vector3(0, 4.2, -15.5)],
+    grada: [new THREE.Vector3(3, 2.5, 4), new THREE.Vector3(12, 2, 4)], pres2: [new THREE.Vector3(0, 1.9, 7), new THREE.Vector3(0, 1.6, 3.2)], copro: [new THREE.Vector3(-.5, 1.9, 5.5), new THREE.Vector3(1.3, 1.6, 2.2)], logo: [new THREE.Vector3(0, 4, -6), new THREE.Vector3(0, 4.2, -15.5)],
     dos: [new THREE.Vector3(0, 2.4, 5.5), new THREE.Vector3(0, 1.6, 0)], cenital: [new THREE.Vector3(0, 14, .1), new THREE.Vector3(0, 0, 0)],
   };
   const cam = { modo: 'orbita', t: 0, desde: null, hacia: null, mira: new THREE.Vector3(), dur: 1.4, orbitR: 13, orbitH: 5, yaw: 0, pitch: 0 };
@@ -115,11 +109,15 @@ export function creaPlato(canvas, calidad = 'media') {
     tiempo += dt; const w = canvas.clientWidth, h = canvas.clientHeight;
     if (w !== ancho || h !== alto) { ancho = w; alto = h; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w / h < 1.2 ? 65 : 50; camera.updateProjectionMatrix(); }
     for (const hz of haces) { const u = hz.userData; hz.rotation.x = Math.sin(tiempo * u.f + u.a) * .45; hz.rotation.z = Math.cos(tiempo * u.f * .8 + u.a) * .45; hz.visible = luces; }
-    for (const id in figuras) { const f = figuras[id]; if (f.userData.habla) f.userData.boca.scale.y = 1 + Math.abs(Math.sin(tiempo * 18)) * 5; else f.userData.boca.scale.y = 1; }
+    for (const id in figuras) if (figuras[id].visible) figuras[id].userData.update(dt);
     if (cam.modo === 'orbita') { const a = tiempo * .08; camera.position.set(Math.sin(a) * cam.orbitR, cam.orbitH + Math.sin(tiempo * .3) * .5, Math.cos(a) * cam.orbitR); cam.mira.set(0, 1.5, 0); }
     else if (cam.modo === 'plano') { cam.t = Math.min(1, cam.t + dt / cam.dur); const e = cam.t < .5 ? 2 * cam.t * cam.t : 1 - Math.pow(-2 * cam.t + 2, 2) / 2; camera.position.lerpVectors(cam.desde[0], cam.hacia[0], e); cam.mira.lerpVectors(cam.desde[1], cam.hacia[1], e); camera.position.x += Math.sin(tiempo * .4) * .05; }
     else if (cam.modo === 'libre') { const f = new THREE.Vector3(Math.sin(cam.yaw), 0, -Math.cos(cam.yaw)), r = new THREE.Vector3(-f.z, 0, f.x); camera.position.addScaledVector(f, -mueve.z * dt * 4).addScaledVector(r, mueve.x * dt * 4); camera.position.y = 1.7; cam.mira.copy(camera.position).add(new THREE.Vector3(Math.sin(cam.yaw) * Math.cos(cam.pitch), Math.sin(cam.pitch), -Math.cos(cam.yaw) * Math.cos(cam.pitch))); }
     camera.lookAt(cam.mira); renderer.render(scene, camera);
   }
-  return { renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
+    const ESTILOS = { '2020': [0x2f7dff, 0x8fd0ff, 0x01030e, 0x3a8cff], '2005': [0x7a3cff, 0xd0a0ff, 0x06021a, 0x9a6aff], '1999': [0x1a5aff, 0xffd060, 0x000510, 0xffc040], virtual: [0x00e0ff, 0xff4ad0, 0x05001a, 0x40ffff] };
+  const aplicaEstilo = (e) => { const [c1, c2, fondo, haz] = ESTILOS[e] || ESTILOS['2020']; azul.color.setHex(c1); azulClaro.color.setHex(c2); scene.background.setHex(fondo); scene.fog.color.setHex(fondo); matHaz.color.setHex(haz); };
+  aplicaEstilo(estilo);
+  const ponLogo = (img) => { const t = new THREE.Texture(img); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true; logo.material.map = t; logo.material.needsUpdate = true; };
+  return { recreaFigura, aplicaEstilo, ponLogo, dePie, gradas: (v) => gradasPub.forEach(m => m.visible = v), renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
 }

@@ -9,7 +9,7 @@ def fnv(t):
         for cu in ([ord(ch)] if ord(ch) < 0x10000 else [0xD800 + ((ord(ch) - 0x10000) >> 10), 0xDC00 + ((ord(ch) - 0x10000) & 0x3FF)]):
             h ^= cu; h = (h * 16777619) & 0xFFFFFFFF
     return '%08x' % h
-VOCES = {'leo': 'es_ES-davefx-medium', 'chema': 'es_ES-carlfm-x_low', 'ramon': 'es_ES-mls_9972-low', 'conc': 'es_ES-mls_10246-low', 'pili': 'es_AR-daniela-high', 'marga': 'es_MX-claude-high', 'encarna': 'es_ES-sharvard-medium'}
+VOCES = {'leo': 'es_ES-davefx-medium', 'chema': 'es_ES-carlfm-x_low', 'ramon': 'es_ES-mls_9972-low', 'conc': 'es_ES-mls_10246-low', 'pili': 'es_AR-daniela-high', 'marga': 'es_MX-claude-high', 'encarna': 'es_ES-sharvard-medium', 'st_sharvard': 'es_ES-sharvard-medium', 'st_ald': 'es_MX-ald-medium', 'st_daniela': 'es_AR-daniela-high', 'st_carlfm': 'es_ES-carlfm-x_low'}
 cache = {}
 idx_p = os.path.join(OUT, 'index.json'); idx = json.load(open(idx_p)) if os.path.exists(idx_p) else {}
 for q, t in json.load(open(os.path.join(R, 'tools/frases.json'))):

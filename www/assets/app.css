@@ -47,3 +47,15 @@ html.vertical .pq{left:90px;width:780px;white-space:normal!important;top:52px!im
 .cheque{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);background:linear-gradient(#fffbe8,#f3e2b0);color:#2a1a00;border:3px solid #b8860b;border-radius:10px;padding:3vh 4vw;font:900 clamp(16px,3.4vw,36px) Georgia,serif;text-align:center;box-shadow:0 10px 40px #000;animation:pop2 .5s}
 .cheque small{display:block;font:700 clamp(10px,1.4vw,14px) Arial;color:#6a4a00}
 .segsel{display:grid;grid-template-columns:repeat(3,1fr);gap:1vh 1vw}
+/* v1.1: icono de rombo estilo Millonario en lugar de la huella */
+.mbtn .fp{border-radius:4px;transform:rotate(45deg) scale(.82);background:linear-gradient(135deg,#fff6c0,#f2b21c 45%,#a8700a 55%,#ffe27a);border:2px solid #fff3c0;box-shadow:0 0 8px #ffd23a88;position:relative}
+.mbtn .fp:before{content:"";position:absolute;left:22%!important;top:22%!important;width:56%!important;height:56%!important;border-radius:2px;background:linear-gradient(135deg,#3b1478,#1a0640);border:none}
+.mbtn .fp:after{content:"";position:absolute;right:auto!important;left:40%!important;top:40%!important;width:20%!important;height:20%!important;border-radius:1px;background:#ffd23a;border:none}
+.mbtn.gold .fp{background:linear-gradient(135deg,#ffffff,#9ad0ff 45%,#1b4fd8 55%,#cfe8ff)}
+.relojllamada{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:1vh;animation:pop .4s}
+.relojllamada .rl{--p:360deg;width:clamp(110px,18vw,190px);aspect-ratio:1;border-radius:50%;background:conic-gradient(#ffd23a var(--p),#0a1748 0);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 30px #2a6aff;position:relative}
+.relojllamada .rl:before{content:"";position:absolute;inset:9%;border-radius:50%;background:radial-gradient(#1b3fa8,#02061e);border:3px solid #9ad0ff}
+.relojllamada b,.relojllamada small{position:relative;color:#fff;font:900 clamp(34px,6vw,64px) Arial Black,Arial}.relojllamada small{font:800 clamp(10px,1.4vw,14px) Arial;color:#ffd23a}
+.relojllamada.ultimos b{color:#ff4a4a;animation:parp .5s steps(2) infinite}
+.cablogo{position:absolute;left:50%;top:45%;width:min(55vh,55vw);transform:translate(-50%,-50%);animation:cab 2.2s ease-out}
+@keyframes cab{0%{transform:translate(-50%,-50%) scale(.1) rotate(-200deg);opacity:0}40%{transform:translate(-50%,-50%) scale(1.1) rotate(10deg);opacity:1}55%{transform:translate(-50%,-50%) scale(1) rotate(0)}100%{transform:translate(-50%,-50%) scale(1.05)}}

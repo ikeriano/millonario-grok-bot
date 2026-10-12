@@ -1,13 +1,13 @@
 // Textos del juego: presentador inventado, escenas extra, promos, publicidad, monólogos e historia.
 export const PRESENTADOR = 'Leo Arrieta';
 export const PERSONAJES = {
-  leo: { nombre: 'Leo Arrieta', rol: 'Presentador', traje: 0x1b2340, pelo: 0x3a2a1c, piel: 0xe0b08c },
-  pili: { nombre: 'Pili', rol: 'Regidora', traje: 0x222222, pelo: 0x8a3b1a, piel: 0xf0c4a0 },
-  chema: { nombre: 'Chema', rol: 'Técnico de sonido', traje: 0x3d5a2a, pelo: 0x111111, piel: 0xc89870 },
-  marga: { nombre: 'Marga', rol: 'Maquilladora', traje: 0x8a1f5c, pelo: 0xd9b25a, piel: 0xf2c8a8 },
-  ramon: { nombre: 'Don Ramón', rol: 'El jefe', traje: 0x4a4a4a, pelo: 0xcccccc, piel: 0xe8b898 },
-  encarna: { nombre: 'Encarna', rol: 'Público', traje: 0xb04a2a, pelo: 0x5a3a2a, piel: 0xe8c0a0 },
-  conc: { nombre: 'Concursante', rol: 'Concursante', traje: 0x2a6a8a, pelo: 0x2a1a10, piel: 0xd8a880 },
+  leo: { nombre: 'Leo Arrieta', rol: 'Presentador', traje: 0x1b2340, pelo: 0x3a2a1c, piel: 0xe0b08c, aspecto: { traje: 0x14203f, corbata: 0x2a6aff, pelo: 0x2a1c12, piel: 0xe8b890, tarjetas: true } },
+  pili: { nombre: 'Pili', rol: 'Regidora', traje: 0x222222, pelo: 0x8a3b1a, piel: 0xf0c4a0, aspecto: { traje: 0x202024, camisa: 0x333333, corbata: null, pelo: 0x8a3b1a, piel: 0xf2c8a8, melena: true, cascos: true, falda: false } },
+  chema: { nombre: 'Chema', rol: 'Técnico de sonido', traje: 0x3d5a2a, pelo: 0x111111, piel: 0xc89870, aspecto: { traje: 0x3d5a2a, camisa: 0x222222, corbata: null, pelo: 0x111111, piel: 0xc89870, cascos: true, gafas: true } },
+  marga: { nombre: 'Marga', rol: 'Maquilladora', traje: 0x8a1f5c, pelo: 0xd9b25a, piel: 0xf2c8a8, aspecto: { traje: 0x8a1f5c, camisa: 0xffe0f0, corbata: null, pelo: 0xd9b25a, piel: 0xf2c8a8, melena: true, falda: true } },
+  ramon: { nombre: 'Don Ramón', rol: 'El jefe', traje: 0x4a4a4a, pelo: 0xcccccc, piel: 0xe8b898, aspecto: { traje: 0x4a4a4a, corbata: 0x8a1010, pelo: 0xcccccc, piel: 0xe8b898, gafas: true } },
+  encarna: { nombre: 'Encarna', rol: 'Público', traje: 0xb04a2a, pelo: 0x5a3a2a, piel: 0xe8c0a0, aspecto: { traje: 0xb04a2a, camisa: 0xffd0a0, corbata: null, pelo: 0x5a3a2a, piel: 0xe8c0a0, melena: true, falda: true } },
+  conc: { nombre: 'Concursante', rol: 'Concursante', traje: 0x2a6a8a, pelo: 0x2a1a10, piel: 0xd8a880, aspecto: { traje: 0x2a6a8a, camisa: 0xd8e8ff, corbata: null, pelo: 0x2a1a10, piel: 0xd8a880, pantalon: 0x22283a } },
 };
 export const ERAS = {
   e2020: { id: 'e2020', nombre: '2020–2025', cadena: 'Antena 3 / laSexta', moneda: '€', escalera: [100,250,500,750,1500,2500,5000,10000,15000,20000,30000,50000,100000,300000,1000000], seguros: [5], eligeSeguro: true, comodines: ['5050','publico','llamada','familiar'], tiempo: false },
@@ -104,3 +104,14 @@ export const HISTORIA = [
   ['2021–2025', 'De Antena 3 a laSexta', 'El concurso continúa en el grupo y pasa a laSexta, con ediciones especiales de famosos que juegan por ONG y programas de «leyendas» con antiguos concursantes.'],
   ['Hoy', 'Este juego', 'Un juego de fans hecho por Iker. Presentador inventado (Leo Arrieta) con voz sintética genérica. No es oficial ni está afiliado al programa.'],
 ];
+export const FRASES2 = {
+  pubSale: 'Nos vamos a publicidad. ¡No se vayan, que volvemos enseguida!',
+  pubVuelve: '¡Ya estamos de vuelta! Seguimos con ¿Quién quiere ser millonario?',
+  apertura: ['¡Público, un aplauso muy fuerte, que empezamos!', 'Bienvenidos al plató más azul de la televisión.'],
+  entraConc: 'Y ahora, recibimos a nuestro concursante. ¡Adelante, siéntate en la silla!',
+  llamadaFin: 'Se acabó el tiempo de la llamada.',
+  chistes: ['¿Sabéis por qué el cincuenta por ciento nunca discute? Porque siempre se queda con la mitad de la razón.', 'Mi madre me llama todas las semanas para el comodín de la llamada. Todavía no he concursado nunca, pero ella está preparada.', 'El otro día pregunté al público cuánto es dos más dos. Un diez por ciento votó cinco. Cariño hay mucho, matemáticas, menos.', 'Me he comprado una silla como la del concurso. Ahora en casa no me siento: me planto.', 'Mi perro se sabe todas las respuestas. El problema es que solo ladra la B.', 'Dicen que el dinero no da la felicidad. Pero un millón de euros ayuda a buscarla en taxi.'],
+  coproBien: ['¡Bien! ¡Yo también lo sabía!', '¡Qué crack! Así da gusto.', 'Esto va como la seda.', '¡Toma ya! Un pasito más.'],
+  coproMal: ['¡Ay, no! ¡Qué pena!', 'Era difícil, ¿eh?', 'Yo habría dicho lo mismo, de verdad.'],
+  coproPregunta: ['Esta me la sé… creo.', 'Uf, qué nervios. Piénsalo bien.', 'Usa un comodín si dudas, que para eso están.', 'Yo aquí me plantaría… o no. ¡Qué sé yo!'],
+};

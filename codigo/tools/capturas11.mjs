@@ -1,0 +1,18 @@
+import puppeteer from 'puppeteer-core';
+const URL = process.argv[2] || 'http://127.0.0.1:18432/', OUT = process.argv[3] || '/workspace/millonario';
+const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--autoplay-policy=no-user-gesture-required'] });
+const p = await b.newPage(); await p.setViewport({ width: 1280, height: 720 });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+const w = (ms) => new Promise(r => setTimeout(r, ms)); const shot = (n) => p.screenshot({ path: `${OUT}/shot11-${n}.png` });
+await p.goto(URL + '?screen=main', { waitUntil: 'load' }); await w(3500); await shot('1-menu');
+await p.evaluate(() => __menu('options')); await w(800); await shot('2-opciones');
+await p.evaluate(() => { document.querySelector('#menu .col').scrollTop = 99999; }); await w(400); await shot('2b-opciones-final');
+await p.evaluate(() => __menu('casting')); await w(800); await shot('3-casting');
+await p.evaluate(() => __menu('publicidad')); await w(800); await shot('4-publicidad-menu');
+await p.evaluate(() => { __it.voz = false; __startMode('publicidad', 'anuncio:brillotex'); }); await w(2500); await shot('5-anuncio');
+await p.evaluate(() => { document.getElementById('showtime')?.remove(); __it.voz = false; __it.lee = false; __it.copro = false; __startMode('promos', 'apertura'); }); await w(6500); await shot('6-apertura-personajes');
+await p.evaluate(() => { __it.era = 'e2005'; __startMode('entrenamiento', 'e2005'); }); await w(6500); await shot('7-pregunta');
+await p.evaluate(() => document.querySelectorAll('.comod')[0].click()); await w(900); await shot('8-5050');
+await w(2500); await p.evaluate(() => document.querySelectorAll('.comod')[1].click()); await w(6000); await shot('9-publico');
+await p.evaluate(() => document.querySelectorAll('.comod')[2].click()); await w(5000); await shot('10-llamada-30s');
+console.log('errores:', errs); await b.close();
