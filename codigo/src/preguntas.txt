@@ -1,0 +1,306 @@
+# Formato: pregunta|correcta|incorrecta|incorrecta|incorrecta. «#N» = nivel de dificultad (1 fácil … 5 muy difícil)
+#1
+¿Cuántas patas tiene una araña?|Ocho|Seis|Diez|Cuatro
+¿De qué color es la clorofila?|Verde|Roja|Azul|Amarilla
+¿Qué animal es conocido como «el rey de la selva»?|El león|El elefante|El tigre|El gorila
+¿Cuántos días tiene una semana?|Siete|Cinco|Seis|Ocho
+¿Qué se celebra el 25 de diciembre?|La Navidad|La Nochevieja|Los Reyes Magos|San Juan
+¿Cuál es la capital de España?|Madrid|Barcelona|Sevilla|Valencia
+¿Qué fruta es amarilla y alargada?|El plátano|La fresa|La manzana|La uva
+¿En qué estación caen las hojas de muchos árboles?|Otoño|Primavera|Verano|Invierno
+¿Cuántos minutos tiene una hora?|60|100|30|50
+¿Qué instrumento tiene teclas blancas y negras?|El piano|La guitarra|El violín|La trompeta
+¿Qué animal hace «muuu»?|La vaca|La oveja|El cerdo|El caballo
+¿Con qué se escribe en una pizarra de colegio tradicional?|Con tiza|Con bolígrafo|Con pincel|Con rotulador permanente
+¿Qué planeta habitamos?|La Tierra|Marte|Venus|Júpiter
+¿Cuántas ruedas tiene una bicicleta normal?|Dos|Tres|Cuatro|Una
+¿Qué se usa para cortar papel?|Tijeras|Grapadora|Celo|Goma
+¿Cuál es el resultado de 5 + 5?|10|55|15|25
+¿Qué ave no puede volar y vive en la Antártida?|El pingüino|La gaviota|El águila|El loro
+¿De qué está hecho principalmente el hielo?|De agua|De sal|De arena|De aire
+¿Cuál es el color del cielo en un día despejado?|Azul|Verde|Naranja|Gris
+¿Qué comida italiana es redonda con tomate y queso?|La pizza|La paella|El sushi|El gazpacho
+¿Cuántos meses tiene un año?|Doce|Diez|Once|Trece
+¿Qué parte del cuerpo usamos para oler?|La nariz|Las orejas|Los ojos|La boca
+¿Qué animal tiene trompa?|El elefante|La jirafa|El camello|El rinoceronte
+¿Qué día va después del lunes?|Martes|Miércoles|Domingo|Jueves
+¿Qué bebida dan las vacas?|Leche|Zumo|Café|Agua con gas
+¿Qué medio de transporte va por raíles?|El tren|El barco|El avión|El patinete
+¿Qué astro nos da luz durante el día?|El Sol|La Luna|Marte|La Estrella Polar
+¿De qué color es una fresa madura?|Roja|Azul|Blanca|Morada
+¿Dónde viven los peces?|En el agua|En los árboles|En el desierto|Bajo tierra
+¿Qué usamos para ver la hora en la muñeca?|Un reloj|Una pulsera de cuero|Un anillo|Un guante
+¿Qué número va después del 99?|100|98|1000|101
+¿Qué estación del año es la más calurosa en España?|El verano|El invierno|El otoño|La primavera
+¿Qué fruta se asocia con Isaac Newton y la gravedad?|La manzana|La pera|El melón|La naranja
+¿Qué animal es famoso por su lentitud y su caparazón?|La tortuga|El conejo|La ardilla|El zorro
+¿Qué deporte se juega con una pelota y dos porterías?|El fútbol|El tenis|El golf|El ajedrez
+¿Qué se pone en un sobre antes de enviarlo por correo?|Un sello|Un imán|Una moneda|Un botón
+¿Con qué letra empieza «España»?|E|A|S|P
+¿Qué color se obtiene al mezclar azul y amarillo?|Verde|Morado|Naranja|Rosa
+¿Qué tiempo hace cuando cae agua del cielo?|Llueve|Nieva|Hace sol|Graniza
+¿Qué animal dice «miau»?|El gato|El perro|El pato|El ratón
+¿Qué se usa para abrir una cerradura?|Una llave|Un tenedor|Un peine|Un lápiz
+¿Qué es más grande, un elefante o una hormiga?|Un elefante|Una hormiga|Son iguales|Depende del día
+¿Cuántas horas tiene un día?|24|12|48|20
+¿Qué lleva un rey en la cabeza?|Una corona|Un casco|Una gorra|Una boina
+¿En qué se duerme normalmente?|En la cama|En la nevera|En la bañera|En el armario
+¿Qué fruta tiene «corona» y piel con escamas?|La piña|El kiwi|La sandía|El mango
+¿Qué figura geométrica tiene tres lados?|El triángulo|El cuadrado|El círculo|El pentágono
+¿Qué mamífero vuela?|El murciélago|El pingüino|El delfín|El topo
+¿Qué hace un bombero?|Apagar fuegos|Repartir cartas|Cocinar pan|Cortar el pelo
+¿De qué color es el carbón?|Negro|Blanco|Amarillo|Verde
+¿Qué se celebra con tarta y velas?|Un cumpleaños|Un funeral|Una mudanza|Un examen
+¿Qué animal pone huevos y hace «cocoricó»?|La gallina|La vaca|La cabra|La oveja
+¿Qué órgano bombea la sangre?|El corazón|El pulmón|El estómago|El hígado
+¿Dónde se guardan los alimentos fríos en casa?|En la nevera|En el horno|En el armario|En la lavadora
+¿Cuántos lados tiene un cuadrado?|Cuatro|Tres|Cinco|Seis
+¿Qué es una «tortilla de patatas»?|Un plato típico español|Un postre francés|Una bebida|Un pan de maíz
+¿Qué ponemos en el pan para hacer un bocadillo de jamón?|Jamón|Chocolate|Gasolina|Arena
+¿Cuál de estos es un color del arcoíris?|Naranja|Marrón|Negro|Gris
+¿Qué animal tiene el cuello más largo?|La jirafa|El hipopótamo|El oso|El cocodrilo
+¿Qué usamos para protegernos de la lluvia?|Un paraguas|Unas gafas de sol|Un abanico|Una toalla
+#2
+¿Cuál es el río más largo de España?|El Tajo|El Ebro|El Duero|El Guadalquivir
+¿Quién escribió «Don Quijote de la Mancha»?|Miguel de Cervantes|Lope de Vega|Francisco de Quevedo|Garcilaso de la Vega
+¿Cuál es la capital de Francia?|París|Lyon|Marsella|Niza
+¿Cuántos jugadores tiene un equipo de fútbol en el campo?|Once|Diez|Nueve|Doce
+¿Qué gas respiramos para vivir?|Oxígeno|Helio|Nitrógeno puro|Dióxido de carbono
+¿En qué continente está Egipto?|África|Asia|Europa|Oceanía
+¿Cuál es el océano más grande?|El Pacífico|El Atlántico|El Índico|El Ártico
+¿Qué ciudad es famosa por la Sagrada Familia?|Barcelona|Madrid|Bilbao|Granada
+¿Cuántos años tiene un siglo?|Cien|Mil|Diez|Cincuenta
+¿Qué pintor creó «Las Meninas»?|Velázquez|Goya|El Greco|Murillo
+¿Cuál es el planeta más grande del sistema solar?|Júpiter|Saturno|Neptuno|La Tierra
+¿Qué idioma se habla en Brasil?|Portugués|Español|Inglés|Francés
+¿En qué ciudad está la Alhambra?|Granada|Córdoba|Málaga|Toledo
+¿Qué animal es el símbolo de la marca de coches Ferrari?|Un caballo|Un toro|Un león|Un jaguar
+¿Cuál es la moneda oficial de España desde 2002?|El euro|La peseta|El dólar|La libra
+¿Qué vitamina aporta principalmente el sol a la piel?|Vitamina D|Vitamina C|Vitamina A|Vitamina K
+¿Cuántos grados tiene un ángulo recto?|90|180|45|360
+¿Qué plato valenciano lleva arroz y se hace en una sartén ancha?|La paella|El cocido|La fabada|El pisto
+¿Qué instrumento tocaba Paco de Lucía?|La guitarra|El piano|El violín|La batería
+¿Qué ciudad es la capital de Italia?|Roma|Milán|Venecia|Florencia
+¿Cuál es el metal más usado en los cables eléctricos?|El cobre|El oro|El plomo|El hierro
+¿Qué se mide con un termómetro?|La temperatura|La presión|La humedad|El peso
+¿En qué país están las pirámides de Guiza?|Egipto|México|Perú|Grecia
+¿Cuál es el animal terrestre más rápido?|El guepardo|El caballo|El león|El avestruz
+¿Qué selección ganó el Mundial de fútbol de 2010?|España|Países Bajos|Alemania|Brasil
+¿Qué hueso protege el cerebro?|El cráneo|El fémur|La tibia|El esternón
+¿Cuántos aros tiene la bandera olímpica?|Cinco|Siete|Cuatro|Seis
+¿Qué cordillera separa España de Francia?|Los Pirineos|Los Alpes|Los Andes|Sierra Nevada
+¿Qué fiesta pamplonesa es famosa por los encierros?|San Fermín|Las Fallas|La Tomatina|La Feria de Abril
+¿Qué estación empieza en España hacia el 21 de marzo?|La primavera|El verano|El otoño|El invierno
+¿Qué superhéroe es «el hombre murciélago»?|Batman|Superman|Spiderman|Hulk
+¿Cuál es el resultado de 7 × 8?|56|54|64|48
+¿Qué país tiene forma de bota?|Italia|Grecia|Portugal|Chile
+¿Qué pieza del ajedrez solo se mueve en diagonal?|El alfil|La torre|El caballo|El peón
+¿Qué escritor creó a Sherlock Holmes?|Arthur Conan Doyle|Agatha Christie|Charles Dickens|Edgar Allan Poe
+¿Cuál es la ciudad más poblada de España?|Madrid|Barcelona|Valencia|Sevilla
+¿Qué nombre recibe la cría del caballo?|Potro|Ternero|Cordero|Lechón
+¿En qué deporte se usa un «green»?|Golf|Tenis|Baloncesto|Rugby
+¿Qué ciudad andaluza tiene la Giralda?|Sevilla|Cádiz|Jaén|Almería
+¿Qué famosa torre de hierro está en París?|La torre Eiffel|La torre de Pisa|El Big Ben|La torre de Hércules
+¿De qué planta se obtiene el chocolate?|Del cacao|Del café|De la caña|Del trigo
+¿Cuántas cuerdas tiene una guitarra española?|Seis|Cuatro|Cinco|Doce
+¿Quién pintó la «Mona Lisa»?|Leonardo da Vinci|Miguel Ángel|Rafael|Botticelli
+¿Qué islas españolas están en el océano Atlántico?|Las Canarias|Las Baleares|Las Columbretes|Las Medas
+¿Cuál es el idioma oficial de México?|Español|Inglés|Portugués|Maya
+¿Qué tipo de animal es la ballena?|Un mamífero|Un pez|Un reptil|Un anfibio
+¿Qué líquido producen las abejas?|Miel|Leche|Resina|Savia
+¿En qué año llegó Colón a América?|1492|1592|1392|1512
+¿Qué comunidad autónoma tiene como capital Santiago de Compostela?|Galicia|Asturias|Cantabria|León
+¿Cuál es la capital de Portugal?|Lisboa|Oporto|Coímbra|Faro
+¿Cuántos jugadores hay por equipo en pista en baloncesto?|Cinco|Seis|Siete|Cuatro
+¿Qué color tiene la camiseta principal de la selección española de fútbol?|Roja|Blanca|Azul|Verde
+¿Qué ciudad es conocida como «la Ciudad Condal»?|Barcelona|Zaragoza|Valencia|Murcia
+¿Qué gas forma la mayor parte del aire?|Nitrógeno|Oxígeno|Hidrógeno|Argón
+¿Qué artista español es famoso por el cubismo?|Pablo Picasso|Salvador Dalí|Joan Miró|Sorolla
+¿Cuál es el satélite natural de la Tierra?|La Luna|Fobos|Europa|Titán
+¿Qué número romano es la «X»?|10|5|50|100
+¿Qué país regaló la Estatua de la Libertad a EE. UU.?|Francia|Reino Unido|España|Italia
+¿Qué se celebra en Valencia quemando monumentos en marzo?|Las Fallas|La Semana Grande|El Carnaval|El Rocío
+¿Qué animal es el más grande del planeta?|La ballena azul|El elefante africano|El tiburón blanco|La jirafa
+#3
+¿Qué científico propuso la teoría de la relatividad?|Albert Einstein|Isaac Newton|Galileo Galilei|Niels Bohr
+¿Cuál es la capital de Australia?|Canberra|Sídney|Melbourne|Perth
+¿En qué año cayó el Muro de Berlín?|1989|1991|1985|1979
+¿Cuál es el elemento químico de símbolo «Fe»?|Hierro|Flúor|Fósforo|Francio
+¿Qué escritor andaluz escribió «Bodas de sangre»?|Federico García Lorca|Antonio Machado|Juan Ramón Jiménez|Rafael Alberti
+¿Cuántos huesos tiene aproximadamente el cuerpo humano adulto?|206|150|306|412
+¿Qué país tiene más habitantes de América del Sur?|Brasil|Argentina|Colombia|Perú
+¿Cuál es el punto más alto de España?|El Teide|El Mulhacén|El Aneto|El Veleta
+¿En qué año se aprobó la Constitución española actual?|1978|1975|1982|1986
+¿Qué compositor alemán se quedó sordo y escribió la Novena Sinfonía?|Beethoven|Mozart|Bach|Wagner
+¿Cuál es la capital de Canadá?|Ottawa|Toronto|Vancouver|Montreal
+¿Qué planeta es conocido como «el planeta rojo»?|Marte|Venus|Mercurio|Saturno
+¿Qué órgano del cuerpo produce la insulina?|El páncreas|El hígado|El riñón|El bazo
+¿Quién fue el primer hombre en pisar la Luna?|Neil Armstrong|Yuri Gagarin|Buzz Aldrin|Michael Collins
+¿Qué escritor colombiano escribió «Cien años de soledad»?|Gabriel García Márquez|Mario Vargas Llosa|Julio Cortázar|Pablo Neruda
+¿En qué ciudad se celebraron los Juegos Olímpicos de 1992?|Barcelona|Madrid|Sevilla|Atlanta
+¿Qué unidad mide la intensidad de la corriente eléctrica?|El amperio|El voltio|El vatio|El ohmio
+¿Cuál es el desierto cálido más grande del mundo?|El Sáhara|El Gobi|El Kalahari|Atacama
+¿Qué tenista español ha ganado más veces Roland Garros?|Rafa Nadal|Carlos Alcaraz|Carlos Moyá|Juan Carlos Ferrero
+¿Qué mar baña la costa de Barcelona?|El Mediterráneo|El Cantábrico|El Báltico|El Caribe
+¿De qué país es originario el tango?|Argentina|Cuba|España|Brasil
+¿Cuál es el hueso más largo del cuerpo humano?|El fémur|El húmero|La tibia|El radio
+¿Qué dramaturgo inglés escribió «Hamlet»?|William Shakespeare|Oscar Wilde|Christopher Marlowe|George Bernard Shaw
+¿Qué es un «heptágono»?|Un polígono de siete lados|Un polígono de seis lados|Un polígono de nueve lados|Un tipo de pirámide
+¿En qué ciudad se encuentra el Museo del Prado?|Madrid|Toledo|Salamanca|Barcelona
+¿Qué país tiene como capital Nairobi?|Kenia|Etiopía|Tanzania|Uganda
+¿Cuál es la fórmula química del agua?|H2O|CO2|O2|NaCl
+¿Qué arquitecto diseñó el parque Güell?|Antoni Gaudí|Santiago Calatrava|Rafael Moneo|Lluís Domènech i Montaner
+¿Cuántos jugadores tiene un equipo de balonmano en pista, portero incluido?|Siete|Seis|Cinco|Ocho
+¿Qué imperio construyó Machu Picchu?|El inca|El azteca|El maya|El olmeca
+¿Qué río pasa por Sevilla?|El Guadalquivir|El Guadiana|El Segura|El Júcar
+¿Quién pintó «El jardín de las delicias»?|El Bosco|Brueghel|Rubens|Durero
+¿Qué capa de la atmósfera contiene la capa de ozono?|La estratosfera|La troposfera|La mesosfera|La exosfera
+¿Qué rey español abdicó en 2014?|Juan Carlos I|Felipe VI|Alfonso XIII|Felipe V
+¿Cuál es la lengua con más hablantes nativos del mundo?|El chino mandarín|El inglés|El español|El hindi
+¿Qué científica ganó dos premios Nobel en disciplinas distintas?|Marie Curie|Rosalind Franklin|Ada Lovelace|Lise Meitner
+¿Qué ciudad gallega es famosa por la Torre de Hércules?|A Coruña|Vigo|Lugo|Ourense
+¿Qué es un «quark»?|Una partícula subatómica|Un tipo de estrella|Un mineral|Un enzima
+¿En qué año terminó la Segunda Guerra Mundial?|1945|1939|1944|1950
+¿Cuál es el país más grande del mundo por superficie?|Rusia|Canadá|China|Estados Unidos
+¿Qué cantante grabó «Thriller»?|Michael Jackson|Prince|Madonna|Stevie Wonder
+¿Qué parte de la célula contiene el ADN?|El núcleo|La membrana|El citoplasma|La pared celular
+¿Qué novela de Pérez Galdós lleva nombre de mujer y apellido «Jacinta»?|Fortunata y Jacinta|Marianela|Doña Perfecta|Tristana
+¿Cuál es la isla más grande del Mediterráneo?|Sicilia|Cerdeña|Chipre|Mallorca
+¿Cuál es la capital de Marruecos?|Rabat|Casablanca|Marrakech|Fez
+¿Cuántos lados tiene un dodecágono?|Doce|Diez|Veinte|Once
+¿Qué ciclista español ganó cinco Tours de Francia seguidos?|Miguel Induráin|Pedro Delgado|Alberto Contador|Óscar Pereiro
+¿A qué temperatura hierve el agua a nivel del mar?|100 ºC|90 ºC|120 ºC|80 ºC
+¿Qué ciudad es la capital de La Rioja?|Logroño|Haro|Calahorra|Nájera
+¿Qué grupo británico cantaba «Yesterday»?|The Beatles|The Rolling Stones|Queen|The Who
+¿Cuál de estos animales es un marsupial?|El canguro|El mapache|El lémur|El armadillo
+¿Qué famoso navegante portugués dio nombre al estrecho del sur de América?|Fernando de Magallanes|Vasco da Gama|Bartolomé Díaz|Pedro Álvares Cabral
+¿Qué instrumento mide los terremotos?|El sismógrafo|El barómetro|El anemómetro|El higrómetro
+¿Cuál es la capital de Noruega?|Oslo|Estocolmo|Helsinki|Copenhague
+¿Qué famoso cuadro de Picasso denuncia un bombardeo de 1937?|Guernica|Las señoritas de Avignon|El viejo guitarrista|La Celestina
+¿Cuál es el planeta más cercano al Sol?|Mercurio|Venus|Marte|La Tierra
+¿Cuántos años dura una legislatura ordinaria en España?|Cuatro|Cinco|Tres|Seis
+¿Qué deportista estadounidense ganó 23 oros olímpicos en natación?|Michael Phelps|Mark Spitz|Ryan Lochte|Ian Thorpe
+¿Qué ciudad italiana tiene canales y góndolas?|Venecia|Nápoles|Turín|Génova
+¿Qué poeta escribió «Campos de Castilla»?|Antonio Machado|Miguel Hernández|Gustavo Adolfo Bécquer|Luis Cernuda
+#4
+¿En qué año se inauguró el primer AVE Madrid-Sevilla?|1992|1989|1996|2000
+¿Qué elemento químico tiene el símbolo «K»?|Potasio|Kriptón|Calcio|Cobalto
+¿Cuál es la capital de Mongolia?|Ulán Bator|Astaná|Biskek|Taskent
+¿Qué filósofo griego fue maestro de Alejandro Magno?|Aristóteles|Platón|Sócrates|Pitágoras
+¿Qué monarca español era conocido como «el Hechizado»?|Carlos II|Felipe IV|Felipe II|Fernando VII
+¿Qué escritor ganó el Nobel de Literatura en 1989?|Camilo José Cela|Vicente Aleixandre|Juan Ramón Jiménez|Jacinto Benavente
+¿Cuál es el lago más profundo del mundo?|El Baikal|El Titicaca|El Tanganica|El Superior
+¿Qué batalla de 1805 enfrentó a la flota británica con la franco-española?|Trafalgar|Lepanto|Bailén|Waterloo
+¿Qué compositor escribió «El amor brujo»?|Manuel de Falla|Isaac Albéniz|Enrique Granados|Joaquín Rodrigo
+¿Cuál es la capital de Nueva Zelanda?|Wellington|Auckland|Christchurch|Dunedin
+¿Qué matemático griego es famoso por su teorema sobre los triángulos rectángulos?|Pitágoras|Euclides|Tales|Arquímedes
+¿Qué Papa era de origen argentino?|Francisco|Benedicto XVI|Juan Pablo II|Pío XII
+¿Qué ciudad fue capital de España antes que Madrid durante unos años con Felipe III?|Valladolid|Toledo|Burgos|Sevilla
+¿Qué es la «xerofilia» en botánica?|La adaptación a ambientes secos|La atracción por la luz|El crecimiento en sombra|La polinización por agua
+¿Qué isla canaria vivió una erupción volcánica en 2021?|La Palma|Tenerife|Lanzarote|El Hierro
+¿En qué año llegó el hombre a la Luna?|1969|1965|1972|1959
+¿Qué nombre tenía la nave de Cristóbal Colón que encalló en La Española?|La Santa María|La Pinta|La Niña|La Victoria
+¿Cuál es el metal más abundante en la corteza terrestre?|El aluminio|El hierro|El cobre|El calcio
+¿Qué director de cine manchego rodó «Todo sobre mi madre»?|Pedro Almodóvar|Alejandro Amenábar|Luis García Berlanga|Fernando Trueba
+¿Qué cordillera recorre Sudamérica de norte a sur?|Los Andes|Las Rocosas|El Atlas|Los Apalaches
+¿Qué emperador romano nació en Itálica (Sevilla)?|Trajano|Augusto|Nerón|Calígula
+¿Cuál es la unidad de la resistencia eléctrica?|El ohmio|El faradio|El julio|El henrio
+¿Qué país africano tuvo como colonia española la Guinea?|Guinea Ecuatorial|Guinea-Bisáu|Guinea Conakri|Gabón
+¿Qué novela de Carmen Laforet ganó el primer Premio Nadal?|Nada|La isla y los demonios|La mujer nueva|Al volver la esquina
+¿Cuál es el río más caudaloso del mundo?|El Amazonas|El Nilo|El Misisipi|El Yangtsé
+¿Qué hormona se asocia con la respuesta de «lucha o huida»?|La adrenalina|La melatonina|La insulina|La tiroxina
+¿Qué rey de Castilla fue llamado «el Sabio»?|Alfonso X|Fernando III|Sancho IV|Alfonso VIII
+¿En qué ciudad está el Guggenheim que diseñó Frank Gehry en España?|Bilbao|San Sebastián|Valencia|Málaga
+¿Cuántos corazones tiene un pulpo?|Tres|Uno|Dos|Cuatro
+¿Qué pintor aragonés pintó «Los fusilamientos del 3 de mayo»?|Francisco de Goya|Diego Velázquez|Zurbarán|Fortuny
+¿Qué país tiene la capital llamada Tiflis?|Georgia|Armenia|Azerbaiyán|Moldavia
+¿Quién escribió «La Regenta»?|Leopoldo Alas «Clarín»|Emilia Pardo Bazán|Juan Valera|Pío Baroja
+¿Qué gas noble se usa en los letreros luminosos rojos?|Neón|Argón|Xenón|Radón
+¿Qué imperio fundó Gengis Kan?|El mongol|El otomano|El persa|El chino Ming
+¿Qué tratado de 1494 repartió el Nuevo Mundo entre España y Portugal?|Tordesillas|Utrecht|Westfalia|Los Pirineos
+¿Qué estrella es la más cercana a la Tierra después del Sol?|Próxima Centauri|Sirio|Betelgeuse|Vega
+¿Cuál es el idioma oficial de Etiopía a nivel federal?|Amhárico|Suajili|Árabe|Somalí
+¿Qué escultor renacentista hizo el «David» de Florencia?|Miguel Ángel|Donatello|Bernini|Cellini
+¿Qué es la «isobara» en un mapa del tiempo?|Línea de igual presión|Línea de igual temperatura|Línea de igual lluvia|Frente frío
+¿Qué futbolista ganó el Balón de Oro de 1960 siendo español?|Luis Suárez Miramontes|Alfredo Di Stéfano|Paco Gento|Kubala
+¿Qué ciudad fue sede de la Expo de 2008 en España?|Zaragoza|Sevilla|Valencia|Gijón
+¿Cuál es el hueso más pequeño del cuerpo humano?|El estribo|El yunque|El martillo|El coxis
+¿En qué año se proclamó la Segunda República española?|1931|1923|1936|1929
+¿Qué economista escribió «La riqueza de las naciones»?|Adam Smith|John Maynard Keynes|Karl Marx|David Ricardo
+¿Qué océano baña la costa occidental de África?|El Atlántico|El Índico|El Pacífico|El Antártico
+¿Qué astronauta fue el primer español en ir al espacio?|Pedro Duque|Miguel López-Alegría|Pablo Álvarez|Sara García
+¿Cuál es la capital de Islandia?|Reikiavik|Akureyri|Nuuk|Tórshavn
+¿Qué tipo de roca es el granito?|Ígnea|Sedimentaria|Metamórfica|Orgánica
+¿Quién compuso «Las cuatro estaciones»?|Antonio Vivaldi|Johann Sebastian Bach|Händel|Haydn
+¿Qué científico español ganó el Nobel de Medicina en 1906?|Santiago Ramón y Cajal|Severo Ochoa|Gregorio Marañón|Isaac Peral
+¿Qué país tiene como moneda el «zloty»?|Polonia|Hungría|Chequia|Rumanía
+¿Qué ciudad era la capital del Imperio bizantino?|Constantinopla|Atenas|Antioquía|Alejandría
+¿Qué animal es el «ajolote»?|Un anfibio|Un reptil|Un pez|Un insecto
+¿Qué guerra enfrentó a España y EE. UU. en 1898?|La guerra hispano-estadounidense|La guerra de Marruecos|La guerra carlista|La guerra de Cuba de los Diez Años
+¿Qué poeta de la Generación del 27 ganó el Nobel en 1977?|Vicente Aleixandre|Jorge Guillén|Pedro Salinas|Dámaso Alonso
+¿Qué es un «año bisiesto»?|Uno de 366 días|Uno de 364 días|Uno con 13 meses|Uno sin febrero
+¿Qué planeta tiene los anillos más visibles?|Saturno|Urano|Júpiter|Neptuno
+¿Qué serie de novelas escribió Benito Pérez Galdós sobre la historia de España?|Episodios nacionales|Comedia humana|Los Rougon-Macquart|La saga de los Forsyte
+¿Qué ciudad es conocida como «la Perla del Cantábrico»?|San Sebastián|Santander|Gijón|Bilbao
+¿Cuántos jugadores componen un equipo de rugby XV en el campo?|Quince|Trece|Once|Siete
+#5
+¿Qué científico enunció las tres leyes del movimiento planetario?|Johannes Kepler|Tycho Brahe|Copérnico|Galileo
+¿Qué rey visigodo fue el último antes de la invasión musulmana de 711?|Rodrigo|Recaredo|Wamba|Leovigildo
+¿Cuál es la capital de Bután?|Timbu|Katmandú|Daca|Lhasa
+¿En qué año se publicó la primera parte del Quijote?|1605|1615|1580|1626
+¿Qué compositor ruso escribió «La consagración de la primavera»?|Ígor Stravinski|Prokófiev|Chaikovski|Rimski-Kórsakov
+¿Qué matemático demostró el último teorema de Fermat en los años noventa?|Andrew Wiles|Grigori Perelmán|Terence Tao|John Nash
+¿Cuál es el número atómico del carbono?|6|12|8|14
+¿Qué batalla de 1212 fue decisiva en la Reconquista?|Las Navas de Tolosa|Covadonga|Sagrajas|Alarcos
+¿Qué filósofo escribió «Así habló Zaratustra»?|Friedrich Nietzsche|Arthur Schopenhauer|Immanuel Kant|Martin Heidegger
+¿Qué país tiene como capital Uagadugú?|Burkina Faso|Mali|Níger|Chad
+¿Qué escritor firmó como «Azorín»?|José Martínez Ruiz|Pío Baroja|Ramiro de Maeztu|Ramón María del Valle-Inclán
+¿Qué nombre recibe el miedo irracional a las alturas?|Acrofobia|Agorafobia|Claustrofobia|Aracnofobia
+¿Qué ingeniero cartagenero diseñó un submarino eléctrico en 1888?|Isaac Peral|Narcís Monturiol|Juan de la Cierva|Leonardo Torres Quevedo
+¿Qué inventor español creó el autogiro?|Juan de la Cierva|Leonardo Torres Quevedo|Isaac Peral|Manuel Jalón
+¿Qué inventor creó el «Ajedrecista», una de las primeras máquinas que jugaban al ajedrez?|Leonardo Torres Quevedo|Juan de la Cierva|Mónico Sánchez|Narcís Monturiol
+¿Cuál es la galaxia espiral grande más cercana a la Vía Láctea?|Andrómeda|El Triángulo|La Gran Nube de Magallanes|El Sombrero
+¿En qué año se firmó la Paz de Westfalia?|1648|1713|1559|1618
+¿Qué es el «bosón de Higgs»?|Una partícula elemental|Un agujero negro|Un isótopo del helio|Un tipo de cuásar
+¿Qué escultor barroco español talló el «Cristo del Gran Poder»?|Juan de Mesa|Martínez Montañés|Gregorio Fernández|Pedro de Mena
+¿Qué faraón construyó la Gran Pirámide de Guiza?|Keops|Kefrén|Micerino|Ramsés II
+¿Qué país latinoamericano tiene dos capitales, una administrativa y otra constitucional?|Bolivia|Ecuador|Paraguay|Honduras
+¿Qué emperador fue a la vez Carlos I de España y Carlos V del Sacro Imperio?|Carlos de Habsburgo|Carlos de Borbón|Carlos el Calvo|Carlos de Anjou
+¿Qué compositor escribió el «Concierto de Aranjuez»?|Joaquín Rodrigo|Manuel de Falla|Isaac Albéniz|Pablo Sarasate
+¿Qué elemento químico tiene el símbolo «W»?|Wolframio|Vanadio|Itrio|Osmio
+¿Qué médico descubrió la penicilina en 1928?|Alexander Fleming|Louis Pasteur|Robert Koch|Edward Jenner
+¿En qué ciudad nació el pintor Joaquín Sorolla?|Valencia|Alicante|Castellón|Murcia
+¿Cuál es la montaña más alta de África?|El Kilimanjaro|El monte Kenia|El Ruwenzori|El Toubkal
+¿Qué rey de Aragón conquistó Mallorca en 1229?|Jaime I|Pedro III|Alfonso I|Ramiro II
+¿Qué obra de Fernando de Rojas tiene como personaje a una alcahueta?|La Celestina|El Lazarillo de Tormes|El Buscón|La Dorotea
+¿Qué físico formuló el principio de incertidumbre?|Werner Heisenberg|Erwin Schrödinger|Paul Dirac|Max Planck
+¿Cuál es el país más pequeño del mundo?|Ciudad del Vaticano|Mónaco|San Marino|Liechtenstein
+¿Qué ciudad española fue Capital Europea de la Cultura en 2016?|San Sebastián|Salamanca|Santiago de Compostela|Córdoba
+¿Qué escritor peruano ganó el Nobel en 2010?|Mario Vargas Llosa|Alfredo Bryce Echenique|César Vallejo|José María Arguedas
+¿Qué nombre recibe la tasa de cambio de la velocidad?|Aceleración|Inercia|Impulso|Momento angular
+¿Cuál es el tercer planeta más grande del sistema solar?|Urano|Neptuno|Saturno|La Tierra
+¿Qué dinastía gobernó China cuando se construyó gran parte de la Gran Muralla actual?|La Ming|La Han|La Tang|La Qing
+¿Qué general cartaginés cruzó los Alpes con elefantes?|Aníbal|Amílcar|Asdrúbal|Escipión
+¿Qué reina inglesa derrotó a la llamada «Armada Invencible» en 1588?|Isabel I|María Tudor|Victoria|Ana
+¿Qué es el «número de Avogadro» aproximadamente?|6,022 × 10²³|3,14 × 10⁸|9,81 × 10²|1,6 × 10⁻¹⁹
+¿Qué ciudad fue capital del califato omeya de al-Ándalus?|Córdoba|Sevilla|Granada|Toledo
+¿Qué novela de Miguel Delibes protagoniza el Azarías?|Los santos inocentes|El camino|Cinco horas con Mario|Las ratas
+¿Qué lengua se hablaba en el Imperio inca?|Quechua|Náhuatl|Guaraní|Aimara
+¿Qué gas descubrió Henry Cavendish como «aire inflamable»?|Hidrógeno|Oxígeno|Metano|Helio
+¿Qué artista surrealista pintó «La persistencia de la memoria»?|Salvador Dalí|René Magritte|Max Ernst|Joan Miró
+¿Qué estrecho separa Asia de América?|El estrecho de Bering|El de Magallanes|El de Ormuz|El de Malaca
+¿Qué constitución española es conocida como «La Pepa»?|La de 1812|La de 1837|La de 1869|La de 1876
+¿Qué compositor austríaco escribió «La flauta mágica»?|Mozart|Haydn|Schubert|Mahler
+¿Qué animal tiene la gestación más larga entre los mamíferos terrestres?|El elefante|La jirafa|El rinoceronte|El camello
+¿Cuál es la capital de Kazajistán desde 1997?|Astaná|Almatý|Taskent|Biskek
+¿Qué científico español ganó el Nobel de Medicina en 1959?|Severo Ochoa|Santiago Ramón y Cajal|Gregorio Marañón|Francisco Mojica
+¿Qué científica española descubrió la polimerasa del fago phi29?|Margarita Salas|Josefina Castellví|María Blasco|Ángeles Alvariño
+¿Qué país fue el primero en conceder el voto a las mujeres a nivel nacional en 1893?|Nueva Zelanda|Finlandia|Reino Unido|Noruega
+¿Qué poema épico se atribuye a Homero junto con la Ilíada?|La Odisea|La Eneida|Las Metamorfosis|El Cantar de Roldán
+¿Qué rey español fue conocido como «el Deseado»?|Fernando VII|Carlos III|Alfonso XII|Felipe V
+¿Qué ley física relaciona tensión, intensidad y resistencia?|La ley de Ohm|La ley de Coulomb|La ley de Boyle|La ley de Hooke
+¿Qué volcán sepultó Pompeya en el año 79?|El Vesubio|El Etna|El Estrómboli|El Teide
+¿Qué escritor francés creó a Jean Valjean?|Victor Hugo|Alexandre Dumas|Émile Zola|Gustave Flaubert
+¿Qué es la «hidrofobia» además de miedo al agua?|Un síntoma de la rabia|Un tipo de alergia|Una enfermedad de las plantas|Un trastorno del oído
+¿Qué país tiene el mayor número de husos horarios contando sus territorios de ultramar?|Francia|Rusia|Estados Unidos|Reino Unido
+¿Qué arquitecto diseñó la Ciudad de las Artes y las Ciencias de Valencia?|Santiago Calatrava|Norman Foster|Rafael Moneo|Ricardo Bofill

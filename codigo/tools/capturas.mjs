@@ -1,0 +1,15 @@
+import puppeteer from 'puppeteer-core';
+const URL = process.argv[2] || 'http://127.0.0.1:18432/', OUT = process.argv[3] || '/workspace/millonario';
+const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--autoplay-policy=no-user-gesture-required'] });
+const p = await b.newPage(); await p.setViewport({ width: 1280, height: 720 });
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+const w = (ms) => new Promise(r => setTimeout(r, ms));
+await p.goto(URL + '?screen=main', { waitUntil: 'load' }); await w(3000); await p.screenshot({ path: OUT + '/shot-1-menu.png' });
+await p.evaluate(() => __menu('options')); await w(800); await p.screenshot({ path: OUT + '/shot-0-opciones.png' });
+await p.evaluate(() => { __it.cabecera = false; __it.lee = false; __it.voz = false; __it.copro = false; __startMode('explorar'); __plato.plano('wide', .1); }); await w(4200); await p.screenshot({ path: OUT + '/shot-2-plato.png' });
+await p.evaluate(() => { __it.era = 'e2005'; __startMode('entrenamiento', 'e2005'); }); await w(9000);
+const clickTxt = async (sel, txt) => p.evaluate((s, t) => { const e = [...document.querySelectorAll(s)].find(x => x.textContent.includes(t)); e && e.click(); return !!e; }, sel, txt);
+await p.screenshot({ path: OUT + '/shot-3-pregunta.png' });
+await p.evaluate(() => document.querySelectorAll('.comod')[0].click()); await w(1000); await p.screenshot({ path: OUT + '/shot-4-5050-ovalo.png' }); await w(2500); await p.screenshot({ path: OUT + '/shot-4-5050.png' });
+await p.evaluate(() => document.querySelectorAll('.comod')[1].click()); await w(7000); await p.screenshot({ path: OUT + '/shot-5-publico.png' });
+console.log('errores:', errs.slice(0, 10)); await b.close();
