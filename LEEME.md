@@ -10,6 +10,19 @@ Juego de fans creado por Iker. Misma estructura de menús, estilos y opciones qu
 - `android/`: proyecto Gradle (AGP 8.5.2, Gradle 8.7, SDK 34), paquete `com.ikeriano.millonario`. Copia `www` a `app/src/main/assets/www`, añade `keystore/` (la de ¡Ahora Caigo!) y `local.properties`, y `./gradlew assembleRelease`.
 - `Plato-Millonario.rbxlx` (+ `roblox/gen_rbxlx.py`): el plató para Roblox Studio.
 
+## Versión 1.2.1
+- **Roblox: port completo como ¡Ahora Caigo!** El menú de Roblox es el mismo de la app, sacado del rastreo de sus pantallas (mismos textos, orden y estilos). Todo lo que antes decía «está en la app» ahora tiene escena real en el plató con personajes animados:
+  - Cámara oculta, Tomas falsas y Fuera de cámaras usan el mismo generador de 9.600 escenas (verificado frase a frase contra la app), con páginas, «al azar», búsqueda y «Ver escena n».
+  - Promos y Promos del presentador.
+  - Publicidad de Show Time TV: pausa completa, cortinillas, promos de la cadena y anuncios inventados.
+  - Monólogos y la historia contada por el presentador.
+  - Casting: el nombre que pongas sale en las partidas.
+  - Especiales, con su saludo y su rótulo.
+  - Edición del título del programa, con «Restaurar original».
+  - Cabecera 3D y cabecera con vídeo propio en un VideoFrame del plató (`Imagenes.VideoCabecera`).
+- **Roblox, partida:** el Programa completo arranca con cabecera, regidora y saludo, y tiene pausa publicitaria a mitad. En Entrenamiento eliges la escalera de cada etapa (2020–2025, 2005–2007, 1999–2001 en pesetas).
+- **Voces:** sin cambios en esta versión. La tasa de error (WER) se volvió a comprobar con Whisper.
+
 ## Novedades v1.1 (igual que ¡Ahora Caigo! 1.13)
 - **Opciones** con todas las filas de ¡Ahora Caigo!: Música, Cabecera (3D / vídeo propio / plató 3D), Música de la cabecera (elegir audio, probar, quitar), Efectos, Público y Público en las gradas, Voz, Lectura, Velocidad, Chistes, Monólogo, Concursantes (nombres, profesión, presentador, amigo de la llamada y acompañante), Etapa del programa, Cargar sb3/sonidos/sprites, Músicas-sonidos-logo, Publicidad, Copresentador sorpresa, Presentador sorpresa (todo el programa), Cabecera 3D y apertura larga, Plató (4 estilos), Mis preguntas (equivale a «Palabra gallina: mis canciones»), Calidad y Pantalla completa.
 - **Publicidad**: el código de Show Time TV de ¡Ahora Caigo! (`src/publicidad.js`, `src/st_datos.js`): cortinillas, 8 anuncios inventados y pausa en mitad del programa (tras las preguntas 5 y 10).
