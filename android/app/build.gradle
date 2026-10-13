@@ -11,8 +11,8 @@ android {
         applicationId 'com.ikeriano.millonario'
         minSdk 24
         targetSdk 34
-        versionCode 4
-        versionName '1.2.1'
+        versionCode 8
+        versionName '1.5'
     }
     signingConfigs {
         release {

@@ -4,4 +4,5 @@ set -e
 cd "$(dirname "$0")/.."
 WWW=${WWW:-../www}
 node -e "const fs=require('fs');const p='$WWW/voz/index.json';fs.writeFileSync('src/gen.js','export const VOZ='+(fs.existsSync(p)?fs.readFileSync(p,'utf8'):'{}')+';\n');"
+(echo "import * as THREE from 'three';"; cat src/personas3d_rb.js; echo "export const P3D = () => p3dRB(THREE, 'personas3d/');"; echo "export const p3dOn = () => { try { return localStorage.getItem('personajes3d') === 'personas'; } catch (e) { return false; } };") > src/p3d_mi.js
 node_modules/.bin/esbuild src/app.js --bundle --minify --charset=utf8 --format=iife --loader:.txt=text --outfile=$WWW/js/app.js --log-level=warning

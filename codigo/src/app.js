@@ -11,7 +11,7 @@ import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras1
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.2.1';
+const VERSION = '1.5';
 const en = (id) => document.getElementById(id);
 const az = (a) => a[Math.floor(Math.random() * a.length)];
 const mezcla = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -136,7 +136,7 @@ async function modoPrograma(s, modo, sub) {
   if (!entreno) {
     await regidor(s, 'aire');
     yn.actions([{ label: 'Saltar ⏭', fn: () => s.saltar = true }]);
-    if (it.apertura) await cabecera(s);
+    { const mcSust = window.MC3D ? await MC3D.introPrograma({ sess: s }) : false; s.ok(); if (it.apertura && !mcSust) await cabecera(s); }
     yn.actions([]); F.stopMusic();
     if (it.apertura) { conc.visible = false; await apertura(s); }
     if (esp.banner) yn.rotulo(esp.banner, era.cadena);
@@ -328,6 +328,8 @@ function optCabeceraMusica() {
 function optPublico() { const e = document.createElement('div'); e.className = 'ocustom opub'; e.id = 'optPublico'; e.appendChild(filaVol('👏 Público', 'publico', 'publicoVol', 'rowPublico')); e.appendChild(filaSi('👥 Público en las gradas', 'gradas', () => plato.gradas(it.gradas))); e.appendChild(nota('Aplausos, vítores y «oooh» del público. Son sonidos sintetizados por el propio juego (no son grabaciones). Si tu móvil va justo, quitar el público de las gradas ayuda.')); return e; }
 function optConcursantes() { const a = document.createElement('div'); a.className = 'ocustom'; a.id = 'optConcursantes'; const e = document.createElement('div'); e.className = 'olabel'; e.textContent = '👥 Concursantes'; const t = document.createElement('div'); t.className = 'oname'; t.textContent = `Tú: ${me.nombre}${me.profesion ? ' · ' + me.profesion : ''} · Presenta: ${me.presentador} · Llamada: ${me.amigo} · Acompañante: ${me.familiar}`; const n = document.createElement('div'); n.className = 'orow obtns'; n.appendChild(boton('✏️ Nombres y profesiones', () => Lt('concursantes'), true)); a.append(e, t, n); return a; }
 const ETAPA_NOTA = { e2020: 'Plató azul con suelo dorado en espiral y consola en V. Primer seguro en la 5; el segundo lo eliges tú. Comodines: 50:50, público, llamada y acompañante.', e2005: 'Antena 3: escalera en euros hasta 1.000.000 €, seguros fijos en 1.000 € y 10.000 €. Comodines: 50:50, público y llamada.', e1999: 'Telecinco «50 por 15»: 15 preguntas hasta 50.000.000 de pesetas. Seguros en 100.000 y 3.200.000 ptas.' };
+function filaPersonajes() { const d = document.createElement('div'); d.className = 'orow'; d.id = 'rowPersonajes'; const f = document.createElement('label'); f.textContent = '🧑 Personajes'; d.appendChild(f); const act = (() => { try { return localStorage.getItem('personajes3d') === 'personas' ? 'personas' : 'monigotes'; } catch (e) { return 'monigotes'; } })();
+  for (const [v, l] of [['monigotes', 'Monigotes'], ['personas', 'Personas 3D']]) { const b = document.createElement('button'); b.className = 'tbtn' + (act === v ? ' sel' : ''); b.textContent = l; b.dataset.v = v; b.onclick = (w) => { w.stopPropagation(); if (v === act) return; try { localStorage.setItem('personajes3d', v); } catch (e) { } F.play('Tecla'); d.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x.dataset.v === v)); try { sessionStorage.setItem('volverOpc', '1'); } catch (e) { } setTimeout(() => location.reload(), 250); }; d.appendChild(b); } return d; }
 function filaEtapa() { const w = document.createElement('div'); const n = nota(ETAPA_NOTA[it.era]); w.append(filaOpc('📅 Etapa del programa', 'era', Object.keys(ERAS).map(k => [k, ERAS[k].nombre]), (v) => n.textContent = ETAPA_NOTA[v], 'rowEtapa'), n); return w; }
 function filaRecursos() {
   const w = document.createElement('div'); const r1 = document.createElement('div'); r1.className = 'orow'; const l1 = document.createElement('label'); l1.textContent = '📦 Cargar sb3 / sonidos / sprites'; r1.append(l1, boton('Abrir ▶', () => Lt('recursos')));
@@ -349,7 +351,7 @@ function Lt(a = 'main') {
   if (a === 'title') {
     const u = document.createElement('div'); u.className = 'title'; const h = logoMenu(560); h.className = 'tlogo';
     const d = document.createElement('div'); d.className = 'tsub'; d.textContent = 'El juego'; const f = document.createElement('div'); f.className = 'ttap'; f.textContent = 'Toca para empezar'; u.append(h, d, f); e.appendChild(u);
-    const p = (v) => { v.stopPropagation(); F.ctx.resume(); F.play('Fanfarria'); e.removeEventListener('pointerup', p); removeEventListener('keydown', p); Lt('main'); };
+    const p = (v) => { v.stopPropagation(); F.ctx.resume(); F.play('Fanfarria'); e.removeEventListener('pointerup', p); removeEventListener('keydown', p); let vo = false; try { vo = sessionStorage.getItem('volverOpc') === '1'; sessionStorage.removeItem('volverOpc'); } catch (e) { } Lt(vo ? 'options' : 'main'); };
     e.addEventListener('pointerup', p); addEventListener('keydown', p); return;
   }
   const n = document.createElement('div'); n.className = 'mbox'; const i = document.createElement('div'); i.className = 'logo'; const s = logoMenu(560); s.className = 'mlogo'; i.appendChild(s);
@@ -373,6 +375,7 @@ function Lt(a = 'main') {
   } else if (a === 'oculta' || a === 'tomas' || a === 'fuera') {
     const MN = { oculta: ['📹', 'Cámara oculta', 'Bromas a Leo en el plató… ¡Inocente, inocente!'], tomas: ['🎬', 'Tomas falsas', 'Lapsus, comodines rebeldes y «¡Corten!»'], fuera: ['🎥', 'Fuera de cámaras', 'Maquillaje, ensayos, técnicos y la pausa'] }[a];
     r.appendChild(Pa(MN[0] + ' ' + MN[1])); r.appendChild(caja(MN[2] + '. Personajes virtuales inventados; todo es ficción.'));
+    if (a === 'tomas' && window.Ep3000) r.appendChild(ei(window.Ep3000.titulo, window.Ep3000.sub, 'gold', () => window.Ep3000.abrir()));
     menuEscenas(a, r); r.appendChild(ei('▶ Ver todas seguidas', EXTRAS[a].length + ' escenas', 'gold', () => ii(a, 'todas'))); for (const x of EXTRAS[a]) r.appendChild(ei(x.titulo, x.pasos.length + ' frases', '', () => ii(a, x.id))); r.appendChild(Ia('main'));
   } else if (a === 'promos') {
     r.appendChild(Pa('Promos')); r.appendChild(caja(`Promos de ¿Quién quiere ser millonario? en 3D, en tiempo real, con nuestro presentador virtual <b>${esc(me.presentador)}</b> (personajes virtuales, sin personas reales).`));
@@ -423,8 +426,8 @@ function Lt(a = 'main') {
     r.classList.add('opts'); r.appendChild(Pa('Opciones'));
     r.append(filaTitulo(), filaVideo3D(), ...filasExtras(), filaSiNo('🎬 La regidora (Pili) habla en el Programa completo', 'regidor'));
     r.append(filaVol('🎵 Música', 'music', 'musicVol'), filaOpc('🎬 Cabecera', 'cabecera', [['cab3d', 'Cabecera 3D'], ['video', RC.cache.video_cabecera ? 'Vídeo propio' : 'Vídeo propio (cárgalo)'], ['plato3d', 'Plató 3D']], async v => { if (v === 'video' && !RC.cache.video_cabecera) { const f = await pideArchivo('video/*'); if (f) { await rcGuarda('video_cabecera', f); Lt('options'); } } }, 'rowCabecera', true),
-      optCabeceraMusica(), filaVol('🔊 Efectos', 'sfx', 'sfxVol'), optPublico(), filaSi('🎤 Voz del presentador', 'voz'), filaSi('📖 El presentador lee las preguntas', 'lee'), filaOpc('⏩ Velocidad de lectura', 'leeVel', [['normal', 'Normal'], ['rapida', 'Rápida']], null, 'rowLeeVel'), filaSi('😄 Chistes del presentador', 'chistes'), filaSi('🎭 Monólogo del presentador', 'monologo'),
-      optConcursantes(), filaEtapa(), filaRecursos(), filaSiNo('📺 Publicidad en el Programa completo', 'publicidad'), filaSiNo('🎤 Copresentador sorpresa', 'copro'), filaSiNo('🎙️ Presentador sorpresa (todo el programa)', 'presSorpresa'), filaSiNo('🎬 Cabecera 3D y apertura larga en el Programa completo', 'apertura'), filaPlato(), optMisPreguntas(),
+      ...(window.MC3D ? [MC3D.fila()] : []), optCabeceraMusica(), filaVol('🔊 Efectos', 'sfx', 'sfxVol'), optPublico(), filaSi('🎤 Voz del presentador', 'voz'), filaSi('📖 El presentador lee las preguntas', 'lee'), filaOpc('⏩ Velocidad de lectura', 'leeVel', [['normal', 'Normal'], ['rapida', 'Rápida']], null, 'rowLeeVel'), filaSi('😄 Chistes del presentador', 'chistes'), filaSi('🎭 Monólogo del presentador', 'monologo'),
+      optConcursantes(), filaEtapa(), filaPersonajes(), filaRecursos(), filaSiNo('📺 Publicidad en el Programa completo', 'publicidad'), filaSiNo('🎤 Copresentador sorpresa', 'copro'), filaSiNo('🎙️ Presentador sorpresa (todo el programa)', 'presSorpresa'), filaSiNo('🎬 Cabecera 3D y apertura larga en el Programa completo', 'apertura'), filaPlato(), optMisPreguntas(),
       filaOpc('✨ Calidad gráfica', 'quality', [['baja', 'Baja'], ['media', 'Media'], ['alta', 'Alta']], () => location.reload()));
     const x = document.createElement('div'); x.className = 'orow'; const y = document.createElement('label'); y.textContent = '⛶ Pantalla completa'; const b = document.createElement('button'); b.className = 'tbtn' + (document.fullscreenElement ? ' sel' : ''); b.textContent = document.fullscreenElement ? 'Salir' : 'Activar';
     b.onclick = async (_) => { _.stopPropagation(); try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch (e) {} setTimeout(() => Lt('options'), 300); }; if (APP) { b.disabled = true; b.textContent = 'Siempre (app)'; } x.append(y, b);
@@ -471,7 +474,7 @@ async function arranca() {
   for (const e of ESPECIALES) { if (SALUDOS_EXISTENTES[e.id]) e.saludo = SALUDOS_EXISTENTES[e.id]; if (LUCES_EXISTENTES[e.id]) e.luz = LUCES_EXISTENTES[e.id]; }
   instalaV12({ ESPECIALES, extra: ESP_EXTRA, temasLogo: TEMAS_LOGO, it, guarda, F, plato: null, RC, rcGuarda, rcBorra, pideArchivo, boton, nota, caja, ei, ii, Lt, yn, di, colocaPersonaje, dibujaLogo, pref: 'mm', colorCss: '#e8b830', colorFondo: '#1a0a4a', hashtagDef: '#QuienQuiereSerMillonario', ledHT: { pos: [0, 6.2, -9], w: 7 }, musicas: [['menu', 'Tema principal'], ['cabecera', 'Cabecera'], ['pregunta', 'Pregunta'], ['tension', 'Tensión'], ['despedida', 'Despedida']], enMenu: () => Mi && Gr === 'main' && !en('menu').classList.contains('hidden'), tituloOriginal: '¿Quién quiere ser millonario?', regidor: REGIDORA, colorMarco: 0x8a4aff,
     escenas: { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' }, cam: { P: 'pres', C: 'silla' }, camDef: 'wide' } });
-  plato = creaPlato(en('c3d'), it.quality, it.plato); K12.plato = plato; K12.yn = yn; instalaExtras(); lucesEspecial(); plato.gradas(it.gradas); aplicaLogo();
+  plato = creaPlato(en('c3d'), it.quality, it.plato); window.__miPlato = plato; K12.plato = plato; K12.yn = yn; instalaExtras(); lucesEspecial(); plato.gradas(it.gradas); aplicaLogo();
   let last = performance.now(); let fr = 0, ft = performance.now(); const loop = (t) => { fr++; if (t - ft > 1000) { fps = fr * 1000 / (t - ft); fr = 0; ft = t; } plato.frame(Math.min(.05, (t - last) / 1000)); last = t; requestAnimationFrame(loop); }; requestAnimationFrame(loop);
   en('btnMenu').onclick = (s) => { s.stopPropagation(); if (jt && jt.alive && !confirm('¿Volver al menú? Se perderá la partida.')) return; document.getElementById('showtime')?.remove(); Lt('main'); };
   en('btnLuces').onclick = (s) => { s.stopPropagation(); yn.toast(plato.toggleLuces() ? 'Haces de luz encendidos' : 'Haces de luz apagados', 1000); };
@@ -489,3 +492,18 @@ async function arranca() {
   Object.assign(window, { __menu: Lt, __startMode: ii, __plato: plato, __preguntas: PREGUNTAS, __it: it });
 }
 arranca();
+
+// ---------- «Mi cabecera 3D» (mc3d/mc3d.js): la IA analiza tu vídeo y lo vuelve a rodar en el plató 3D del juego ----------
+if (window.MC3D) MC3D.config({ app: 'millonario', nombre: "¿Quién quiere ser millonario?", titulo: "¿Quién quiere ser millonario?", hashtagDef: '#Millonario', sintoniaJuego: () => { F.playMusic('cabecera'); return () => F.stopMusic(); }, logo: () => null,
+  palabrasLogo: ["millonario", "ahora", "caigo"], creditos: () => ["Juego creado por Iker", "Presenta: {PRES} (presentador virtual)", "Formato original: ¿Quién quiere ser millonario?"].map(x => x.replace('{PRES}', me.presentador || '')),
+  recrear: (pl, op) => { let propia = false, modo0 = null; const P3 = plato, V0 = a => [a.x, a.y, a.z], PL = P3.PLANOS || {};
+    const w = PL.wide || [new P3.THREE.Vector3(0, 5, 14), new P3.THREE.Vector3(0, 1.5, 0)], c = w[1], R0 = Math.max(5, w[0].distanceTo(w[1]) * 0.75);
+    const dL = PL.logo ? PL.logo[0].distanceTo(PL.logo[1]) : 0, lpos = PL.logo ? PL.logo[1].clone().lerp(PL.logo[0], 0.3).add(new P3.THREE.Vector3(0, -dL * 0.2, 0)) : null; // letras debajo del emblema, sin tapar su rótulo
+    const lg = PL.logo ? [V0(lpos), V0(lpos.clone().add(PL.logo[1].clone().sub(PL.logo[0])))] : null, lc = PL.logo ? [V0(PL.logo[0]), V0(PL.logo[1])] : null;
+    const pub = ['grada', 'publico', 'transeuntes', 'expertos'].filter(k => PL[k]).map(k => V0(PL[k][1]));
+    return MC3D.recrearGenerico({ THREE: P3.THREE, scene: P3.scene, camera: P3.camera, mira: P3.cam.mira, centro: [c.x, Math.max(1.2, c.y), c.z], radio: R0, altura: Math.max(2.6, w[0].y * 0.8), texto: "¿Quién quiere ser millonario?",
+      concursantes: () => Object.entries(P3.figuras).filter(([k, f]) => f.visible && k !== 'leo').map(([, f]) => V0(f.position)),
+      presentador: () => P3.figuras['leo'] ? V0(P3.figuras['leo'].position) : [c.x, 0, c.z], publico: () => pub, logo: lg, logoCam: lc,
+      antes: () => { if (!op.ctx || !op.ctx.sess) { propia = true; sesion(); en('menu').classList.add('hidden'); F.stopAll && F.stopAll(); typeof colocaBase === 'function' && colocaBase(); } F.stopMusic && F.stopMusic(); },
+      toma: () => { modo0 = P3.cam.modo; P3.cam.modo = 'mc3d'; }, suelta: () => { P3.cam.modo = modo0 === 'mc3d' ? 'orbita' : modo0 || 'orbita'; },
+      despues: () => { if (propia) { jt && (jt.alive = false); Lt('options'); } } })(pl, op); } });

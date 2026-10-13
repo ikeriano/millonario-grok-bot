@@ -1,5 +1,6 @@
 // Personajes al estilo de ¡Ahora Caigo! 1.13 (función e2 del presentador, portada): piernas y brazos en cápsula con pivote,
 // chaqueta con solapas, camisa, corbata o pajarita, cara pintada en lienzo, pelo, orejas, gafas y sombreros.
+import { P3D, p3dOn } from './p3d_mi.js';
 import * as THREE from 'three';
 const L = (color, emissive = 0) => new THREE.MeshLambertMaterial({ color, emissive });
 const tex = (w, h, f) => { const c = document.createElement('canvas'); c.width = w; c.height = h; f(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; };
@@ -12,7 +13,25 @@ function cara(g, boca) {
   else { g.strokeStyle = '#8a1c1c'; g.lineWidth = 5; g.beginPath(); g.moveTo(44, 86); g.quadraticCurveTo(64, 96, 84, 86); g.stroke(); }
 }
 /** a: { piel, traje, camisa, corbata, pelo, pajarita, gafas, falda, melena, sombrero } */
-export function creaPersonaje(a) {
+// Personas 3D (Opciones › Personajes): personas realistas con caras inventadas. Cada personaje conserva su identidad (misma persona siempre).
+const FIJOS = { leo: 'Business_Male_02', pili: 'Female_Adult_08', chema: 'Male_Adult_13', marga: 'Business_Female_03', ramon: 'Business_Male_06', encarna: 'Female_Adult_11' };
+const VIVOS = new Map(); let hablaHook = false;
+function creaP3D(a, id) {
+  const api = P3D(); if (!hablaHook) { hablaHook = true; api.setHabla(h => { const P = VIVOS.get(h); return !!(P && P.habla); }); }
+  const f = api.persona({ avatar: FIJOS[id], g: a.melena || a.falda ? 'f' : 'm', seed: FIJOS[id] ? id : (a.p3dSeed || JSON.stringify(a)) });
+  const { root, body, legL, legR, armL, armR, head } = f;
+  const P = { root, body, legL, legR, armL, armR, head, habla: false, sentado: false, t: Math.random() * 10, gesto: 0, p3d: f }; VIVOS.set(head, P);
+  P.update = (dt) => { P.t += dt; const t = P.t;
+    head.rotation.y = Math.sin(t * .7) * .1 + (P.habla ? Math.sin(t * 3.1) * .06 : 0); head.rotation.x = 0;
+    f.sentado = P.sentado ? 0.86 : undefined;
+    if (P.sentado) { legL.rotation.x = legR.rotation.x = 0; armL.rotation.x = armR.rotation.x = -.5; }
+    else if (P.anda) { const w = Math.sin(t * 8) * .45; legL.rotation.x = w; legR.rotation.x = -w; armL.rotation.x = -w * .7; armR.rotation.x = w * .7; }
+    else { legL.rotation.x = legR.rotation.x = 0; armL.rotation.x = 0; armR.rotation.x = P.habla ? -.3 + Math.sin(t * 2.5) * .2 : (a.tarjetas ? -.5 : 0); }
+    if (P.gesto > 0) { P.gesto -= dt; armR.rotation.z = .12 + 2.6 * Math.min(1, P.gesto); armL.rotation.z = -.12 - 2.6 * Math.min(1, P.gesto); } else { armR.rotation.z = .12; armL.rotation.z = -.12; } };
+  return P;
+}
+export function creaPersonaje(a, id) {
+  if (p3dOn()) return creaP3D(a || {}, id);
   const piel = L(a.piel ?? 0xf2c8a0, 0x2a1408), traje = L(a.traje ?? 0x1b2340, 0x050710), camisa = L(a.camisa ?? 0xffffff), corb = L(a.corbata ?? 0x2a5aff, 0x0a1a40), zap = L(0x111111), pelo = L(a.pelo ?? 0x3a2414);
   const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
   const pierna = a.falda ? piel : L(a.pantalon ?? a.traje ?? 0x1b2340);

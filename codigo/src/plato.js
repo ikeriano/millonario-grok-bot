@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { dibujaLogo } from './logo.js';
 import { PERSONAJES } from './datos.js';
 import { creaPersonaje } from './personajes.js';
+import { P3D, p3dOn } from './p3d_mi.js';
 // Plató 2020: azul oscuro, haces de luz, suelo dorado en espiral, consola en V, dos sillas, gradas y logo al fondo
 export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: calidad !== 'baja', preserveDrawingBuffer: true });
@@ -83,11 +84,16 @@ export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
   const foco2 = new THREE.PointLight(0x2f6bff, 25, 25); foco2.position.set(0, 5, -8); scene.add(foco2);
   // ---------- personajes (figuras inventadas, sin parecido con nadie real) ----------
   const figuras = {};
+  // Personas 3D: el público de las gradas son personas realistas sentadas (instancias horneadas), mirando al centro
+  if (p3dOn()) { cuerpos.visible = cabezas.visible = false; const grp = new THREE.Group(); scene.add(grp); gradasPub.length = 0; gradasPub.push(grp); const api = P3D(), todos = api.todos();
+    Promise.all(todos.map(n => api.bakePublico(n))).then(bk => { const por = todos.map(() => []); publico.forEach((v, i) => por[(i * 7 + 3) % todos.length].push(v)); const sc = new THREE.Vector3(1, 1, 1), M = new THREE.Matrix4(), q = new THREE.Quaternion(), ax = new THREE.Vector3(0, 1, 0);
+      por.forEach((l, k) => { if (!l.length) return; const im = new THREE.InstancedMesh(bk[k].geo, new THREE.MeshLambertMaterial({ map: bk[k].atlas, alphaTest: .45, side: THREE.DoubleSide }), l.length); im.morphTargetInfluences = [0, 0, 0, 0]; im.frustumCulled = false;
+        l.forEach((v, j) => { q.setFromAxisAngle(ax, Math.atan2(-v.x, -v.z)); M.compose(new THREE.Vector3(v.x * .985, v.y - .42, v.z * .985), q, sc); im.setMatrixAt(j, M); im.setMorphAt(j, { morphTargetInfluences: [0, 0, 0, 0] }); }); im.morphTexture.needsUpdate = true; grp.add(im); }); }).catch(e => console.warn('[p3d público]', e)); }
   const creaFigura = (id) => {
-    const p = PERSONAJES[id], P = creaPersonaje(p.aspecto || {}); P.root.userData = P; P.root.visible = false; scene.add(P.root); figuras[id] = P.root; return P.root;
+    const p = PERSONAJES[id], P = creaPersonaje(p.aspecto || {}, id); P.root.userData = P; P.root.visible = false; scene.add(P.root); figuras[id] = P.root; return P.root;
   };
   Object.keys(PERSONAJES).forEach(creaFigura);
-  const recreaFigura = (id, aspecto) => { const v = figuras[id]; const pos = v.position.clone(), rot = v.rotation.y, vis = v.visible, sen = v.userData.sentado; scene.remove(v); const P = creaPersonaje(aspecto || PERSONAJES[id].aspecto); P.root.userData = P; scene.add(P.root); figuras[id] = P.root; P.root.position.copy(pos); P.root.rotation.y = rot; P.root.visible = vis; P.sentado = sen; return P.root; };
+  const recreaFigura = (id, aspecto) => { const v = figuras[id]; const pos = v.position.clone(), rot = v.rotation.y, vis = v.visible, sen = v.userData.sentado; scene.remove(v); const P = creaPersonaje(aspecto || PERSONAJES[id].aspecto, aspecto ? null : id); P.root.userData = P; scene.add(P.root); figuras[id] = P.root; P.root.position.copy(pos); P.root.rotation.y = rot; P.root.visible = vis; P.sentado = sen; return P.root; };
   const sentar = (f, silla) => { f.position.copy(silla.position).add(new THREE.Vector3(0, .24, 0)); f.rotation.y = silla.rotation.y; f.visible = true; f.userData.sentado = true; };
   const dePie = (f, x, y, z, ry) => { f.position.set(x, y, z); f.rotation.y = ry; f.visible = true; f.userData.sentado = false; };
   sentar(figuras.leo, sillas[1]); sentar(figuras.conc, sillas[0]);
@@ -119,5 +125,5 @@ export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
   const aplicaEstilo = (e) => { const [c1, c2, fondo, haz] = ESTILOS[e] || ESTILOS['2020']; azul.color.setHex(c1); azulClaro.color.setHex(c2); scene.background.setHex(fondo); scene.fog.color.setHex(fondo); matHaz.color.setHex(haz); };
   aplicaEstilo(estilo);
   const ponLogo = (img) => { const t = new THREE.Texture(img); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true; logo.material.map = t; logo.material.needsUpdate = true; };
-  return { recreaFigura, aplicaEstilo, ponLogo, dePie, gradas: (v) => gradasPub.forEach(m => m.visible = v), renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
+  return { THREE, recreaFigura, aplicaEstilo, ponLogo, dePie, gradas: (v) => gradasPub.forEach(m => m.visible = v), renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
 }
