@@ -11,7 +11,7 @@ import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras1
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.5';
+const VERSION = '1.6';
 const en = (id) => document.getElementById(id);
 const az = (a) => a[Math.floor(Math.random() * a.length)];
 const mezcla = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -90,7 +90,7 @@ async function di(s, quien, texto, planoCam) { s.ok(); if (planoCam) plato.plano
 function ii(modo, sub) {
   en('menu').classList.add('hidden'); en('topbar').classList.remove('hidden'); yn.limpia(); Mi = false; F.stopMusic(); K12.EX && K12.EX.ocioMenu(false); if (K12.EX && (modo === 'programa' || modo === 'promos' || modo === 'promosleo' || modo === 'promocadena')) K12.EX.bugMostrar();
   const s = sesion();
-  const M = { programa: modoPrograma, entrenamiento: modoPrograma, clasico: modoClasico, explorar: modoExplorar, paseo: modoExplorar, monologos: modoMonologo, camlibre: async (s) => { en('topbar').classList.add('hidden'); await camaraLibre(s); Lt('main'); }, oculta: modoEscena, tomas: modoEscena, fuera: modoEscena, promos: modoPromo, promosleo: modoPromo, promocadena: modoPromo, publicidad: modoPublicidad, historia: modoHistoria };
+  const M = { programa: modoPrograma, entrenamiento: modoPrograma, clasico: modoClasico, clasico2010: modoClasico2010, explorar: modoExplorar, paseo: modoExplorar, monologos: modoMonologo, camlibre: async (s) => { en('topbar').classList.add('hidden'); await camaraLibre(s); Lt('main'); }, oculta: modoEscena, tomas: modoEscena, fuera: modoEscena, promos: modoPromo, promosleo: modoPromo, promocadena: modoPromo, publicidad: modoPublicidad, historia: modoHistoria };
   if (modo !== 'programa' && modo !== 'entrenamiento') { plato.sentar(plato.figuras.conc, plato.sillas[0]); plato.sentar(plato.figuras.leo, plato.sillas[1]); for (const k of ['pili', 'chema', 'marga', 'ramon', 'encarna']) plato.figuras[k].visible = false; }
   (M[modo] || modoPrograma)(s, modo, sub).catch((e) => { if (!(e instanceof Cancel)) console.error(e); });
 }
@@ -247,7 +247,10 @@ async function creditos(s) {
   c.classList.remove('hidden'); plato.plano('cenital', 4); await s.espera(5000).finally(() => c.classList.add('hidden'));
 }
 // ---------- otros modos ----------
-function modoClasico() { en('menu').classList.add('hidden'); Mi = false; en('classicWrap').classList.remove('hidden'); en('classic').src = 'clasico/index.html'; }
+async function modoClasico2010() { en('menu').classList.add('hidden'); Mi = false; en('classicWrap').classList.remove('hidden'); en('classic').src = 'clasico2010/index.html'; }
+let hayClasico2010 = false; try { fetch('clasico2010/index.html', { method: 'HEAD' }).then(r => { hayClasico2010 = r.ok; }).catch(() => {}); } catch (e) {}
+addEventListener('message', e => { if (e.data === 'clasico2010:salir') en('classicBack').click(); });
+async function modoClasico() { en('menu').classList.add('hidden'); Mi = false; en('classicWrap').classList.remove('hidden'); en('classic').src = 'clasico/index.html'; }
 async function modoExplorar(s, modo) {
   plato.libre(); if (modo === 'paseo') plato.camera.position.set(11, 1.7, 2);
   yn.toast(APP || matchMedia('(pointer:coarse)').matches ? 'Arrastra a la derecha para mirar y usa el joystick para andar' : 'WASD para andar, arrastra para mirar', 3500);
@@ -364,7 +367,7 @@ function Lt(a = 'main') {
       ei('Opciones', 'Sonido, calidad gráfica, pantalla completa', '', () => Lt('options')), ei('La historia de ¿Quién quiere ser millonario?', `${me.presentador} te cuenta la historia del programa`, 'hist', () => Lt('historia')), ei('Cómo se juega', 'Las reglas del concurso', '', () => Lt('help')), ei('Créditos', '', '', () => Lt('credits')));
     if (!APP) r.append(ei('Instalar app', 'Juega sin conexión desde tu pantalla de inicio', 'inst', () => { yc ? yc.prompt() : yn.toast('Usa «Añadir a pantalla de inicio» en el menú del navegador', 3000); }));
   } else if (a === 'play') {
-    r.append(ei('Programa completo', 'Cabecera, apertura, 15 preguntas, comodines, cheque y despedida', 'gold', () => ii('programa')), ei('Entrenamiento', 'Juega sin cabecera ni publicidad, elige la escalera', '', () => Lt('train')), ei('Clásico', 'El juego original de Scratch', '', () => ii('clasico')), ei('Explorar el plató', 'Pasea libremente por el plató 3D', '', () => ii('explorar')), ei('Monólogos del presentador', 'Sus números de humor: con el público, al teléfono y las normas', '', () => Lt('monologos')));
+    r.append(ei('Programa completo', 'Cabecera, apertura, 15 preguntas, comodines, cheque y despedida', 'gold', () => ii('programa')), ei('Entrenamiento', 'Juega sin cabecera ni publicidad, elige la escalera', '', () => Lt('train')), ei('Clásico', 'El juego original de Scratch', '', () => ii('clasico')), ...(hayClasico2010 ? [ei('Modo clásico 2010', '¿Quién quiere ser millonario? 2010: el juego de móvil original, en español', '', () => ii('clasico2010'))] : []), ei('Explorar el plató', 'Pasea libremente por el plató 3D', '', () => ii('explorar')), ei('Monólogos del presentador', 'Sus números de humor: con el público, al teléfono y las normas', '', () => Lt('monologos')));
     r.appendChild(Pa('Programa especial')); const u = document.createElement('div'); u.className = 'themes';
     for (const h of ESPECIALES) { const d = document.createElement('button'); d.className = 'tbtn' + (h.id === it.especial ? ' sel' : ''); d.innerHTML = `<span>${h.emoji}</span>${h.name}`; d.onclick = (f) => { f.stopPropagation(); F.play('Tecla'); it.especial = h.id; guarda(); lucesEspecial(); sting(h.id); Lt('play'); }; u.appendChild(d); }
     r.append(u, Ia('main'));
