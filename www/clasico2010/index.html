@@ -11,10 +11,10 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:C,Ari
 .sm{background-image:url(spr/bar_small.png)}.smw{background-image:url(spr/bar_small_white.png);color:#000}
 .ans{justify-content:flex-start;padding-left:20px;box-sizing:border-box;font-size:13px}
 .ans b{color:#f7a51c;margin-right:6px}.ans.sel{background-image:url(spr/bar_big_gold.png)}.ans.sel b{color:#fff}
-.ans.ok{background-image:url(spr/bar_big_gold.png);animation:fl .25s 6 alternate}.ans.ko{opacity:.35}
+.ans.ok{background-image:url(spr/bar_big_green.png);animation:fl .25s 8 alternate}.ans.bad{background-image:url(spr/bar_big_red.png)}.ans.sel{background-image:url(spr/bar_big_orange.png)}.ans.ko{opacity:.35}
 @keyframes fl{to{filter:brightness(1.8)}}
 .mi{font-size:16px;letter-spacing:.5px;text-shadow:0 1px 2px #000}
-#tree div{height:15px;font-size:11px;display:flex;justify-content:space-between;padding:0 10px 0 8px}
+#tree div{height:17px;font-size:11.5px;display:flex;gap:8px;padding:0 10px 0 8px;align-items:center}#tree span.n{width:20px}#tree span.v{width:78px;text-align:right}#tree span.c{flex:1;color:#cfe3ff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #tree div.safe{color:#fff}#tree div{color:#f7a51c}#tree div.cur{background:url(spr/bar_big_gold.png) 0 0/100% 100%;color:#000}
 #ll img{width:44px;cursor:pointer;margin-right:2px}#ll img.used{opacity:.25;filter:grayscale(1)}
 #timer{width:60px;height:60px;left:210px;top:6px;background:url(spr/orb_blue.png) center/contain no-repeat;display:flex;align-items:center;justify-content:center;font-size:24px}
@@ -30,17 +30,16 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:C,Ari
 #bars i{display:block;width:22px;background:linear-gradient(#fff,#4af);font-style:normal}
 </style></head><body><div id="st">
 <div class="s" id="sIntro"><video id="vid" src="img/intro.mp4" playsinline style="width:100%;height:100%;background:#000"></video><div class="abs" style="right:8px;bottom:6px;font-size:11px;opacity:.7">Toca para saltar</div></div>
-<div class="s" id="sMenu"><img src="img/logo.png" class="abs" style="left:10px;top:30px;width:250px">
- <div class="bar sm mi" style="left:270px;top:70px;width:200px;height:40px" data-a="jugar">Jugar</div>
- <div class="bar sm mi" style="left:270px;top:118px;width:200px;height:40px" data-a="ayuda">Ayuda</div>
- <div class="bar sm mi" style="left:270px;top:166px;width:200px;height:40px" data-a="opciones">Opciones</div>
- <div class="bar sm mi" style="left:270px;top:214px;width:200px;height:40px" data-a="acerca">Acerca de</div>
- <div class="bar sm mi" style="left:270px;top:262px;width:200px;height:40px" data-a="salir">Salir</div></div>
+<div class="s" id="sMenu"><img src="img/logo.png" class="abs" id="mlogo" style="left:10px;top:30px;width:250px"><div id="mlist"></div></div>
+<div class="s" id="sTree"><div class="abs" style="left:4px;top:4px;width:472px;height:312px;background:url(spr/a2_1.png) 0 0/100% 100%"></div><div id="tree" class="abs" style="left:22px;top:14px;width:436px"></div>
+ <div class="abs" id="bankTxt" style="left:20px;top:278px;width:250px;font-size:12px;color:#9cf"></div><div class="bar sm mi abs" id="treeGo" style="left:300px;top:274px;width:160px;height:32px;font-size:14px">Empezar</div></div>
+<div class="s" id="sWin"><div class="bar abs mi" style="left:90px;top:96px;width:300px;height:44px;background-image:url(spr/bar_small.png);color:#f7a51c;font-size:18px">GANANCIAS TOTALES</div>
+ <div class="abs mi" id="winAmt" style="left:0;top:150px;width:480px;text-align:center;font-size:40px;color:#fff"></div><div class="bar sm mi abs" id="winGo" style="left:160px;top:250px;width:160px;height:34px">Continuar</div><div id="cf"></div></div>
 <div class="s" id="sGame">
  <div id="ll" class="abs" style="left:6px;top:8px"><img id="lAud" src="spr/ico_audience.png"><img id="lPhn" src="spr/ico_phone.png"><img id="lX2" src="spr/ico_x2.png"><img id="lExp" src="spr/ico_expert.png"></div>
  <img src="spr/line_blue.png" class="abs" style="left:0;top:66px;width:480px;height:14px;opacity:.9">
  <div id="timer" class="abs">15</div>
- <div class="bar sm abs" id="treeBtn" style="right:6px;top:12px;width:120px;height:30px;font-size:14px;color:#f7a51c">0 €</div>
+ <div class="bar sm abs" id="treeBtn" style="right:6px;top:12px;width:120px;height:30px;font-size:14px;color:#f7a51c">0 €</div><div class="bar sm abs" id="pauseBtn" style="right:130px;top:16px;width:34px;height:24px;font-size:12px">II</div>
  <div class="bar big" id="cat" style="left:120px;top:84px;width:240px;height:22px;font-size:12px;color:#f7a51c"></div>
  <div class="bar big" id="q" style="left:6px;top:108px;width:468px;height:70px;font-size:15px;padding:0 30px;box-sizing:border-box"></div>
  <div class="bar big ans" id="a0" style="left:6px;top:188px;width:232px;height:38px"></div>
@@ -49,15 +48,9 @@ html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:C,Ari
  <div class="bar big ans" id="a3" style="left:242px;top:232px;width:232px;height:38px"></div>
  <img src="spr/line_bottom.png" class="abs" style="left:0;top:280px;width:480px">
  <div class="bar sm" id="walk" style="left:160px;top:288px;width:160px;height:28px;font-size:13px">Plantarse</div>
- <div class="pop" id="pTree"><div class="pnl" style="width:180px;padding:8px 14px"><div id="tree"></div></div></div>
- <div class="pop" id="pFinal"><div class="pnl" style="width:260px"><div class="mi" style="margin-bottom:10px">¿Respuesta definitiva?</div>
-  <div class="bar sm mi" style="position:relative;width:200px;height:34px;margin:4px auto" id="fSi">Sí</div>
-  <div class="bar sm mi" style="position:relative;width:200px;height:34px;margin:4px auto" id="fNo">No</div>
-  <div class="bar sm mi" style="position:relative;width:200px;height:34px;margin:4px auto" id="fWalk">Plantarse</div></div></div>
  <div class="pop" id="pLL"><div id="llBox" style="position:relative"></div></div>
- <div class="pop" id="pMsg"><div class="pnl" style="width:300px"><div id="msg" class="mi" style="margin-bottom:12px"></div><div class="bar sm mi" style="position:relative;width:200px;height:34px;margin:auto" id="msgOk">Continuar</div></div></div>
- <div id="cf"></div>
 </div>
+<div class="pop" id="pDlg" style="z-index:9"><div class="pnl" style="width:300px"><div id="dTxt" class="mi" style="margin-bottom:10px;font-size:15px"></div><div id="dBtns"></div></div></div>
 <div class="s" id="sHelp"><div id="help"></div><div class="bar sm mi abs" style="left:4px;top:4px;width:90px;height:26px;font-size:13px" data-a="menu">‹ Menú</div></div>
 <div class="s" id="sOpt"><div class="bar big mi hd" style="width:260px">Opciones</div>
  <div class="bar sm mi" style="left:110px;top:70px;width:260px;height:38px" id="oSnd"></div>
