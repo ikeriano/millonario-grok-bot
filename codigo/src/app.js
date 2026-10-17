@@ -11,7 +11,7 @@ import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras1
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.7';
+const VERSION = '1.8';
 const en = (id) => document.getElementById(id);
 const az = (a) => a[Math.floor(Math.random() * a.length)];
 const mezcla = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -61,7 +61,15 @@ const F = {
 // ---------------- voz (Piper pregrabada; si no, síntesis del navegador) ----------------
 export const fnv = (t) => { t = t.normalize('NFC').trim(); let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16).padStart(8, '0'); };
 let audioVoz = null;
+// Mis audios: si el jugador puso SU audio a este momento, suena él en lugar de la frase (el bocadillo se sigue viendo)
+const MA_MAP = (() => { const m = new Map(), F = FRASES, F2 = FRASES2 || {}; const pon = (x, k) => (Array.isArray(x) ? x : [x]).forEach(t => typeof t === 'string' && t && m.set(t.replace(/[«»]/g, '').trim(), k));
+  pon(F.saludo, 'pres.saludo'); pon(F.ultima, 'pres.ultima'); pon(F.bien, 'pres.acierto'); pon(F.mal, 'pres.fallo'); pon(F.seguroOk, 'pres.seguro'); pon([F.c5050, F.cpublico, F.cllamada, F.cfamiliar], 'pres.comodin');
+  pon(F.planta, 'pres.planta'); pon(F.millon, 'pres.victoria'); pon(F.despedida, 'pres.despedida');
+  pon(F2.coproBien, 'copro.acierto'); pon(F2.coproMal, 'copro.fallo'); pon(F2.coproPregunta, 'copro.nervios'); return m; })();
+function maMom(texto, quien) { try { if (!window.MisAudios || typeof texto !== 'string') return null; const k = MA_MAP.get(texto.replace(/[«»]/g, '').trim()); if (!k) return null; const [pid, mom] = k.split('.');
+    if (pid === 'pres' && quien !== 'leo') return null; return window.MisAudios.evento(mom, pid); } catch (e) { return null; } }
 function hablar(texto, quien = 'leo') {
+  { const ma = maMom(texto, quien); if (ma) { const fig = plato && plato.figuras[quien]; if (fig) fig.userData.habla = true; if (audioVoz) audioVoz.pause(); return Promise.race([ma.done, new Promise(r => setTimeout(r, ma.ms + 2500))]).then(() => { if (fig) fig.userData.habla = false; }); } }
   return new Promise((res) => {
     const fig = plato && plato.figuras[quien]; if (fig) fig.userData.habla = true;
     const fin = () => { if (fig) fig.userData.habla = false; res(); };
