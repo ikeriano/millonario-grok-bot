@@ -8,10 +8,11 @@ import TXT from './preguntas.txt';
 import { VOZ } from './gen.js';
 import { camaraLibre, instalaV12, lucesEspecial, sting, filaTitulo, filaVideo3D, cabVideo3D, regidor, menuEscenas, esGen, escenaGen, bannerDe, tituloTexto, especialActual, K as K12 } from './v12.js';
 import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras12.js';
+import { masOpcionesMi, ordenEspeciales135 } from './menu135.js';
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.9';
+const VERSION = '1.10';
 // ---------- v1.9: Normas sorpresa (lib en www/ns; apagadas por defecto: sin normas todo es exactamente igual) ----------
 const NSX = () => window.NS || null;
 const nsAct = () => { const N = NSX(); return !!(N && N.activas().length); };
@@ -411,7 +412,8 @@ function Lt(a = 'main') {
   if (a === 'main') {
     r.append(ei('Jugar', 'Programa completo, entrenamiento, clásico…', 'gold', () => Lt('play')), ei('Promos', 'Promos 3D con Leo Arrieta: cabecera, apertura, casting, esta noche…', '', () => Lt('promos')), ei('Promos de Leo', `${me.presentador} presenta ¿Quién quiere ser millonario? en el plató: próximo programa, seguro, consola`, '', () => Lt('promosleo')),
       ei('Publicidad', `Pausa de ${CADENA}: anuncios inventados, cortinillas y promos de la cadena`, '', () => Lt('publicidad')), ei('Cámara oculta', 'Bromas a Leo en el plató… ¡Inocente, inocente!', '', () => Lt('oculta')), ei('Tomas falsas', 'Lapsus, comodines rebeldes y «¡Corten!»', '', () => Lt('tomas')), ei('Fuera de cámaras', 'Maquillaje, ensayos, técnicos y la pausa', '', () => Lt('fuera')),
-      ei('Cámara libre', 'Vuela por el plató 3D, marca puntos y graba tu propia cabecera', '', () => ii('camlibre')), ei('Paseo', 'Pasea por el plató y sube a la grada', '', () => ii('paseo')), ei('Casting', 'Apúntate y sal como concursante en las partidas', '', () => Lt('casting')), ei('Elige el valor de cada pregunta', 'Coloca los 15 premios de la escalera', '', () => Lt('escalera')),
+      ei('Paseo', 'Pasea por el plató y sube a la grada', '', () => ii('paseo')), ei('Casting', 'Apúntate y sal como concursante en las partidas', '', () => Lt('casting')), ei('Elige el valor de cada pregunta', 'Coloca los 15 premios de la escalera', '', () => Lt('escalera')),
+      ei('Cámara libre', 'Vuela por el plató 3D, marca puntos y graba tu propia cabecera', '', () => ii('camlibre')),
       ei('Opciones', 'Sonido, calidad gráfica, pantalla completa', '', () => Lt('options')), ei('La historia de ¿Quién quiere ser millonario?', `${me.presentador} te cuenta la historia del programa`, 'hist', () => Lt('historia')), ei('Cómo se juega', 'Las reglas del concurso', '', () => Lt('help')), ei('Créditos', '', '', () => Lt('credits')));
     if (!APP) r.append(ei('Instalar app', 'Juega sin conexión desde tu pantalla de inicio', 'inst', () => { yc ? yc.prompt() : yn.toast('Usa «Añadir a pantalla de inicio» en el menú del navegador', 3000); }));
   } else if (a === 'play') {
@@ -482,7 +484,7 @@ function Lt(a = 'main') {
       filaOpc('✨ Calidad gráfica', 'quality', [['baja', 'Baja'], ['media', 'Media'], ['alta', 'Alta']], () => location.reload()));
     const x = document.createElement('div'); x.className = 'orow'; const y = document.createElement('label'); y.textContent = '⛶ Pantalla completa'; const b = document.createElement('button'); b.className = 'tbtn' + (document.fullscreenElement ? ' sel' : ''); b.textContent = document.fullscreenElement ? 'Salir' : 'Activar';
     b.onclick = async (_) => { _.stopPropagation(); try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch (e) {} setTimeout(() => Lt('options'), 300); }; if (APP) { b.disabled = true; b.textContent = 'Siempre (app)'; } x.append(y, b);
-    r.append(x, nota(`Rendimiento actual: ${Math.round(fps)} fps. Si el juego va lento en tu móvil, elige calidad «Baja».`, 'mtext'), Ia('main'));
+    r.append(x, nota(`Rendimiento actual: ${Math.round(fps)} fps. Si el juego va lento en tu móvil, elige calidad «Baja».`, 'mtext'), Ia('main')); masOpcionesMi(r, F);
   } else if (a === 'concursantes') {
     r.classList.add('opts'); r.appendChild(Pa('Concursantes'));
     const campo = (et, k, ph) => { const R = document.createElement('div'); R.className = 'orow ofield'; const l = document.createElement('label'); l.textContent = et; const z = document.createElement('input'); z.type = 'text'; z.className = 'otext'; z.value = me[k]; z.placeholder = ph; z.maxLength = 24; z.addEventListener('input', () => { me[k] = z.value; guardaMe(); }); z.addEventListener('keydown', ev => { ev.stopPropagation(); ev.key === 'Enter' && z.blur(); }); z.addEventListener('pointerdown', ev => ev.stopPropagation()); z.addEventListener('pointerup', ev => ev.stopPropagation()); R.append(l, z); return R; };
@@ -525,6 +527,7 @@ async function arranca() {
   for (const e of ESPECIALES) { if (SALUDOS_EXISTENTES[e.id]) e.saludo = SALUDOS_EXISTENTES[e.id]; if (LUCES_EXISTENTES[e.id]) e.luz = LUCES_EXISTENTES[e.id]; }
   instalaV12({ ESPECIALES, extra: ESP_EXTRA, temasLogo: TEMAS_LOGO, it, guarda, F, plato: null, RC, rcGuarda, rcBorra, pideArchivo, boton, nota, caja, ei, ii, Lt, yn, di, colocaPersonaje, dibujaLogo, pref: 'mm', colorCss: '#e8b830', colorFondo: '#1a0a4a', hashtagDef: '#QuienQuiereSerMillonario', ledHT: { pos: [0, 6.2, -9], w: 7 }, musicas: [['menu', 'Tema principal'], ['cabecera', 'Cabecera'], ['pregunta', 'Pregunta'], ['tension', 'Tensión'], ['despedida', 'Despedida']], enMenu: () => Mi && Gr === 'main' && !en('menu').classList.contains('hidden'), tituloOriginal: '¿Quién quiere ser millonario?', regidor: REGIDORA, colorMarco: 0x8a4aff,
     escenas: { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' }, cam: { P: 'pres', C: 'silla' }, camDef: 'wide' } });
+  ordenEspeciales135(ESPECIALES);
   plato = creaPlato(en('c3d'), it.quality, it.plato); window.__miPlato = plato; K12.plato = plato; K12.yn = yn; instalaExtras(); lucesEspecial(); plato.gradas(it.gradas); aplicaLogo();
   let last = performance.now(); let fr = 0, ft = performance.now(); const loop = (t) => { fr++; if (t - ft > 1000) { fps = fr * 1000 / (t - ft); fr = 0; ft = t; } plato.frame(Math.min(.05, (t - last) / 1000)); last = t; requestAnimationFrame(loop); }; requestAnimationFrame(loop);
   en('btnMenu').onclick = (s) => { s.stopPropagation(); if (jt && jt.alive && !confirm('¿Volver al menú? Se perderá la partida.')) return; document.getElementById('showtime')?.remove(); Lt('main'); };

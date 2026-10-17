@@ -3,3 +3,4 @@ android/keystore/
 android/local.properties
 android/app/build/
 android/.gradle/
+codigo/node_modules

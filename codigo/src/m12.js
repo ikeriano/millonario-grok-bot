@@ -11,6 +11,9 @@ export const TEMAS_LOGO = { // halo, anillo, banda, oro (4 paradas), deco
   ninos: { halo: ['#26c2f0', '#0a3a8a'], anillo: '#1a5ad0', banda: '#0a2a6a', oro: ['#ffffff', '#ffd23a', '#ff5fb0', '#fff0a0'], deco: '☺' },
   findeano: { halo: ['#3a3326', '#0a0a0a'], anillo: '#1a1812', banda: '#000000', oro: ['#ffffff', '#ffe28a', '#c9a227', '#fff6c0'], deco: '12' },
   carnaval: { halo: ['#8a1fd0', '#2a0a4a'], anillo: '#4b0f8a', banda: '#1a0430', oro: ['#e0ffe8', '#3dff8a', '#ffd23a', '#c0ffd8'], deco: '✦' },
+  primetime: { halo: ['#123a9a', '#06123f'], anillo: '#0a1a5a', banda: '#050a28', oro: ['#ffffff', '#ffe7a0', '#d9a520', '#fff6d0'], deco: '★' },
+  nochebuena: { halo: ['#c8a040', '#3a0a10'], anillo: '#5a1018', banda: '#2a0408', oro: ['#fffbe0', '#ffd27a', '#c08a20', '#fff0c0'], deco: '✶' },
+  especial300: { halo: ['#e8b830', '#3a1a00'], anillo: '#6a4a00', banda: '#2a1600', oro: ['#ffffff', '#ffe27a', '#d9a520', '#fff6c0'], deco: '300' },
   youtube: { halo: ['#ff3a3a', '#5a0000'], anillo: '#b00000', banda: '#2a0000', oro: ['#ffffff', '#ffffff', '#ffd0d0', '#ffffff'], deco: 'play' },
 };
 export const ESP_EXTRA = [
@@ -20,6 +23,9 @@ export const ESP_EXTRA = [
   { id: 'ninos', emoji: '🧸', name: 'Niños', banner: 'ESPECIAL NIÑOS', luz: 0x26c2f0, saludo: '¡Hola, chicos y chicas! Bienvenidos al especial infantil. Hoy las preguntas son para los más listos de la casa.' },
   { id: 'findeano', emoji: '🥂', name: 'Fin de Año', banner: 'ESPECIAL FIN DE AÑO', luz: 0xffe28a, saludo: 'Últimas horas del año. Bienvenidos a la gran gala de Fin de Año. Que el año que viene empiece con un millón.' },
   { id: 'carnaval', emoji: '🎭', name: 'Carnaval', banner: 'ESPECIAL CARNAVAL', luz: 0x3dff8a, saludo: '¡Que empiece el Carnaval! Disfraces, confeti y quince preguntas sin máscara.' },
+  { id: 'primetime', emoji: '🌟', name: 'Especial Prime Time', banner: 'ESPECIAL PRIME TIME', luz: 0xffd060, saludo: 'Buenas noches y bienvenidos a una edición muy especial en horario de máxima audiencia. Esta noche, en prime time, el millón está más cerca que nunca.' },
+  { id: 'nochebuena', emoji: '🕯️', name: 'Nochebuena', banner: 'ESPECIAL NOCHEBUENA', luz: 0xffb040, saludo: 'Feliz Nochebuena a todos. Antes de la cena, quince preguntas y un millón de euros encima de la mesa.' },
+  { id: 'especial300', emoji: '🏆', name: 'Especial 300 suscriptores', banner: 'ESPECIAL 300 SUSCRIPTORES', luz: 0xffd23a, saludo: '¡Somos trescientos! Bienvenidos al especial trescientos suscriptores. Gracias por estar ahí; esta noche jugamos para celebrarlo.' },
   { id: 'youtube', emoji: '▶️', name: 'Especial YouTube', banner: 'ESPECIAL YOUTUBE', luz: 0xff2a2a, saludo: 'Muy buenas noches. Hoy celebramos el aniversario de YouTube. Dale al play, que empezamos.' },
 ];
 export const SALUDOS_EXISTENTES = { famosos: 'Bienvenidos al especial famosos. Esta noche, caras conocidas juegan por una buena causa.', leyendas: 'Bienvenidos al especial leyendas. Vuelven los mejores concursantes de la historia del programa.', navidad: '¡Feliz Navidad! Bienvenidos al especial navideño. El mejor regalo: un millón de euros.', aniversario: 'Bienvenidos al especial aniversario. Veinticinco años de preguntas, nervios y millonarios.' };
