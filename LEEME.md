@@ -10,6 +10,13 @@ Juego de fans creado por Iker. Misma estructura de menús, estilos y opciones qu
 - `android/`: proyecto Gradle (AGP 8.5.2, Gradle 8.7, SDK 34), paquete `com.ikeriano.millonario`. Copia `www` a `app/src/main/assets/www`, añade `keystore/` (la de ¡Ahora Caigo!) y `local.properties`, y `./gradlew assembleRelease`.
 - `Plato-Millonario.rbxlx` (+ `roblox/gen_rbxlx.py`): el plató para Roblox Studio.
 
+## Versión 1.11 · ⚡ Pregunta rápida
+- **Pregunta rápida** antes de las 15 preguntas (Programa completo, especiales y Entrenamiento), como en Antena 3: seis candidatos en atriles (tú y cinco rivales virtuales), el plató se pone en rojo oscuro, Leo lee la pregunta y hay 15 segundos para ordenar las 4 respuestas (botón «Borrar»). Panel lateral con tu orden y el correcto, que se enciende en verde uno a uno; luego la lista de acertantes con sus tiempos y el más rápido va a la silla con aplausos. Si fallas o eres más lento, «FIN DEL JUEGO» y puedes jugar otra. Opción «⚡ Pregunta rápida» (Sí por defecto) en Más opciones.
+- Código: `codigo/src/rapida.js`, frases `rapida_fr.js`, 127 preguntas de ordenar en `rapida.txt` (`pregunta|1ª|2ª|3ª|4ª`, en el orden correcto). Música propia sintetizada en `www/rapida/`. Voces Piper nuevas (Leo, es_ES-davefx-medium) en `www/voz/`.
+- **Emisión de TV** (Sí por defecto): #QQSMElMinijuego arriba a la izquierda, logo de la cadena abajo a la derecha y autopromociones arriba a la derecha; empieza con la cabecera del Programa completo. **📺 Logo de la cadena**: El del juego (por defecto, sin logo), Cuatro, Antena 3 HD, Telecinco o La 2 (archivos de Iker tal cual, en `www/cadena/`).
+- Arreglos: el comodín del público sube con porcentajes que siempre suman 100; confirmación al plantarse; los botones de confirmación quedan por encima de la escalera.
+- Capturas: `codigo/tools/capturas111.mjs` y `capturas111b.mjs`.
+
 ## Versión 1.9 · 🎲 Normas sorpresa
 - **Opciones › 🎲 Normas sorpresa** («No (normas de siempre)» por defecto). En «Sí», al empezar cada partida (Programa completo y especiales, Entrenamiento y Modo clásico 2010) se sortean de 2 a 4 normas entre **51** (8 categorías, una por categoría como mucho, nunca dos retos juntos; 75.648 combinaciones) y Leo Arrieta las anuncia con voz y subtítulos. «🎲 N normas» (arriba a la izquierda) las recuerda.
 - Motor común `www/ns/ns.js` (el mismo de El Cazador 1.10 y Pasapalabra 2.15), catálogo `www/ns/cat.js`, voces nuevas en `www/ns/voz/` (Piper es_ES-davefx-medium como Leo; el experto con la voz de Don Ramón) y `www/ns/vozx.js`. Las voces del juego (`www/voz/`) no cambian.

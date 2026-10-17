@@ -23,5 +23,6 @@ for (const e of M12.ESP_EXTRA) add(e.saludo); for (const t of Object.values(M12.
 for (const L of Object.values(M12.REGIDORA.lineas)) L.forEach(t => add(t, 'pili'));
 for (const l of M12.PREGUNTAS_YT.split('\n')) if (l.includes('|')) add(l.split('|')[0]);
 { const G = EscenasGen(JSON.parse(fs.readFileSync(new URL('../src/escenas_pool.json', import.meta.url), 'utf8')), { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' } }); for (const [q, t] of G.textos()) add(t, q); }
+{ const R = await import('../src/rapida_fr.js'); for (const t of Object.values(R.FR_RAPIDA)) add(t); for (const l of fs.readFileSync(new URL('../src/rapida.txt', import.meta.url), 'utf8').split('\n')) if (l.includes('|') && !l.startsWith('#')) add(l.split('|')[0] + '.'); } // v1.11 Pregunta rápida
 const out = [...T].map(x => JSON.parse(x)).map(([q, t]) => [q, t.replace(/[«»]/g, '')]);
 fs.writeFileSync(new URL('frases.json', import.meta.url), JSON.stringify(out, null, 0)); console.log(out.length, 'frases');

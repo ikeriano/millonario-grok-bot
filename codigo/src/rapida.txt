@@ -1,0 +1,127 @@
+# Pregunta rápida: «pregunta|primera|segunda|tercera|cuarta» (en el orden correcto)
+Ordena estos inventos, del más antiguo al más reciente|La imprenta de Gutenberg|La máquina de vapor de Watt|El teléfono|Internet
+Ordena estos acontecimientos, del más antiguo al más reciente|El descubrimiento de América|La Revolución francesa|La Primera Guerra Mundial|La llegada del hombre a la Luna
+Ordena a estos pintores por su fecha de nacimiento, del primero al último|Diego Velázquez|Francisco de Goya|Pablo Picasso|Salvador Dalí
+Ordena estas sedes de Mundiales de fútbol, de la más antigua a la más reciente|España|Estados Unidos|Sudáfrica|Catar
+Ordena a estos presidentes del Gobierno de España, del primero al último en llegar al cargo|Adolfo Suárez|Felipe González|José María Aznar|José Luis Rodríguez Zapatero
+Ordena a estos reyes de España, del primero al último en reinar|Felipe II|Carlos III|Alfonso XIII|Juan Carlos I
+Ordena a estos compositores por su fecha de nacimiento, del primero al último|Johann Sebastian Bach|Wolfgang Amadeus Mozart|Ludwig van Beethoven|Frédéric Chopin
+Ordena a estos escritores por su fecha de nacimiento, del primero al último|Miguel de Cervantes|Lope de Vega|Gustavo Adolfo Bécquer|Federico García Lorca
+Ordena estos hechos de la Antigüedad, del más antiguo al más reciente|La construcción de las pirámides de Guiza|La fundación de Roma|La caída del Imperio romano de Occidente|La coronación de Carlomagno
+Ordena estas ciudades olímpicas de verano, de la más antigua a la más reciente|Barcelona|Sídney|Pekín|Tokio
+Ordena estas videoconsolas por su lanzamiento, de la más antigua a la más reciente|Game Boy|PlayStation|Wii|Nintendo Switch
+Ordena estas películas por su año de estreno, de la más antigua a la más reciente|Lo que el viento se llevó|Psicosis|Tiburón|Titanic
+Ordena estas etapas de la vida, de la primera a la última|La infancia|La adolescencia|La juventud|La vejez
+Ordena estas etapas de la historia, de la más antigua a la más reciente|La Prehistoria|La Edad Antigua|La Edad Media|La Edad Moderna
+Ordena estos periodos geológicos, del más antiguo al más reciente|Cámbrico|Jurásico|Cretácico|Cuaternario
+Ordena estos inventos, del más antiguo al más reciente|La bombilla de Edison|El avión de los hermanos Wright|La televisión|El teléfono móvil
+Ordena estos viajes, del más antiguo al más reciente|El viaje de Marco Polo a China|El primer viaje de Colón|La vuelta al mundo de Magallanes y Elcano|La llegada del Apolo 11 a la Luna
+Ordena estas redes sociales por su fecha de creación, de la más antigua a la más reciente|Facebook|YouTube|Instagram|TikTok
+Ordena estas empresas por su año de fundación, de la más antigua a la más reciente|Microsoft|Apple|Amazon|Google
+Ordena estos monumentos por su construcción, del más antiguo al más reciente|El Coliseo de Roma|La Mezquita de Córdoba|La catedral de Notre Dame de París|La Torre Eiffel
+Ordena estas guerras, de la más antigua a la más reciente|La guerra de los Cien Años|La guerra de la Independencia española|La Guerra Civil española|La guerra del Golfo
+Ordena a estos papas, del primero al último en ser elegido|Juan XXIII|Juan Pablo II|Benedicto XVI|Francisco
+Ordena a estos presidentes de Estados Unidos, del primero al último en gobernar|Abraham Lincoln|Franklin D. Roosevelt|John F. Kennedy|Barack Obama
+Ordena a estos científicos por su fecha de nacimiento, del primero al último|Galileo Galilei|Isaac Newton|Charles Darwin|Albert Einstein
+Ordena estos canales de televisión por su primera emisión, del más antiguo al más reciente|La 1|La 2|Antena 3|Cuatro
+Ordena estos hechos de la historia de España, del más antiguo al más reciente|La aprobación de la Constitución|La entrada en la Comunidad Económica Europea|Los Juegos Olímpicos de Barcelona|La llegada del euro en monedas y billetes
+Ordena estos animales según su aparición en la Tierra, del primero al último|Los peces|Los anfibios|Los reptiles|Los mamíferos
+Ordena estos libros de Harry Potter, del primero al último|La piedra filosofal|La cámara secreta|El prisionero de Azkaban|El cáliz de fuego
+Ordena estas películas de La guerra de las galaxias por su estreno, de la primera a la última|La guerra de las galaxias|El imperio contraataca|El retorno del Jedi|La amenaza fantasma
+Ordena estos hitos de la carrera espacial, del más antiguo al más reciente|El lanzamiento del Sputnik|El vuelo de Yuri Gagarin|La llegada del Apolo 11 a la Luna|El inicio de la Estación Espacial Internacional
+Ordena estas obras de la literatura española, de la más antigua a la más reciente|El Cantar de mio Cid|La Celestina|El Quijote|La casa de Bernarda Alba
+Ordena estos cuadros, del más antiguo al más reciente|La Gioconda|Las meninas|La noche estrellada|El Guernica
+Ordena estos clubes de fútbol por su año de fundación, del más antiguo al más reciente|Athletic Club|FC Barcelona|Real Madrid|Atlético de Madrid
+Ordena a estos reyes de España, del primero al último en reinar|Isabel la Católica|Carlos I|Felipe II|Felipe V
+Ordena estas películas de Disney por su estreno, de la más antigua a la más reciente|Blancanieves y los siete enanitos|La Cenicienta|El rey león|Frozen
+Ordena estas películas de Pixar por su estreno, de la más antigua a la más reciente|Toy Story|Buscando a Nemo|Up|Coco
+Ordena a estos deportistas españoles por su fecha de nacimiento, del mayor al más joven|Pau Gasol|Fernando Alonso|Rafa Nadal|Carlos Alcaraz
+Ordena estos acontecimientos del siglo XX, del más antiguo al más reciente|La Revolución rusa|El crac de la bolsa de 1929|El final de la Segunda Guerra Mundial|La caída del muro de Berlín
+Ordena estos aparatos para escuchar música, del más antiguo al más reciente|El gramófono|El casete|El disco compacto|El reproductor MP3
+Ordena estas monedas que se han usado en España, de la más antigua a la más reciente|El maravedí|El real|La peseta|El euro
+Ordena estos estilos artísticos, del más antiguo al más reciente|Románico|Gótico|Renacimiento|Barroco
+Ordena estos estilos musicales por su aparición, del más antiguo al más reciente|El canto gregoriano|La ópera|El jazz|El rap
+Ordena estos medios de transporte por su invención, del más antiguo al más reciente|El globo aerostático|La locomotora de vapor|El automóvil de gasolina|El helicóptero
+Ordena estos planetas, del más pequeño al más grande|Mercurio|Marte|La Tierra|Júpiter
+Ordena estos planetas, del más cercano al más lejano del Sol|Venus|Marte|Saturno|Neptuno
+Ordena estos animales, del que menos pesa al que más|La gallina|La oveja|El caballo|El elefante
+Ordena estos océanos, del más pequeño al más grande|Ártico|Índico|Atlántico|Pacífico
+Ordena estos continentes, del más pequeño al más grande|Oceanía|Europa|África|Asia
+Ordena estos países, del más pequeño al más grande en superficie|Portugal|Italia|España|Argentina
+Ordena estos países, del más pequeño al más grande en superficie|India|Australia|China|Rusia
+Ordena estos ríos españoles, del más corto al más largo|Guadalquivir|Duero|Ebro|Tajo
+Ordena estos ríos, del más corto al más largo|Sena|Rin|Danubio|Amazonas
+Ordena estas montañas, de la más baja a la más alta|Mulhacén|Teide|Mont Blanc|Everest
+Ordena estas montañas, de la más baja a la más alta|Aneto|Mulhacén|Teide|Kilimanjaro
+Ordena estas construcciones, de la más baja a la más alta|La torre de Pisa|La Giralda|La Torre Eiffel|El Burj Khalifa
+Ordena estas monedas de euro, de la de menos valor a la de más|1 céntimo|10 céntimos|50 céntimos|2 euros
+Ordena estos billetes de euro, del de menos valor al de más|5 euros|20 euros|100 euros|200 euros
+Ordena estas unidades de longitud, de la más pequeña a la más grande|Milímetro|Centímetro|Decímetro|Metro
+Ordena estos periodos de tiempo, del más corto al más largo|Lustro|Década|Siglo|Milenio
+Ordena estas unidades de información, de la más pequeña a la más grande|Bit|Byte|Kilobyte|Megabyte
+Ordena estos prefijos, del que vale menos al que vale más|Kilo|Mega|Giga|Tera
+Ordena estos números romanos, del menor al mayor|L|C|D|M
+Ordena estas fracciones, de la menor a la mayor|Un octavo|Un cuarto|Un tercio|La mitad
+Ordena estas figuras, de la que tiene menos lados a la que tiene más|Triángulo|Pentágono|Hexágono|Octógono
+Ordena estos animales, del que tiene menos patas al que tiene más|La gallina|El perro|La hormiga|La araña
+Ordena estos deportes por los jugadores de cada equipo en el campo, de menos a más|Baloncesto|Voleibol|Balonmano|Fútbol
+Ordena estos seres vivos, del más lento al más rápido|El caracol|El ser humano|El caballo|El guepardo
+Ordena estas temperaturas, de la más baja a la más alta|La congelación del agua|La del cuerpo humano|La ebullición del agua|La superficie del Sol
+Ordena estas ciudades, de la más cercana a la más lejana de Madrid|Toledo|Valencia|Barcelona|Santa Cruz de Tenerife
+Ordena estas ciudades por su número de habitantes, de menos a más|Bilbao|Sevilla|Barcelona|Madrid
+Ordena estos países por su número de habitantes, de menos a más|Portugal|España|Alemania|Estados Unidos
+Ordena estas comunidades autónomas por su superficie, de la más pequeña a la más grande|Comunidad de Madrid|Galicia|Andalucía|Castilla y León
+Ordena estas islas Canarias, de la más pequeña a la más grande|El Hierro|La Gomera|Gran Canaria|Tenerife
+Ordena estas islas Baleares, de la más pequeña a la más grande|Formentera|Ibiza|Menorca|Mallorca
+Ordena estas aves, de la más pequeña a la más grande|El colibrí|La paloma|El águila real|El avestruz
+Ordena estas notas musicales, de la más grave a la más aguda dentro de la escala|Do|Mi|Sol|Si
+Ordena estos colores tal y como aparecen en el arcoíris, empezando por fuera|Rojo|Amarillo|Verde|Azul
+Ordena estos días de la semana, empezando por el lunes|Lunes|Miércoles|Jueves|Sábado
+Ordena estos meses del año, del primero al último|Febrero|Mayo|Agosto|Noviembre
+Ordena estos signos del zodiaco, empezando por Aries|Aries|Géminis|Leo|Sagitario
+Ordena estas palabras alfabéticamente|Casa|Caso|Cosa|Cuna
+Ordena estas provincias alfabéticamente|Almería|Burgos|Cuenca|Teruel
+Ordena estas letras del alfabeto griego, de la primera a la última|Alfa|Beta|Gamma|Delta
+Ordena estas cantidades, de la menor a la mayor|Una docena|Una veintena|Una centena|Un millar
+Ordena estos minerales según la escala de Mohs, del más blando al más duro|Talco|Yeso|Cuarzo|Diamante
+Ordena estas cosas, de la más pequeña a la más grande|Un átomo|Una molécula|Una célula|Un órgano
+Ordena estas capas de la Tierra, desde la superficie hacia el centro|Corteza|Manto|Núcleo externo|Núcleo interno
+Ordena estas capas de la atmósfera, desde el suelo hacia arriba|Troposfera|Estratosfera|Mesosfera|Termosfera
+Ordena estos huesos del cuerpo humano, del más corto al más largo|El estribo|El radio|El húmero|El fémur
+Ordena estos rangos militares, del más bajo al más alto|Soldado|Cabo|Sargento|Teniente
+Ordena estas piezas de ajedrez según su valor, de la que menos vale a la que más|Peón|Alfil|Torre|Dama
+Ordena estas tallas de ropa, de la más pequeña a la más grande|S|M|L|XL
+Ordena estos tanteos de un juego de tenis, del primero al último|Quince|Treinta|Cuarenta|Juego
+Ordena estas fases de la Luna, empezando por la luna nueva|Luna nueva|Cuarto creciente|Luna llena|Cuarto menguante
+Ordena las fases de la vida de una mariposa, de la primera a la última|Huevo|Oruga|Crisálida|Mariposa
+Ordena estos pasos para hacer pan, del primero al último|Sembrar el trigo|Moler el grano|Amasar la harina|Hornear la masa
+Ordena estos animales, del más bajo al más alto|El pingüino emperador|El avestruz|El elefante africano|La jirafa
+Ordena estos medios de transporte, del más lento al más rápido|La bicicleta|El coche en la autovía|El tren AVE|El avión comercial
+Ordena estos periodos de tiempo, del más corto al más largo|Una semana|Una quincena|Un mes|Un trimestre
+Ordena estas carreras de atletismo, de la más corta a la más larga|100 metros|400 metros|Media maratón|Maratón
+Ordena estos astros, del más cercano al más lejano de la Tierra|La Luna|El Sol|Júpiter|Neptuno
+Ordena estos instrumentos de cuerda, del más pequeño al más grande|Violín|Viola|Violonchelo|Contrabajo
+Ordena estas pelotas, de la más pequeña a la más grande|La de golf|La de tenis|La de balonmano|La de baloncesto
+Ordena estas cifras, de la menor a la mayor|Mil|Un millón|Mil millones|Un billón
+Ordena estas comunidades autónomas por su número de habitantes, de menos a más|La Rioja|Asturias|Galicia|Andalucía
+Ordena estas ciudades, de la más al norte a la más al sur|Oviedo|Madrid|Córdoba|Cádiz
+Ordena estas ciudades, de la más al oeste a la más al este|A Coruña|Madrid|Zaragoza|Barcelona
+Ordena estas capitales, de la más al norte a la más al sur|Oslo|Berlín|Roma|El Cairo
+Ordena estas capitales, de la más al norte a la más al sur|Caracas|Bogotá|Lima|Buenos Aires
+Ordena estas capitales, de la más al oeste a la más al este|Lisboa|Madrid|Roma|Atenas
+Ordena estas unidades de peso, de la más pequeña a la más grande|Gramo|Kilogramo|Quintal|Tonelada
+Ordena estas unidades de volumen, de la más pequeña a la más grande|Mililitro|Centilitro|Decilitro|Litro
+Ordena estos juegos según sus piezas o cartas, del que tiene menos al que tiene más|Dominó|Ajedrez|Baraja española|Baraja francesa
+Ordena estas rondas de un torneo, de la primera a la última|Octavos de final|Cuartos de final|Semifinales|Final
+Ordena estos animales por lo que viven normalmente, del que menos al que más|El ratón|El perro|El caballo|La tortuga gigante
+Ordena estos planetas, del más cercano al más lejano del Sol|Mercurio|La Tierra|Júpiter|Urano
+Ordena estos números, del menor al mayor|Siete al cuadrado|Cincuenta y dos|La mitad de ciento diez|Sesenta
+Ordena estas operaciones por su resultado, de menor a mayor|Tres por tres|Dos elevado a cuatro|Veinte menos dos|Cinco por cuatro
+Ordena estos números primos, del menor al mayor|Siete|Trece|Diecinueve|Veintitrés
+Ordena estas palabras por su número de letras, de menos a más|Sol|Luna|Cielo|Planeta
+Ordena estos grados académicos, del primero al último que se consigue|Graduado en ESO|Bachiller|Grado universitario|Doctorado
+Ordena estos títulos nobiliarios, del de menor rango al de mayor|Barón|Conde|Marqués|Duque
+Ordena estas comidas del día, de la primera a la última|Desayuno|Almuerzo|Merienda|Cena
+Ordena estas notas de examen, de la más baja a la más alta|Suspenso|Aprobado|Notable|Sobresaliente
+Ordena estos aniversarios de boda, del más corto al más largo|Bodas de papel|Bodas de plata|Bodas de oro|Bodas de brillantes
+Ordena estos órganos del aparato digestivo, por donde pasa la comida, del primero al último|Esófago|Estómago|Intestino delgado|Intestino grueso

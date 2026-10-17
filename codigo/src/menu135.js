@@ -10,7 +10,7 @@ const MAS135 = { abierto: false };
 (function () { const s = document.createElement('style'); s.textContent = '#menu .ofold>.olabel{cursor:pointer;display:flex;align-items:center;gap:8px}#menu .ofold>.olabel:after{content:"▸";margin-left:auto;transition:transform .15s}#menu .ofold.open>.olabel:after{transform:rotate(90deg)}#menu .ofold:not(.open)>:not(.olabel){display:none}#menu .ofold.open{display:flex;flex-direction:column;gap:8px}'; document.head.appendChild(s); })();
 // filas que van dentro (por cómo empieza su título), en el orden de ¡Ahora Caigo! 1.35
 const DENTRO = ['📦 Cargar sb3', '📺 Publicidad en el Programa', '🎤 Copresentador sorpresa', '🎙️ Presentador sorpresa', '🎬 La regidora', '🎬 Cabecera 3D y apertura',
-  '✏️ Editar título', '🎥 ELEGIR VÍDEO', '🎥 Mi cabecera 3D', '# Mis hashtags', '🎬 Creador de promos', '🖼 Guardar logo', '🏟️ Plató', '❓ Mis preguntas', '🎲 Normas sorpresa'];
+  '✏️ Editar título', '🎥 ELEGIR VÍDEO', '🎥 Mi cabecera 3D', '# Mis hashtags', '🎬 Creador de promos', '🖼 Guardar logo', '🏟️ Plató', '❓ Mis preguntas', '⚡ Pregunta rápida', '📡 Emisión de TV', '📢 Autopromociones', '📺 Logo de la cadena', '🎲 Normas sorpresa'];
 export function masOpcionesMi(r, F) {
   const kids = [...r.children], txt = (x) => ((x.querySelector && x.querySelector('label,.olabel')) || x).textContent.trim();
   const fin = kids.find((x) => txt(x).startsWith('✨ Calidad gráfica')); if (!fin) return;

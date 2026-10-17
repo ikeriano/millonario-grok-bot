@@ -121,7 +121,7 @@ export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
     else if (cam.modo === 'libre') { const f = new THREE.Vector3(Math.sin(cam.yaw), 0, -Math.cos(cam.yaw)), r = new THREE.Vector3(-f.z, 0, f.x); camera.position.addScaledVector(f, -mueve.z * dt * 4).addScaledVector(r, mueve.x * dt * 4); camera.position.y = 1.7; cam.mira.copy(camera.position).add(new THREE.Vector3(Math.sin(cam.yaw) * Math.cos(cam.pitch), Math.sin(cam.pitch), -Math.cos(cam.yaw) * Math.cos(cam.pitch))); }
     camera.lookAt(cam.mira); renderer.render(scene, camera);
   }
-    const ESTILOS = { '2020': [0x2f7dff, 0x8fd0ff, 0x01030e, 0x3a8cff], '2005': [0x7a3cff, 0xd0a0ff, 0x06021a, 0x9a6aff], '1999': [0x1a5aff, 0xffd060, 0x000510, 0xffc040], virtual: [0x00e0ff, 0xff4ad0, 0x05001a, 0x40ffff] };
+    const ESTILOS = { '2020': [0x2f7dff, 0x8fd0ff, 0x01030e, 0x3a8cff], '2005': [0x7a3cff, 0xd0a0ff, 0x06021a, 0x9a6aff], '1999': [0x1a5aff, 0xffd060, 0x000510, 0xffc040], virtual: [0x00e0ff, 0xff4ad0, 0x05001a, 0x40ffff], rojo: [0xc0102a, 0xff5a6a, 0x0c0104, 0xff2a3a] };
   const aplicaEstilo = (e) => { const [c1, c2, fondo, haz] = ESTILOS[e] || ESTILOS['2020']; azul.color.setHex(c1); azulClaro.color.setHex(c2); scene.background.setHex(fondo); scene.fog.color.setHex(fondo); matHaz.color.setHex(haz); };
   aplicaEstilo(estilo);
   const ponLogo = (img) => { const t = new THREE.Texture(img); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true; logo.material.map = t; logo.material.needsUpdate = true; };
