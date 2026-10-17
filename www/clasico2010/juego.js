@@ -19,7 +19,7 @@ function intro(){show('sIntro');const v=$('vid');if(!O.vid){menu();return}v.mute
 let G=null;
 // menú principal: Play / Options / Help - High Scores / Quit ; submenú: Help / High Scores / About / About the Experts / Back
 function lista(items){const l=$('mlist');l.innerHTML='';items.forEach(([t,f],i)=>{const e=document.createElement('div');e.className='bar sm mi abs';e.style.cssText=`left:270px;top:${(320-items.length*48)/2+i*48+4}px;width:200px;height:40px`;e.textContent=t;e.onclick=f;e.dataset.m=t;l.appendChild(e)})}
-function menu(){const v=$('vid');v.onended=null;v.pause();if(G)clearInterval(G.iv);stopAll();show('sMenu');snd('bed',true);
+function menu(){if(window.NS)NS.termina();const v=$('vid');v.onended=null;v.pause();if(G)clearInterval(G.iv);stopAll();show('sMenu');snd('bed',true);
  lista([['Jugar',jugar],['Opciones',opciones],['Ayuda / Récords',submenu],['Salir',salir]])}
 function submenu(){lista([['Ayuda',ayuda],['Récords',async()=>{await dlg('No se ha podido conectar con los récords.<br>Esta función necesita conexión a Internet.',['Volver'])}],['Acerca de',acerca],['Acerca de los expertos',expertos],['Atrás',menu]])}
 function salir(){stopAll();if(parent!==window)parent.postMessage('clasico2010:salir','*');else menu()}
@@ -45,9 +45,14 @@ function elegir(){const used=new Set(JSON.parse(localStorage.m2010used||'[]'));c
  localStorage.m2010used=JSON.stringify([...used]);return Q}
 const guardar=()=>{if(G)localStorage.m2010save=JSON.stringify({Q:G.Q,n:G.n,bank:G.bank,ll:G.ll,exp:G.exp})};
 const borrar=()=>localStorage.removeItem('m2010save');
+// v1.9 · Normas sorpresa (../ns, apagadas por defecto: sin normas todo es exactamente igual)
+const NSA=()=>!!(window.NS&&NS.activas().length),NSF=(k,d)=>NSA()?NS.fx(k,d):d;
+function nsTacha(oculta){const w=[0,1,2,3].filter(k=>k!=G.p[4]&&!G.dead.has(k));if(!w.length)return;const k=w[Math.random()*w.length|0];G.dead.add(k);const a=$('a'+k);a.className='bar big ans ko nstach';if(oculta)a.style.visibility='hidden'}
+function nsPremio(v,tipo){if(!NSA())return v;if(tipo=='planta'&&NSF('plantaMas',1)!=1)v=Math.round(v*NSF('plantaMas',1));if(tipo=='mal'){const t=G.n?VAL[G.n-1]:0;if(NSF('red',false))v=Math.max(v,Math.floor(t/2));if(NSF('consuelo',0))v=Math.max(v,NSF('consuelo',0)*VAL[0])}if(G.hu){NS.aviso('🐷 Hucha de las normas: +'+eur(G.hu));v+=G.hu}return v}
 async function jugar(){stopAll();const sv=JSON.parse(localStorage.m2010save||'null');
  if(sv&&await dlg('Tu partida se interrumpió.<br>¿Quieres continuar tu partida anterior?',['Sí','No'])==0){G=Object.assign({dead:new Set()},sv)}else{borrar();G={Q:elegir(),n:0,bank:0,ll:{aud:1,phn:1,x2:1,exp:0},exp:-1}}
  ['lAud','lPhn','lX2','lExp'].forEach(i=>$(i).classList.toggle('used',!G.ll[{lAud:'aud',lPhn:'phn',lX2:'x2',lExp:'exp'}[i]]));
+ if(window.NS){NS.termina();if(G.n==0){NS.mudo=!O.snd;NS.sonido(!!O.snd);G.hu=0;G.oro=-1;await NS.empieza(NS.tipos('Modo clásico 2010'),{modo:'Modo clásico 2010'});if(NSF('oro',false))G.oro=1+(Math.random()*12|0)}}
  if(G.n==0)snd('opening_titles');arbol(true)}
 // escalera (MoneyTree: TriggerIntro / SetCategory / "Money Tree Done")
 function bankTxt(b){const m=Math.floor(b/60),s=b%60;return `${m} minuto${m==1?'':'s'} y ${s} segundo${s==1?'':'s'} guardados`}
@@ -58,33 +63,40 @@ async function arbol(go){show('sTree');stop('bed');const t=$('tree');t.innerHTML
  snd('money_tree_full');for(const d of rows){d.style.opacity=1;await wait(55)}log('Money Tree Done');$('treeGo').style.visibility='visible';
  return new Promise(r=>{$('treeGo').onclick=()=>{if(go)pregunta();else{show('sGame');G.paused=0;const b=bed();G.bed=b&&snd(b,true)}r()}})}
 $('treeBtn').onclick=()=>{if(G&&!G.busy&&G.sel<0){G.paused=1;stop(bed()||'bed');arbol(false)}};
-function tlimit(n){return n<5?15:n<10?30:n<14?45:G.bank}
+function tlimit(n){if(n<14&&NSA())return NS.tiempo(n<5?15:n<10?30:45);return n<5?15:n<10?30:n<14?45:G.bank}
+function nsPregunta(p){const o=G.n==G.oro;$('q').classList.toggle('nsgold',o);if(o)$('q').textContent='⭐ '+p[2];
+ if(G.n<NSF('tachada',0))nsTacha(false);if(NSF('recta',false)&&G.n>=12)nsTacha(true);
+ if(NSF('inicial5',false)&&G.n<5){const w=String(p[3][p[4]]).trim();$('q').innerHTML=$('q').innerHTML+'<br><small class="nsgold" style="font-size:12px">💡 Empieza por «'+w.charAt(0).toUpperCase()+'»</small>'}
+ let pb=$('nsPista');if(NSF('pistaLeo',false)&&!NS.usado('pista')){if(!pb){pb=document.createElement('div');pb.id='nsPista';pb.className='bar sm';pb.style.cssText='left:332px;top:288px;width:142px;height:28px;font-size:12px';pb.textContent='💡 Pista de Leo';$('sGame').appendChild(pb);pb.onclick=()=>{if(!G||G.busy||G.paused||!NS.una('pista'))return;nsTacha(true);pb.remove();NS.aviso('💡 Leo quita una respuesta falsa');NS.suena('x_pista',3000)}}}else if(pb)pb.remove()}
 function bed(){const n=G.n;return n<5?null:n<10?'q6to10_clock':n<14?'q11to14_clock':'q15_clock'}
 function pregunta(){show('sGame');const p=PREG[G.Q[G.n]];G.p=p;G.sel=-1;G.dd=0;G.dead=new Set();G.busy=0;G.paused=0;$('walk').style.opacity=1;
- $('cat').textContent=p[1];$('q').textContent=p[2];for(let i=0;i<4;i++){const a=$('a'+i);a.className='bar big ans';a.innerHTML='<b>'+'ABCD'[i]+':</b>'+p[3][i];a.onclick=()=>elegirResp(i)}
- $('treeBtn').textContent=eur(G.n?VAL[G.n-1]:0);G.t=tlimit(G.n);$('timer').textContent=G.t;$('timer').className='abs';
+ $('cat').textContent=p[1];$('q').textContent=p[2];for(let i=0;i<4;i++){const a=$('a'+i);a.className='bar big ans';a.style.visibility='';a.innerHTML='<b>'+'ABCD'[i]+':</b>'+p[3][i];a.onclick=()=>elegirResp(i)}
+ if(NSA())nsPregunta(p);
+ $('treeBtn').textContent=eur(G.n?VAL[G.n-1]:0);G.t=tlimit(G.n);$('timer').textContent=G.t;$('timer').className='abs';G.np=NSA()&&G.n<NSF('parado',0);if(G.np)$('timer').textContent='∞';
  const b=bed();G.bed=b&&snd(b,true);if(!b)snd('bed',true);log('pregunta',G.n+1,p[2]);guardar();
  clearInterval(G.iv);G.iv=setInterval(tick,1000);window.M2010Q={n:G.n,cor:p[4]}}
-function tick(){if(G.paused||G.busy)return;G.t--;$('timer').textContent=Math.max(0,G.t);if(G.t<=5)$('timer').className='abs red';if(G.t<=0){clearInterval(G.iv);G.busy=1;stopAll();snd('out_of_time');resolver(-1)}}
+function tick(){if(G.paused||G.busy||G.np)return;G.t--;$('timer').textContent=Math.max(0,G.t);if(G.t<=5)$('timer').className='abs red';if(G.t<=0&&NSF('prorroga',0)&&NS.una('prorroga')){G.t=NSF('prorroga',0);NS.aviso('⏱️ ¡Prórroga! +'+G.t+' s');$('timer').textContent=G.t;$('timer').className='abs';return}if(G.t<=0){clearInterval(G.iv);G.busy=1;stopAll();snd('out_of_time');resolver(-1)}}
 async function elegirResp(i){if(G.busy||G.paused||G.dead.has(i))return;G.sel=i;for(let k=0;k<4;k++)$('a'+k).classList.toggle('sel',k==i);
- if(G.dd){return confirmar()}
+ if(G.dd||NSF('rapida',false)){return confirmar()}
  G.paused=1;const r=await dlg('¿Es tu respuesta definitiva?',['Sí','No','Plantarse']);
  if(r==0)confirmar();else if(r==1){G.paused=0;$('a'+i).classList.remove('sel');G.sel=-1}else plantarse()}
 // suspense (L_CalcQuestionSuspenseTime): más largo cuanto más alta la pregunta
 async function confirmar(){G.paused=0;G.busy=1;const ok=G.sel==G.p[4];
+ if(!ok&&!G.dd&&NSF('segunda',false)&&NS.una('segunda')){await wait(1200);G.dead.add(G.sel);$('a'+G.sel).className='bar big ans ko nstach';NS.aviso('🔁 ¡Segunda oportunidad! Elige otra');NS.suena('x_segunda',3000);G.sel=-1;G.busy=0;return}
  if(!ok&&G.dd==1){await wait(1200);G.dd=2;G.dead.add(G.sel);$('a'+G.sel).className='bar big ans bad';stop('doubledipfirst');snd('doubledipsecond');await wait(700);$('a'+G.sel).className='bar big ans ko';G.sel=-1;G.busy=0;return}
  await wait(G.n<5?900:G.n<10?1800:G.n<14?2800:4000);resolver(G.sel)}
 async function resolver(i){clearInterval(G.iv);const ok=i>=0&&i==G.p[4];const b=bed();if(b)stop(b);stop('bed');
  if(i>=0)snd(G.n==14?(ok?'win_million':'lose_million'):(G.n<5?'q1to5':'q6to10')+(ok?'_yes':'_no'));
  if(ok)$('a'+i).className='bar big ans ok';else{if(i>=0)$('a'+i).className='bar big ans bad';if(O.show)$('a'+G.p[4]).className='bar big ans ok'}
  log('respuesta',ok?'correcta':'incorrecta');await wait(2400);
- if(ok){if(G.n<14)G.bank+=Math.max(0,G.t);G.n++;if(G.n==15)return ganancias(1e6,true);
+ if(NSA()){if(ok){NS.acierto();const e=NS.est();let x=NSF('hucha',0)*VAL[0];if(NSF('primerU',0)&&e.aciertos==1)x+=NSF('primerU',0)*VAL[0];if(NSF('rachaU',0)&&e.racha%3==0){x+=NSF('rachaU',0)*VAL[0];NS.aviso('🔥 ¡Racha de 3!');NS.vozEv('racha')}if(G.n==G.oro)x+=Math.round(VAL[G.n]/2);if(x){G.hu=(G.hu||0)+x;setTimeout(()=>NS.aviso('🐷 Hucha +'+eur(x)),900)}}else NS.fallo({sinEscudo:1})}
+ if(ok){if(G.n<14)G.bank+=Math.max(0,G.t)*NSF('bolsaX',1);G.n++;if(G.n==15)return ganancias(nsPremio(1e6),true);
   if(G.n==5&&!G.exp_done){G.exp=Math.random()*EXPERTOS.length|0;G.ll.exp=1;G.exp_done=1;$('lExp').classList.remove('used');guardar();await dlg('¡Pregunta al experto desbloqueada!<br>Tu experto se llama '+EXPERTOS[G.exp]+'.',['Continuar'])}
   guardar();arbol(true)}
- else{await dlg(i<0?'¡Se acabó el tiempo!':'Lo siento, es incorrecta.',['Continuar']);ganancias(G.n>=10?25000:G.n>=5?1000:0,false)}}
-function plantarse(){G.busy=1;clearInterval(G.iv);stopAll();ganancias(G.n?VAL[G.n-1]:0,false)}
+ else{await dlg(i<0?'¡Se acabó el tiempo!':'Lo siento, es incorrecta.',['Continuar']);ganancias(nsPremio(G.n>=10?25000:G.n>=5?1000:0,'mal'),false)}}
+function plantarse(){G.busy=1;clearInterval(G.iv);stopAll();ganancias(nsPremio(G.n?VAL[G.n-1]:0,'planta'),false)}
 // WinningsScene (TOTAL WINNINGS + L_DoTotalWinningsMusic)
-async function ganancias(v,win){borrar();show('sWin');$('winAmt').textContent=eur(v);$('cf').style.display=win?'block':'none';window.M2010FIN={premio:v};log('fin',v);
+async function ganancias(v,win){borrar();if(window.NS){const b=$('nsPista');if(b)b.remove();setTimeout(()=>NS.termina(),1500)}show('sWin');$('winAmt').textContent=eur(v);$('cf').style.display=win?'block':'none';window.M2010FIN={premio:v};log('fin',v);
  if(!win&&v>0)snd('q6to10_yes');$('winGo').onclick=()=>{stopAll();snd('closing_titles');menu()}}
 $('pauseBtn').onclick=async()=>{if(!G||G.busy)return;G.paused=1;const b=bed();if(b)stop(b);const r=await dlg('Tu partida está en pausa.',['Continuar','Menú principal']);if(r==0){G.paused=0;G.bed=b&&snd(b,true)}else{clearInterval(G.iv);menu()}};
 $('walk').onclick=async()=>{if(!G||G.busy||G.dd)return;G.paused=1;const r=await dlg('¿Seguro que quieres plantarte con '+eur(G.n?VAL[G.n-1]:0)+'?',['Plantarse','Seguir jugando']);if(r==0)plantarse();else G.paused=0};

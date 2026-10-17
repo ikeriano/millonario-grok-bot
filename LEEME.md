@@ -10,6 +10,12 @@ Juego de fans creado por Iker. Misma estructura de menús, estilos y opciones qu
 - `android/`: proyecto Gradle (AGP 8.5.2, Gradle 8.7, SDK 34), paquete `com.ikeriano.millonario`. Copia `www` a `app/src/main/assets/www`, añade `keystore/` (la de ¡Ahora Caigo!) y `local.properties`, y `./gradlew assembleRelease`.
 - `Plato-Millonario.rbxlx` (+ `roblox/gen_rbxlx.py`): el plató para Roblox Studio.
 
+## Versión 1.9 · 🎲 Normas sorpresa
+- **Opciones › 🎲 Normas sorpresa** («No (normas de siempre)» por defecto). En «Sí», al empezar cada partida (Programa completo y especiales, Entrenamiento y Modo clásico 2010) se sortean de 2 a 4 normas entre **51** (8 categorías, una por categoría como mucho, nunca dos retos juntos; 75.648 combinaciones) y Leo Arrieta las anuncia con voz y subtítulos. «🎲 N normas» (arriba a la izquierda) las recuerda.
+- Motor común `www/ns/ns.js` (el mismo de El Cazador 1.10 y Pasapalabra 2.15), catálogo `www/ns/cat.js`, voces nuevas en `www/ns/voz/` (Piper es_ES-davefx-medium como Leo; el experto con la voz de Don Ramón) y `www/ns/vozx.js`. Las voces del juego (`www/voz/`) no cambian.
+- Herramientas: `codigo/tools/normas/` (gen_ns_voz.py, voces.json, asr.py, regen.py, CATALOGO.md).
+- El Clásico de Scratch no cambia.
+
 ## Versión 1.2.1
 - **Roblox: port completo como ¡Ahora Caigo!** El menú de Roblox es el mismo de la app, sacado del rastreo de sus pantallas (mismos textos, orden y estilos). Todo lo que antes decía «está en la app» ahora tiene escena real en el plató con personajes animados:
   - Cámara oculta, Tomas falsas y Fuera de cámaras usan el mismo generador de 9.600 escenas (verificado frase a frase contra la app), con páginas, «al azar», búsqueda y «Ver escena n».

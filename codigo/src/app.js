@@ -11,7 +11,20 @@ import { instalaExtras, filasExtras, entradasPromos, EX as EX0 } from './extras1
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.8';
+const VERSION = '1.9';
+// ---------- v1.9: Normas sorpresa (lib en www/ns; apagadas por defecto: sin normas todo es exactamente igual) ----------
+const NSX = () => window.NS || null;
+const nsAct = () => { const N = NSX(); return !!(N && N.activas().length); };
+const nsFx = (k, d) => nsAct() ? NSX().fx(k, d) : d;
+async function nsArranca(entreno, era) {
+  const N = NSX(); if (!N) return; N.termina(); N.mudo = !it.voz; N.sonido(it.sfx !== false); { const C = N.cat(); if (C) C.presentador = me.presentador || 'Leo Arrieta'; }
+  const t = N.tipos(entreno ? 'Entrenamiento' : 'Programa completo').slice(); if (!era.eligeSeguro) t.push('segFijo'); if (!era.comodines.includes('familiar')) t.push('sinFamiliar');
+  await N.empieza(t, { modo: (entreno ? 'Entrenamiento' : 'Programa completo') + ' · ' + era.nombre });
+}
+const nsTermina = () => { const N = NSX(); if (N) N.termina(); };
+const NS_TXT = { cambio: 'Cambiamos la pregunta. Aquí tienes otra del mismo nivel.', pista: 'Te ayudo: esta respuesta no es.', segunda: '¡Segunda oportunidad! Esa no era. Elige otra.',
+  trampolin: '¡Pregunta trampolín! Saltamos directamente a la pregunta nueve.', recarga: '¡Comodín recargado! Recuperas un comodín.', premio: '¡Gracias a las normas sorpresa, te llevas un premio especial! ¡Enhorabuena!',
+  experto: 'Vamos a pedir la opinión de nuestro experto.', exp: [['A', 'B', 'C', 'D'].map(l => `Yo diría que es la ${l}.`), ['A', 'B', 'C', 'D'].map(l => `No estoy del todo seguro, pero creo que es la ${l}.`)] };
 const en = (id) => document.getElementById(id);
 const az = (a) => a[Math.floor(Math.random() * a.length)];
 const mezcla = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -73,10 +86,10 @@ function hablar(texto, quien = 'leo') {
   return new Promise((res) => {
     const fig = plato && plato.figuras[quien]; if (fig) fig.userData.habla = true;
     const fin = () => { if (fig) fig.userData.habla = false; res(); };
-    const limpio = texto.replace(/[«»]/g, ''); const k = fnv(limpio), dur = VOZ[k];
+    const limpio = texto.replace(/[«»]/g, ''); const k = fnv(limpio), nsv = !VOZ[k] && window.NS_VOZ ? window.NS_VOZ[k] : null, dur = VOZ[k] || (nsv ? 1 : 0);
     const lectura = Math.max(1600, texto.length * (it.leeVel === 'rapida' ? 45 : 62));
     if (!it.voz || /^\(/.test(texto)) return setTimeout(fin, lectura);
-    if (dur) { audioVoz = new Audio('voz/' + k + '.mp3'); audioVoz.playbackRate = it.leeVel === 'rapida' ? 1.15 : 1; audioVoz.onended = fin; audioVoz.onerror = () => setTimeout(fin, lectura); audioVoz.play().catch(() => setTimeout(fin, lectura)); return; }
+    if (dur) { audioVoz = new Audio(nsv ? 'ns/voz/' + nsv + '.mp3' : 'voz/' + k + '.mp3'); audioVoz.playbackRate = it.leeVel === 'rapida' ? 1.15 : 1; audioVoz.onended = fin; audioVoz.onerror = () => setTimeout(fin, lectura); audioVoz.play().catch(() => setTimeout(fin, lectura)); return; }
     if (window.speechSynthesis && speechSynthesis.getVoices().some(v => v.lang.startsWith('es'))) { const u = new SpeechSynthesisUtterance(limpio); u.lang = 'es-ES'; u.rate = it.leeVel === 'rapida' ? 1.2 : 1; u.onend = fin; u.onerror = fin; speechSynthesis.speak(u); setTimeout(fin, lectura * 2.5); return; }
     setTimeout(fin, lectura);
   });
@@ -159,31 +172,47 @@ async function modoPrograma(s, modo, sub) {
     if (cast && cast.frase) await di(s, 'conc', cast.frase, 'silla'); yn.rotulo();
     await di(s, 'leo', FRASES['siéntate'], 'dos');
   }
-  if (era.eligeSeguro) {
+  await nsArranca(entreno, era); s.ok();
+  if (era.eligeSeguro || nsFx('eligeSeguro', false)) {
     await di(s, 'leo', FRASES.seguro, 'pres');
     const nv = await new Promise((r) => { const m = en('mq'); m.innerHTML = `<div class="mqzona"><div class="hexo q"><div class="hexi">Elige tu segundo seguro (pregunta 6 a 14)</div></div><div class="segsel"></div></div>`; for (let i = 6; i <= 14; i++) { const b = document.createElement('div'); b.className = 'hexo'; b.innerHTML = `<div class="hexi"><b>${i}:</b>${fmt(era.escalera[i - 1], era)}</div>`; b.onclick = () => { F.play('Tecla'); r(i); }; m.querySelector('.segsel').appendChild(b); } });
     seguros = [5, nv]; en('mq').innerHTML = ''; await di(s, 'leo', `Segundo seguro en la pregunta ${nv}: ${fmt(era.escalera[nv - 1], era, true)}.`, 'pres');
   }
+  if (nsFx('seguroEn3', false)) seguros = seguros.map(n => n === 5 ? 3 : n);
+  if (nsFx('tercerSeguro', 0) && !seguros.includes(12)) { seguros.push(12); seguros.sort((a, b) => a - b); }
   await di(s, 'leo', FRASES.empezamos, 'consola');
   const usados = {}, comods = era.comodines.slice(); let ganado = 0;
+  let nsHucha = 0; const nsU = era.escalera[0], nsOro = nsFx('oro', false) ? 2 + Math.floor(Math.random() * 10) : -1;
+  if (nsAct()) { if (nsFx('familiar', false) && !comods.includes('familiar')) comods.push('familiar'); if (nsFx('sinPublico', false) && comods.includes('publico')) comods.splice(comods.indexOf('publico'), 1); if (nsFx('cambio', false)) comods.push('cambio'); if (nsFx('experto', false)) comods.push('experto'); if (nsFx('pistaLeo', false)) comods.push('pista'); }
+  const nsNivel = (i) => { let n = nivelDe(i); if (nsFx('suave', false) && i < 5) n = 1; if (nsFx('reto', false) && i >= 5) n = Math.min(5, n + 1); return pool[n].length ? n : nivelDe(i); };
   const pool = {}; const todas = PREGUNTAS.concat(it.misPreguntas ? misPreguntas() : []); for (let n = 1; n <= 5; n++) pool[n] = mezcla(todas.filter(p => p.nivel === n)).concat(esp.id === 'youtube' ? mezcla(PREG_YT.filter(p => p.nivel === n)) : []);
   for (let i = 0; i < 15; i++) {
-    const p = pool[nivelDe(i)].pop(), resp = mezcla([p.c, ...p.inc]), correcta = resp.indexOf(p.c);
+    const p = pool[nsAct() ? nsNivel(i) : nivelDe(i)].pop(), resp = mezcla([p.c, ...p.inc]), correcta = resp.indexOf(p.c);
     if (coproProg) await comentaCopro(s, 'coproPregunta');
     if (!entreno) { if (i === 14) await regidor(s, 'final'); else if (i >= 5) await regidor(s, 'silencio', .25); }
-    const r = await juegaPregunta(s, { p, resp, correcta, i, era, seguros, usados, comods });
-    if (r === 'planta') { await di(s, 'leo', FRASES.planta, 'pres'); return final(s, ganado, era, true); }
+    const r = await juegaPregunta(s, { p, resp, correcta, i, era, seguros, usados, comods, oro: i === nsOro });
+    if (r === 'cambio') { i--; continue; }
+    if (r === 'planta') { await di(s, 'leo', FRASES.planta, 'pres'); return final(s, nsAct() && nsFx('plantaMas', 1) !== 1 ? Math.round(ganado * nsFx('plantaMas', 1)) : ganado, era, true, nsHucha); }
+    if (r === 'mal' && nsAct() && NSX().fallo().perdon) { F.oooh(); await s.espera(1600); i--; continue; }
     if (r === 'mal') {
-      F.oooh(); const seg = seguros.filter(n => n <= i).pop(); const premio = seg ? era.escalera[seg - 1] : 0;
+      F.oooh(); const seg = seguros.filter(n => n <= i).pop(); let premio = seg ? era.escalera[seg - 1] : 0;
+      if (nsAct()) { if (nsFx('red', false) && i > 0) premio = Math.max(premio, Math.floor(era.escalera[i - 1] / 2)); if (nsFx('consuelo', 0)) premio = Math.max(premio, nsFx('consuelo', 0) * nsU); }
       await di(s, 'leo', az(FRASES.mal), 'pres'); yn.bocadillo('leo', `La correcta era la ${'ABCD'[correcta]}: ${p.c}.`); await s.espera(2500);
-      if (coproProg) await comentaCopro(s, 'coproMal'); return final(s, premio, era, false);
+      if (coproProg) await comentaCopro(s, 'coproMal'); return final(s, premio, era, false, nsHucha);
     }
     ganado = era.escalera[i];
+    if (nsAct()) { const N = NSX(); N.acierto(); const e = N.est(); let x = nsFx('hucha', 0) * nsU;
+      if (nsFx('primerU', 0) && e.aciertos === 1) x += nsFx('primerU', 0) * nsU;
+      if (nsFx('rachaU', 0) && e.racha % 3 === 0) { x += nsFx('rachaU', 0) * nsU; N.aviso('🔥 ¡Racha de 3!'); N.vozEv('racha'); }
+      if (i === nsOro) x += Math.round(era.escalera[i] / 2);
+      if (x) { nsHucha += x; setTimeout(() => N.aviso('🐷 Hucha +' + fmt(x, era)), 900); } }
     if (coproProg) await comentaCopro(s, 'coproBien');
-    if (i === 14) { F.play('Fanfarria'); F.aplauso(4); await di(s, 'leo', FRASES.millon, 'dos'); return final(s, ganado, era, true); }
+    if (i === 14) { F.play('Fanfarria'); F.aplauso(4); await di(s, 'leo', FRASES.millon, 'dos'); return final(s, nsAct() ? Math.round(ganado * nsFx('ultimaMas', 1)) : ganado, era, true, nsHucha); }
     if (seguros.includes(i + 1)) await di(s, 'leo', FRASES.seguroOk, 'pres');
+    if (nsAct() && nsFx('recarga', false) && i + 1 === seguros[0]) { const k = comods.find(c => usados[c]); if (k) { delete usados[k]; NSX().aviso('🔋 ¡Comodín recargado!'); await di(s, 'leo', NS_TXT.recarga, 'pres'); } }
+    if (nsAct() && nsFx('trampolin', false) && i === 6) { await di(s, 'leo', NS_TXT.trampolin, 'pres'); F.aplauso(1); i++; ganado = era.escalera[i]; }
     if (!entreno && i === 7) { await K12.EX.aleatoriaReproduce(.25); s.ok(); K12.EX.bugMostrar(); }
-    if (it.chistes && !entreno && Math.random() < .18) { await di(s, 'leo', az(FRASES2.chistes), 'pres'); F.aplauso(1); }
+    if (it.chistes && !entreno && Math.random() < (nsFx('chistes', 0) || .18)) { await di(s, 'leo', az(FRASES2.chistes), 'pres'); F.aplauso(1); }
     if (it.publicidad && !entreno && (i === 4 || i === 9)) { await di(s, 'leo', FRASES2.pubSale, 'wide'); await regidor(s, 'pub'); await stCorre(i === 4 ? 'corta' : 'pausa', s); s.ok(); await K12.EX.aleatoriaReproduce(.6); s.ok(); F.snd('publicidad'); plato.plano('wide', .1); await regidor(s, 'vuelta'); await di(s, 'leo', FRASES2.pubVuelve, 'pres2'); }
   }
 }
@@ -192,33 +221,41 @@ function pintaEscalera(m, i, era, seguros, comods, usados, onComod) {
   const e = document.createElement('div'); e.className = 'escalera';
   era.escalera.forEach((v, k) => { const d = document.createElement('div'); d.className = (k === i ? 'act ' : '') + (k < i ? 'hecho ' : '') + (seguros.includes(k + 1) ? 'seg' : ''); d.innerHTML = `<span>${k + 1}</span><span>${fmt(v, era)}</span>`; e.appendChild(d); });
   const c = document.createElement('div'); c.className = 'comods';
-  const nom = { '5050': '50:50', publico: '👥', llamada: '📞', familiar: '👪' };
-  for (const k of comods) { const b = document.createElement('div'); b.className = 'comod' + (usados[k] ? ' usado' : ''); b.textContent = nom[k]; b.title = { '5050': 'Cincuenta por ciento', publico: 'Comodín del público', llamada: 'Llamada', familiar: 'Comodín del acompañante' }[k]; b.onclick = () => !usados[k] && onComod(k); c.appendChild(b); }
+  const nom = { '5050': '50:50', publico: '👥', llamada: '📞', familiar: '👪', cambio: '🔄', experto: '🎓', pista: '💡' };
+  for (const k of comods) { const b = document.createElement('div'); b.className = 'comod' + (usados[k] ? ' usado' : ''); b.textContent = nom[k]; b.title = { '5050': 'Cincuenta por ciento', publico: 'Comodín del público', llamada: 'Llamada', familiar: 'Comodín del acompañante', cambio: 'Cambio de pregunta', experto: 'Comodín del experto', pista: 'Pista de Leo' }[k]; b.onclick = () => !usados[k] && onComod(k); c.appendChild(b); }
   e.appendChild(c); m.appendChild(e);
 }
 /** reloj de 30 segundos de la llamada */
 async function cuentaAtras(s, seg, alHablar) {
-  const m = en('mq'), r = document.createElement('div'); r.className = 'relojllamada'; r.innerHTML = '<div class="rl"><b>30</b><small>📞 LLAMADA</small></div>'; const col = document.createElement('button'); col.className = 'btn'; col.textContent = 'Colgar'; r.appendChild(col); m.appendChild(r);
+  const m = en('mq'), r = document.createElement('div'); r.className = 'relojllamada'; r.innerHTML = `<div class="rl"><b>${seg}</b><small>📞 LLAMADA</small></div>`; const col = document.createElement('button'); col.className = 'btn'; col.textContent = 'Colgar'; r.appendChild(col); m.appendChild(r);
   let colgado = false; col.onclick = () => { F.play('Tecla'); colgado = true; };
   F.playMusic('llamada'); const t0 = performance.now(); const habla = alHablar();
   while (true) { s.ok(); const q = Math.max(0, seg - (performance.now() - t0) / 1000); r.querySelector('b').textContent = Math.ceil(q); r.querySelector('.rl').style.setProperty('--p', (q / seg * 360) + 'deg'); if (q <= 5) r.classList.add('ultimos'); if (q <= 0 || colgado) break; await s.espera(100); }
   F.stopMusic(); callaVoz(); r.remove(); await habla.catch(() => {}); if (!colgado) { F.tono(440, .6, 'square', .2); }
 }
 async function juegaPregunta(s, o) {
-  const { p, resp, correcta, i, era, seguros, usados, comods } = o; const m = en('mq'); m.innerHTML = '';
+  const { p, resp, correcta, i, era, seguros, usados, comods, oro } = o; const m = en('mq'); m.innerHTML = '';
   F.playMusic(i < 5 ? 'pregunta' : 'tension', i); plato.plano(az(['consola', 'silla', 'dos']), 1.5);
   const zona = document.createElement('div'); zona.className = 'mqzona';
   zona.innerHTML = `<div class="hexo q"><div class="hexi">${esc(p.q)}</div></div><div class="rejilla">${resp.map((r, k) => `<div class="hexo" data-k="${k}"><div class="hexi"><b>${'ABCD'[k]}:</b>${esc(r)}</div></div>`).join('')}</div><div class="mqbtns"></div>`;
   m.appendChild(zona); const quitadas = new Set();
+  const nsQuita = (oculta) => { const w = [0, 1, 2, 3].filter(x => x !== correcta && !quitadas.has(x)); if (!w.length) return; const x = az(w); quitadas.add(x); zona.querySelector(`[data-k="${x}"]`).classList.add(oculta ? 'out' : 'nstach'); };
+  if (nsAct()) { const q = zona.querySelector('.hexo.q .hexi'); if (oro) { q.classList.add('nsgold'); q.textContent = '⭐ ' + p.q; }
+    if (nsFx('inicial5', false) && i < 5) q.insertAdjacentHTML('beforeend', `<div class="nspista">💡 Empieza por «${esc(String(p.c).trim().charAt(0).toUpperCase())}»</div>`);
+    if (i < nsFx('tachada', 0)) nsQuita(false); if (nsFx('recta', false) && i >= 12) nsQuita(true); }
   let elegir; let eleccion = new Promise(r => elegir = r); let ocupado = false;
   const comodin = async (k) => {
-    if (ocupado) return; ocupado = true; usados[k] = true; m.querySelector('.escalera').remove(); pintaEscalera(m, i, era, seguros, comods, usados, comodin);
-    if (k === '5050') { yn.bocadillo('leo', FRASES.c5050); hablar(FRASES.c5050); F.play('5050'); const ov = document.createElement('div'); ov.className = 'ovalo5050'; ov.textContent = '50:50'; m.appendChild(ov); await s.espera(1600); ov.remove(); mezcla([0, 1, 2, 3].filter(x => x !== correcta)).slice(0, 2).forEach(x => { quitadas.add(x); zona.querySelector(`[data-k="${x}"]`).classList.add('out'); }); }
-    if (k === 'publico') { plato.plano('grada', 1); F.play('Comodin'); await di(s, 'leo', FRASES.cpublico); F.snd('publico'); const pc = votos(correcta, i, quitadas); const sd = document.createElement('div'); sd.className = 'sondeo'; sd.innerHTML = `<div class="pct">${pc.map(x => `<span>${x}%</span>`).join('')}</div><div class="barras">${pc.map(() => '<i style="height:0"></i>').join('')}</div><div class="let"><span>A</span><span>B</span><span>C</span><span>D</span></div>`; m.appendChild(sd); await s.espera(60); sd.querySelectorAll('i').forEach((b, k2) => b.style.height = pc[k2] + '%'); plato.plano('consola'); }
+    if (ocupado) return; if (k === '5050' && quitadas.size >= 2) return yn.toast('Úsalo en otra pregunta'); ocupado = true; usados[k] = true; if (k === '5050' && nsFx('c5050x2', false) && !usados._5050b) { usados._5050b = true; usados[k] = false; }
+    m.querySelector('.escalera').remove(); pintaEscalera(m, i, era, seguros, comods, usados, comodin);
+    if (k === 'cambio') { await di(s, 'leo', NS_TXT.cambio, 'pres'); ocupado = false; elegir('cambio'); return; }
+    if (k === 'pista') { await di(s, 'leo', NS_TXT.pista, 'pres'); nsQuita(true); }
+    if (k === 'experto') { F.play('Comodin'); await di(s, 'leo', NS_TXT.experto, 'pres'); const ex = plato.figuras.ramon; plato.dePie(ex, -1.6, .25, 1.2, Math.PI / 2); yn.rotulo('🎓 ' + PERSONAJES.ramon.nombre, 'Comodín del experto'); const vale = [0, 1, 2, 3].filter(x => !quitadas.has(x)); const dice = Math.random() < .85 ? correcta : az(vale.filter(x => x !== correcta).length ? vale.filter(x => x !== correcta) : vale); await di(s, 'ramon', NS_TXT.exp[Math.floor(Math.random() * 2)][dice], 'silla'); ex.visible = false; yn.rotulo(); }
+    if (k === '5050') { yn.bocadillo('leo', FRASES.c5050); hablar(FRASES.c5050); F.play('5050'); const ov = document.createElement('div'); ov.className = 'ovalo5050'; ov.textContent = '50:50'; m.appendChild(ov); await s.espera(1600); ov.remove(); (() => { const w = [0, 1, 2, 3].filter(x => x !== correcta && !quitadas.has(x)); return mezcla(w).slice(0, Math.min(2, w.length - 1)); })().forEach(x => { quitadas.add(x); zona.querySelector(`[data-k="${x}"]`).classList.add('out'); }); }
+    if (k === 'publico') { plato.plano('grada', 1); F.play('Comodin'); await di(s, 'leo', FRASES.cpublico); F.snd('publico'); const pc = votos(correcta, i, quitadas, nsFx('publicoPro', false) ? .95 : 0); const sd = document.createElement('div'); sd.className = 'sondeo'; sd.innerHTML = `<div class="pct">${pc.map(x => `<span>${x}%</span>`).join('')}</div><div class="barras">${pc.map(() => '<i style="height:0"></i>').join('')}</div><div class="let"><span>A</span><span>B</span><span>C</span><span>D</span></div>`; m.appendChild(sd); await s.espera(60); sd.querySelectorAll('i').forEach((b, k2) => b.style.height = pc[k2] + '%'); plato.plano('consola'); }
     if (k === 'llamada' || k === 'familiar') {
-      F.play('Comodin'); const acierta = Math.random() < (1 - i * .045), dice = acierta ? correcta : az([0, 1, 2, 3].filter(x => !quitadas.has(x)));
+      F.play('Comodin'); const acierta = Math.random() < (nsFx('amigo', false) ? .95 : (1 - i * .045)), dice = acierta ? correcta : az([0, 1, 2, 3].filter(x => !quitadas.has(x)));
       const cast = castingDe(1); const quienN = k === 'llamada' ? (cast ? cast.nombre : me.amigo) : me.familiar;
-      if (k === 'llamada') { await di(s, 'leo', FRASES.cllamada, 'pres'); yn.rotulo('📞 ' + quienN, 'Llamada · 30 segundos'); await cuentaAtras(s, 30, async () => { await di(s, 'leo', `Hola, ${quienN}. Te llamamos desde ¿Quién quiere ser millonario? Tu amigo tiene una pregunta.`, 'pres'); await di(s, 'conc', p.q, 'silla'); await di(s, 'encarna', `${az(['Creo que es', 'Yo diría', 'Estoy casi seguro de que es', 'Ni idea, pero me suena'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); }); yn.rotulo(); await di(s, 'leo', FRASES2.llamadaFin, 'pres'); }
+      if (k === 'llamada') { await di(s, 'leo', FRASES.cllamada, 'pres'); yn.rotulo('📞 ' + quienN, `Llamada · ${nsFx('llamada', 30)} segundos`); await cuentaAtras(s, nsFx('llamada', 30), async () => { await di(s, 'leo', `Hola, ${quienN}. Te llamamos desde ¿Quién quiere ser millonario? Tu amigo tiene una pregunta.`, 'pres'); await di(s, 'conc', p.q, 'silla'); await di(s, 'encarna', `${az(['Creo que es', 'Yo diría', 'Estoy casi seguro de que es', 'Ni idea, pero me suena'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); }); yn.rotulo(); await di(s, 'leo', FRASES2.llamadaFin, 'pres'); }
       else { await di(s, 'leo', FRASES.cfamiliar, 'pres'); const fam = plato.figuras.encarna; plato.dePie(fam, -1.6, .25, 1.2, Math.PI / 2); yn.rotulo('👪 ' + quienN, 'Comodín del acompañante'); await di(s, 'encarna', `${az(['Yo creo que es', 'Me suena mucho', 'Ponla, que es'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); fam.visible = false; yn.rotulo(); }
     }
     ocupado = false;
@@ -229,25 +266,28 @@ async function juegaPregunta(s, o) {
   const bt = zona.querySelector('.mqbtns'); const pb = document.createElement('button'); pb.className = 'btn'; pb.textContent = i === 0 ? 'Plantarse (0)' : `Plantarse (${fmt(era.escalera[i - 1], era)})`; pb.onclick = () => { if (i === 0) return yn.toast('Aún no has ganado nada'); elegir('planta'); }; bt.appendChild(pb);
   let k;
   while (true) {
-    k = await eleccion; if (k === 'planta') { m.innerHTML = ''; return 'planta'; }
+    k = await eleccion; if (k === 'planta') { m.innerHTML = ''; return 'planta'; } if (k === 'cambio') { m.innerHTML = ''; return 'cambio'; }
     const h = zona.querySelector(`[data-k="${k}"]`); zona.querySelectorAll('.hexo').forEach(x => x.classList.remove('sel')); h.classList.add('sel');
-    if (i < 4) break;
+    const nsSegunda = async () => { if (k === correcta || !nsFx('segunda', false) || !NSX().una('segunda')) return false; F.stopMusic(); F.play('Elige'); await s.espera(1200); F.play('Mal'); h.classList.remove('sel'); h.classList.add('nstach'); quitadas.add(k); NSX().aviso('🔁 ¡Segunda oportunidad!'); await di(s, 'leo', NS_TXT.segunda, 'pres'); F.playMusic(i < 5 ? 'pregunta' : 'tension', i); eleccion = new Promise(r => elegir = r); return true; };
+    if (i < 4 || nsFx('rapida', false)) { if (await nsSegunda()) continue; break; }
     await di(s, 'leo', FRASES.ultima, 'pres');
     const ok = await new Promise(r => yn.actions([{ label: 'Sí, última', cls: 'gold', fn: () => r(true) }, { label: 'No', fn: () => r(false) }])); yn.actions([]);
-    if (ok) break; h.classList.remove('sel'); eleccion = new Promise(r => elegir = r);
+    if (ok) { if (await nsSegunda()) continue; break; } h.classList.remove('sel'); eleccion = new Promise(r => elegir = r);
   }
   F.stopMusic(); F.play('Elige'); plato.plano('silla', 1); await s.espera(i < 5 ? 1200 : 2600);
   const hc = zona.querySelector(`[data-k="${correcta}"]`); hc.classList.remove('sel'); hc.classList.add('ok', 'parpadea'); setTimeout(() => hc.classList.remove('parpadea'), 1200);
   if (k === correcta) { F.play('Bien'); F.aplauso(1.5); plato.figuras.conc.userData.gesto = 1; await di(s, 'leo', az(FRASES.bien), 'pres'); m.innerHTML = ''; return 'bien'; }
   F.play('Mal'); await s.espera(1500); m.innerHTML = ''; return 'mal';
 }
-function votos(c, i, quitadas) { const acierto = Math.max(.3, .85 - i * .04); let v = [0, 1, 2, 3].map(k => quitadas.has(k) ? 0 : k === c ? acierto * 100 : Math.random() * 30); const t = v.reduce((a, b) => a + b, 0); v = v.map(x => Math.round(x / t * 100)); v[c] += 100 - v.reduce((a, b) => a + b, 0); return v; }
-async function final(s, premio, era, bueno) {
+function votos(c, i, quitadas, pro) { const acierto = pro || Math.max(.3, .85 - i * .04); let v = [0, 1, 2, 3].map(k => quitadas.has(k) ? 0 : k === c ? acierto * 100 : Math.random() * 30); const t = v.reduce((a, b) => a + b, 0); v = v.map(x => Math.round(x / t * 100)); v[c] += 100 - v.reduce((a, b) => a + b, 0); return v; }
+async function final(s, premio, era, bueno, hucha = 0) {
+  premio += hucha;
   F.stopMusic(); const cast = castingDe(); const m = en('mq'); m.innerHTML = `<div class="cheque"><small>PÁGUESE A ${esc((cast ? cast.nombre : nombreJugador()).toUpperCase())}</small>${fmt(premio, era, true)}<small>¿Quién quiere ser millonario? · ${esc(era.nombre)}</small></div>`;
-  plato.plano('dos', 2); if (bueno) F.aplauso(3); await di(s, 'leo', `Te llevas ${fmt(premio, era, true)}. ¡Enhorabuena!`);
+  plato.plano('dos', 2); if (bueno) F.aplauso(3);
+  { const t = `Te llevas ${fmt(premio, era, true)}. ¡Enhorabuena!`; if (nsAct() && !VOZ[fnv(t)]) { if (hucha) NSX().aviso('🐷 Hucha de las normas: +' + fmt(hucha, era)); s.ok(); yn.bocadillo('leo', t); await hablar(NS_TXT.premio); s.ok(); await s.espera(400); } else await di(s, 'leo', t); }
   F.playMusic('despedida'); await di(s, 'leo', FRASES.despedida, 'wide'); m.innerHTML = '';
   if (regOn) { regOn = false; await regidor(s, 'fin'); }
-  await creditos(s); plato.orbita(); F.playMusic('menu');
+  nsTermina(); await creditos(s); plato.orbita(); F.playMusic('menu');
   yn.actions([{ label: 'Jugar otra vez', cls: 'gold', fn: () => ii('programa') }, { label: 'Menú', fn: () => Lt('play') }]);
 }
 async function creditos(s) {
@@ -323,7 +363,7 @@ const nota = (t, cls = 'onote') => { const p = document.createElement('p'); p.cl
 const pideArchivo = (accept, multiple = false) => new Promise(r => { const i = document.createElement('input'); i.type = 'file'; i.accept = accept; i.multiple = multiple; i.onchange = () => r(multiple ? [...i.files] : i.files[0]); i.click(); });
 let Mi = false, yc = null;
 addEventListener('beforeinstallprompt', (a) => { a.preventDefault(); yc = a; });
-function XA() { if (jt) { jt.alive = false; jt = null; } callaVoz(); if (!Mi) { F.stopAll(); yn.limpia(); plato.orbita(10.8, 4.8); F.playMusic('menu'); Mi = true; } }
+function XA() { if (jt) { jt.alive = false; jt = null; } callaVoz(); nsTermina(); if (!Mi) { F.stopAll(); yn.limpia(); plato.orbita(10.8, 4.8); F.playMusic('menu'); Mi = true; } }
 // filas de Opciones (mismos componentes que ¡Ahora Caigo!)
 function filaVol(txt, k, kv, id = '') { const M = document.createElement('div'); M.className = 'orow'; if (id) M.id = id; const C = document.createElement('button'), L = () => { C.className = 'tbtn' + (it[k] ? ' sel' : ''); C.textContent = it[k] ? 'Sí' : 'No'; }; C.onclick = (D) => { D.stopPropagation(); it[k] = !it[k]; L(); guarda(); if (k === 'music') { Mi = false; XA(); } F.play('Tecla'); }; L(); const B = document.createElement('input'); B.type = 'range'; B.min = 0; B.max = 100; B.value = Math.round(it[kv] * 100); B.oninput = () => { it[kv] = +B.value / 100; guarda(); }; B.onclick = (e) => e.stopPropagation(); B.onchange = () => { k === 'publico' ? F.aplauso(1.5) : F.play('Tecla'); if (k === 'music') { Mi = false; XA(); } }; const U = document.createElement('label'); U.textContent = txt; M.append(U, C, B); return M; }
 function filaSi(txt, k, cb) { const R = document.createElement('div'); R.className = 'orow'; const w = document.createElement('label'); w.textContent = txt; const M = document.createElement('button'), C = () => { M.className = 'tbtn' + (it[k] ? ' sel' : ''); M.textContent = it[k] ? 'Sí' : 'No'; }; M.onclick = (L) => { L.stopPropagation(); it[k] = !it[k]; C(); guarda(); F.play('Tecla'); cb && cb(); }; C(); R.append(w, M); return R; }
@@ -438,7 +478,7 @@ function Lt(a = 'main') {
     r.append(filaTitulo(), filaVideo3D(), ...filasExtras(), filaSiNo('🎬 La regidora (Pili) habla en el Programa completo', 'regidor'));
     r.append(filaVol('🎵 Música', 'music', 'musicVol'), filaOpc('🎬 Cabecera', 'cabecera', [['cab3d', 'Cabecera 3D'], ['video', RC.cache.video_cabecera ? 'Vídeo propio' : 'Vídeo propio (cárgalo)'], ['plato3d', 'Plató 3D']], async v => { if (v === 'video' && !RC.cache.video_cabecera) { const f = await pideArchivo('video/*'); if (f) { await rcGuarda('video_cabecera', f); Lt('options'); } } }, 'rowCabecera', true),
       ...(window.MC3D ? [MC3D.fila()] : []), optCabeceraMusica(), filaVol('🔊 Efectos', 'sfx', 'sfxVol'), optPublico(), filaSi('🎤 Voz del presentador', 'voz'), filaSi('📖 El presentador lee las preguntas', 'lee'), filaOpc('⏩ Velocidad de lectura', 'leeVel', [['normal', 'Normal'], ['rapida', 'Rápida']], null, 'rowLeeVel'), filaSi('😄 Chistes del presentador', 'chistes'), filaSi('🎭 Monólogo del presentador', 'monologo'),
-      optConcursantes(), filaEtapa(), filaPersonajes(), filaRecursos(), filaSiNo('📺 Publicidad en el Programa completo', 'publicidad'), filaSiNo('🎤 Copresentador sorpresa', 'copro'), filaSiNo('🎙️ Presentador sorpresa (todo el programa)', 'presSorpresa'), filaSiNo('🎬 Cabecera 3D y apertura larga en el Programa completo', 'apertura'), filaPlato(), optMisPreguntas(),
+      optConcursantes(), filaEtapa(), filaPersonajes(), filaRecursos(), filaSiNo('📺 Publicidad en el Programa completo', 'publicidad'), filaSiNo('🎤 Copresentador sorpresa', 'copro'), filaSiNo('🎙️ Presentador sorpresa (todo el programa)', 'presSorpresa'), filaSiNo('🎬 Cabecera 3D y apertura larga en el Programa completo', 'apertura'), filaPlato(), optMisPreguntas(), ...(window.NS ? [NSX().fila('orow', 'tbtn'), nota('🎲 Con «Normas sorpresa», al empezar cada partida (Programa completo, especiales, entrenamiento y Modo clásico 2010) se sortean de 2 a 4 normas nuevas entre 51 (más de 75.000 combinaciones) y Leo Arrieta te las anuncia.')] : []),
       filaOpc('✨ Calidad gráfica', 'quality', [['baja', 'Baja'], ['media', 'Media'], ['alta', 'Alta']], () => location.reload()));
     const x = document.createElement('div'); x.className = 'orow'; const y = document.createElement('label'); y.textContent = '⛶ Pantalla completa'; const b = document.createElement('button'); b.className = 'tbtn' + (document.fullscreenElement ? ' sel' : ''); b.textContent = document.fullscreenElement ? 'Salir' : 'Activar';
     b.onclick = async (_) => { _.stopPropagation(); try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch (e) {} setTimeout(() => Lt('options'), 300); }; if (APP) { b.disabled = true; b.textContent = 'Siempre (app)'; } x.append(y, b);
