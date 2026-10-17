@@ -14,7 +14,7 @@ import { creaPersonaje } from './personajes.js';
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.11';
+const VERSION = '1.12';
 // ---------- v1.9: Normas sorpresa (lib en www/ns; apagadas por defecto: sin normas todo es exactamente igual) ----------
 const NSX = () => window.NS || null;
 const nsAct = () => { const N = NSX(); return !!(N && N.activas().length); };
@@ -38,7 +38,9 @@ export const PREGUNTAS = [];
 { let nivel = 1; for (const l of TXT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim() || l.startsWith('#')) continue; const [q, c, ...inc] = l.split('|'); PREGUNTAS.push({ nivel, q, c, inc }); } }
 const nivelDe = (i) => i < 3 ? 1 : i < 6 ? 2 : i < 10 ? 3 : i < 13 ? 4 : 5;
 // ---------------- ajustes ----------------
-const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', regidor: true, vcab3d: false, plato: '2020', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false, rapida: true, emision: true, autopromos: true, logoCadena: 'juego' }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
+const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', regidor: true, vcab3d: false, plato: '2020', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false, rapida: true, emision: true, autopromos: true, logoCadena: 'antena3hd' }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
+// v1.12: Antena 3 HD pasa a ser el logo de la cadena por defecto (una sola vez, también para quien ya tenía la 1.11)
+if (!localStorage.getItem('mm_v112')) { if (it.logoCadena === 'juego') it.logoCadena = 'antena3hd'; localStorage.setItem('mm_v112', '1'); localStorage.setItem('mm_opts', JSON.stringify(it)); }
 const guarda = () => localStorage.setItem('mm_opts', JSON.stringify(it));
 const escaleraPropia = () => JSON.parse(localStorage.getItem('mm_escalera') || 'null');
 // ---------------- audio sintetizado ----------------

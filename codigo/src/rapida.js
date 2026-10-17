@@ -144,7 +144,7 @@ export function reparte100(v) { const t = v.reduce((a, b) => a + b, 0) || 1; con
 export async function animaSondeo(sd, pc, quitadas, s) { const vivos = [0, 1, 2, 3].filter(k => !quitadas.has(k)); const ini = [0, 1, 2, 3].map(k => vivos.includes(k) ? 1 : 0); const sp = sd.querySelectorAll('.pct span'), bs = sd.querySelectorAll('.barras i'); const t0 = performance.now(), dur = 1800;
   while (true) { const k = Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - k, 3); const ini100 = reparte100(ini); const v = reparte100(ini100.map((a, i) => a + (pc[i] - a) * e)); v.forEach((x, i) => { sp[i].textContent = x + '%'; bs[i].style.height = x + '%'; }); if (k >= 1) break; await (s ? s.espera(50) : new Promise(r => setTimeout(r, 50))); } pc.forEach((x, i) => { sp[i].textContent = x + '%'; bs[i].style.height = x + '%'; }); }
 // ---------------- emisión de TV: #QQSMElMinijuego, logo de la cadena y autopromociones ----------------
-export const LOGOS_CADENA = [['juego', 'El del juego'], ['cuatro', 'Cuatro'], ['antena3hd', 'Antena 3 HD'], ['telecinco', 'Telecinco'], ['la2', 'La 2']];
+export const LOGOS_CADENA = [['antena3hd', 'Antena 3 HD'], ['juego', 'Sin logo'], ['cuatro', 'Cuatro'], ['telecinco', 'Telecinco'], ['la2', 'La 2']];
 const LOGO_ARCH = { cuatro: 'cadena/cuatro.png', antena3hd: 'cadena/antena3_hd.jpg', telecinco: 'cadena/telecinco_blanco_contorno.png', la2: 'cadena/la2_blanco.png' };
 const NOM_CADENA = { cuatro: 'Cuatro', antena3hd: 'Antena 3', telecinco: 'Telecinco', la2: 'La 2' };
 const APROMOS = [['A continuación', '¿Quién quiere ser millonario?'], ['Esta noche', 'Nuevo programa de ¿Quién quiere ser millonario?'], ['Muy pronto', 'Programa especial Nochebuena'], ['No te lo pierdas', 'La Pregunta rápida: ¿quién se sentará en la silla?'], ['Mañana', 'Más ¿Quién quiere ser millonario?, con Leo Arrieta'], ['Próximamente', 'Especial Prime Time']];
@@ -159,6 +159,6 @@ export function emision(on) {
 export function filasRapida() {
   const { filaSiNo, filaOpc, nota } = D; const w = [];
   w.push(filaSiNo('⚡ Pregunta rápida antes de las 15 preguntas', 'rapida'), nota('Seis candidatos ordenan cuatro respuestas contra el reloj; el más rápido que acierte se sienta en la silla. Sale en el Programa completo, los especiales y el Entrenamiento.'));
-  w.push(filaSiNo('📡 Emisión de TV (#QQSMElMinijuego, logo y autopromos)', 'emision'), filaSiNo('📢 Autopromociones de la cadena', 'autopromos'), filaOpc('📺 Logo de la cadena', 'logoCadena', LOGOS_CADENA, null, 'rowLogoCadena', true), nota('El logo de la cadena sale abajo a la derecha durante la emisión. «El del juego» lo deja como siempre.'));
+  w.push(filaSiNo('📡 Emisión de TV (#QQSMElMinijuego, logo y autopromos)', 'emision'), filaSiNo('📢 Autopromociones de la cadena', 'autopromos'), filaOpc('📺 Logo de la cadena', 'logoCadena', LOGOS_CADENA, null, 'rowLogoCadena', true), nota('El logo de la cadena sale abajo a la derecha durante la emisión. Por defecto, Antena 3 HD.'));
   return w;
 }

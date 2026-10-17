@@ -10,6 +10,9 @@ Juego de fans creado por Iker. Misma estructura de menús, estilos y opciones qu
 - `android/`: proyecto Gradle (AGP 8.5.2, Gradle 8.7, SDK 34), paquete `com.ikeriano.millonario`. Copia `www` a `app/src/main/assets/www`, añade `keystore/` (la de ¡Ahora Caigo!) y `local.properties`, y `./gradlew assembleRelease`.
 - `Plato-Millonario.rbxlx` (+ `roblox/gen_rbxlx.py`): el plató para Roblox Studio.
 
+## Versión 1.12
+- 📺 Logo de la cadena: **Antena 3 HD** (`www/cadena/antena3_hd.jpg`, el archivo de Iker tal cual) es ahora el logo por defecto de la emisión. Quien ya tuviera la 1.11 con «El del juego» pasa una vez a Antena 3 HD; se puede cambiar en Más opciones («Sin logo», Cuatro, Telecinco, La 2).
+
 ## Versión 1.11 · ⚡ Pregunta rápida
 - **Pregunta rápida** antes de las 15 preguntas (Programa completo, especiales y Entrenamiento), como en Antena 3: seis candidatos en atriles (tú y cinco rivales virtuales), el plató se pone en rojo oscuro, Leo lee la pregunta y hay 15 segundos para ordenar las 4 respuestas (botón «Borrar»). Panel lateral con tu orden y el correcto, que se enciende en verde uno a uno; luego la lista de acertantes con sus tiempos y el más rápido va a la silla con aplausos. Si fallas o eres más lento, «FIN DEL JUEGO» y puedes jugar otra. Opción «⚡ Pregunta rápida» (Sí por defecto) en Más opciones.
 - Código: `codigo/src/rapida.js`, frases `rapida_fr.js`, 127 preguntas de ordenar en `rapida.txt` (`pregunta|1ª|2ª|3ª|4ª`, en el orden correcto). Música propia sintetizada en `www/rapida/`. Voces Piper nuevas (Leo, es_ES-davefx-medium) en `www/voz/`.
