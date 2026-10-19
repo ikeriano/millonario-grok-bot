@@ -1,6 +1,6 @@
 /* Normas sorpresa · motor común (ES5, sin dependencias) · juegos de Iker
    Opciones › «🎲 Normas sorpresa» (clave localStorage 'ns_on', NO por defecto).
-   Al empezar cada partida se sortean de 2 a 4 normas (una por categoría) entre las que sirven para ese modo,
+   Al empezar cada partida se sortean las normas (CAT.min–CAT.max, hasta CAT.maxCat por categoría) entre las que sirven para ese modo,
    el presentador las anuncia con subtítulos y su voz Piper (ns/voz/<id>.mp3) y el juego las aplica. */
 (function () {
   'use strict';
@@ -16,16 +16,20 @@
   NS.sonido = function (on) { sonOn = on !== false; };
   // ---------- sorteo ----------
   function sirve(r, tipos) { var q = r.req || []; for (var i = 0; i < q.length; i++) { var alt = q[i].split('|'), ok = false; for (var j = 0; j < alt.length; j++) if (tipos.indexOf(alt[j]) >= 0) ok = true; if (!ok) return false; } return true; }
-  function chocan(a, b) { var x = CAT.excl || []; for (var i = 0; i < x.length; i++) if ((x[i][0] === a.id && x[i][1] === b.id) || (x[i][1] === a.id && x[i][0] === b.id)) return true; return false; }
+  function chocan(a, b) { var fa = a.fx || {}, fb = b.fx || {}; for (var q in fa) if (q in fb) return true; var x = CAT.excl || []; for (var i = 0; i < x.length; i++) if ((x[i][0] === a.id && x[i][1] === b.id) || (x[i][1] === a.id && x[i][0] === b.id)) return true; return false; }
   NS.aplicables = function (tipos) { var p = {}, L = CAT ? CAT.reglas : []; for (var i = 0; i < L.length; i++) if (sirve(L[i], tipos)) (p[L[i].c] = p[L[i].c] || []).push(L[i]); return p; };
   function baraja(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   NS.sortea = function (tipos) {
     activas = []; est = { racha: 0, aciertos: 0, fallos: 0, escudos: 0, usado: {}, estrellas: 0, bolsa: 0, primer: false, pasas: 0 };
     if (!CAT) return activas; if (window.__NS_FIJA) return NS.fija(window.__NS_FIJA); // pruebas
-    var p = NS.aplicables(tipos), cats = baraja(Object.keys(p)); var min = CAT.min || 2, max = Math.min(CAT.max || 4, cats.length);
-    var k = min + Math.floor(Math.random() * (max - min + 1));
-    for (var i = 0; i < cats.length && activas.length < k; i++) {
-      var op = baraja(p[cats[i]]); for (var j = 0; j < op.length; j++) { var ch = false; for (var m = 0; m < activas.length; m++) if (chocan(op[j], activas[m])) ch = true; if (!ch) { activas.push(op[j]); break; } }
+    // v1.13: 10 normas por partida, hasta CAT.maxCat por categoría (repartidas por rondas), nunca dos que choquen
+    var p = NS.aplicables(tipos), cats = baraja(Object.keys(p)); var min = CAT.min || 2, maxC = CAT.maxCat || 1;
+    var max = Math.min(CAT.max || 4, cats.length * maxC); var k = min + Math.floor(Math.random() * (Math.max(max, min) - min + 1));
+    var mezcla = {}; cats.forEach(function (c) { mezcla[c] = baraja(p[c]); });
+    for (var ronda = 0; ronda < maxC && activas.length < k; ronda++) {
+      for (var i = 0; i < cats.length && activas.length < k; i++) {
+        var op = mezcla[cats[i]]; for (var j = 0; j < op.length; j++) { var ch = activas.indexOf(op[j]) >= 0; for (var m = 0; m < activas.length && !ch; m++) if (chocan(op[j], activas[m])) ch = true; if (!ch) { activas.push(op[j]); break; } }
+      }
     }
     var orden = (CAT.cats || []).map(function (c) { return c.id; }); activas.sort(function (a, b) { return orden.indexOf(a.c) - orden.indexOf(b.c); });
     est.escudos = NS.fx('escudo', 0); return activas;
@@ -62,8 +66,10 @@
     '.nscards{display:flex;flex-wrap:wrap;gap:1.4vh 2vw;justify-content:center;max-width:960px;width:100%}' +
     '.nscard{background:linear-gradient(180deg,#fff,#dfe8ff);color:#123;border-radius:16px;padding:1.4vh 1.6vw;width:min(44vw,420px);box-shadow:0 6px 0 #0a2a7a,0 0 0 3px #ffd84a;transform:scale(.6);opacity:0;transition:transform .35s,opacity .35s;box-sizing:border-box}' +
     '.nstach{text-decoration:line-through!important;opacity:.45!important}.nspct{font-style:normal;color:#ffe066;font-weight:900;margin-left:.3em}.nsaviso,.nscom,.nscom button{font-family:Nunito,"Varela Round",Arial,sans-serif}.nscard.on{transform:none;opacity:1}.nscard b{display:block;font-size:min(4.6vw,23px);color:#0b3cc8}.nscard i{font-style:normal;font-size:min(3.6vw,17px);line-height:1.25}.nscard em{float:right;font-style:normal;font-size:min(3vw,13px);background:#0b3cc8;color:#fff;border-radius:10px;padding:1px 8px}@media (max-height:520px) and (orientation:landscape){.nsov{padding-top:1.5vh}.nsov h1{font-size:26px!important;margin:0!important}.nscard{width:min(30vw,300px);padding:6px 10px}.nscard b{font-size:16px}.nscard i{font-size:13px}.nscard em{font-size:10px}.nssub{font-size:15px;min-width:0;max-width:70vw}}' +
+    '.nsmuchas .nscards{gap:.8vh 1vw;max-width:1200px}.nsmuchas .nscard{width:min(46vw,300px);padding:.8vh 1vw;border-radius:12px}.nsmuchas .nscard b{font-size:min(3.6vw,17px)}.nsmuchas .nscard i{font-size:min(3vw,13px)}.nsmuchas .nscard em{font-size:11px}.nsmuchas h1{font-size:min(6vw,34px)}' +
     '.nssub{font-family:Nunito,"Varela Round",Arial,sans-serif;position:fixed;left:50%;bottom:calc(2vh + 58px);transform:translateX(-50%);max-width:92vw;min-width:min(80vw,520px);box-sizing:border-box;background:rgba(0,0,0,.78);color:#fff;border-radius:10px;padding:.4em .9em;font-size:min(4.4vw,5.4vh,22px);line-height:1.25;text-align:center;z-index:99992}.nssub b{color:#ffd84a}' +
     '.nsbtns{font-family:Nunito,"Varela Round",Arial,sans-serif;position:fixed;bottom:2vh;left:0;right:0;display:flex;gap:12px;justify-content:center;z-index:99993}.nsbtns button{font:inherit;font-weight:900;font-size:min(4.4vw,20px);border:0;border-radius:30px;padding:.55em 1.4em;background:#ff8a1c;color:#fff;box-shadow:0 4px 0 #a84f00}.nsbtns button.s{background:#5b6b9a;box-shadow:0 4px 0 #2b375e}' +
+    '.nsbadge ul{max-height:60vh;overflow:auto;margin:.3em 0 0;padding-left:1.2em}' +
     '.nsbadge{position:fixed;left:6px;bottom:6px;z-index:99980;background:rgba(10,30,110,.85);color:#ffe066;border:2px solid #ffd84a;border-radius:16px;padding:3px 9px;font:900 13px Arial,sans-serif;pointer-events:auto;max-width:60vw}' +
     '.nsbadge ul{margin:4px 0 0;padding-left:16px;color:#fff;font-weight:400}.nsaviso{position:fixed;left:50%;top:14vh;transform:translateX(-50%);z-index:99985;background:#ffd84a;color:#102060;font:900 min(5vw,24px) Arial,sans-serif;padding:.35em .9em;border-radius:22px;box-shadow:0 4px 0 #b8860b;animation:nsav 1.8s forwards;pointer-events:none;white-space:nowrap}' +
     '@keyframes nsav{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}12%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-14px)}}' +
@@ -106,15 +112,15 @@
     if (!activas.length) return res();
     var ov = el('div', 'nsov'); var P = (CAT && CAT.presentador) || 'El presentador';
     ov.appendChild(el('h1', '', '🎲 ¡NORMAS SORPRESA!')); ov.appendChild(el('div', 'nsp', '🎤 ' + P + ' anuncia las normas de esta partida' + (op.modo ? ' · ' + op.modo : '')));
-    var cs = el('div', 'nscards'); ov.appendChild(cs); var cats = {}; (CAT.cats || []).forEach(function (c) { cats[c.id] = c; });
+    var muchas = activas.length > 4; if (muchas) ov.classList.add('nsmuchas'); var cs = el('div', 'nscards'); ov.appendChild(cs); var cats = {}; (CAT.cats || []).forEach(function (c) { cats[c.id] = c; });
     var cards = activas.map(function (r) { var c = cats[r.c] || { n: '', ico: '🎲' }; var d = el('div', 'nscard', '<em>' + c.ico + ' ' + c.n + '</em><b>' + (r.ico || c.ico) + ' ' + r.n + '</b><i>' + r.d + '</i>'); cs.appendChild(d); return d; });
     var sub = el('div', 'nssub'); var bt = el('div', 'nsbtns'); var go = el('button', '', '¡A jugar!'), sk = el('button', 's', 'Saltar ⏭');
     bt.appendChild(sk); bt.appendChild(go); D.body.appendChild(ov); D.body.appendChild(sub); D.body.appendChild(bt);
     var cerrado = false; var cierra = function () { if (cerrado) return; cerrado = true; NS.para(); ov.remove(); sub.remove(); bt.remove(); pintaBadge(); res(); };
     var salta = false; go.onclick = function (e) { e.stopPropagation(); cierra(); }; sk.onclick = function (e) { e.stopPropagation(); salta = true; NS.para(); cards.forEach(function (c) { c.classList.add('on'); }); sub.style.display = 'none'; };
-    var di = function (k, t) { if (salta || cerrado) return Promise.resolve(); sub.style.display = ''; sub.innerHTML = '<b>' + P + ':</b> ' + t; return suena(k, 1200 + t.length * 75).then(function () { sub.style.display = 'none'; }); };
+    var di = function (k, t) { if (salta || cerrado) return Promise.resolve(); sub.style.display = ''; sub.innerHTML = '<b>' + P + ':</b> ' + t; return suena(k, (muchas ? 700 : 1200) + t.length * 75).then(function () { sub.style.display = 'none'; }); };
     var I = (CAT.intro || '¡Atención! Hoy jugamos con normas sorpresa.'), F = (CAT.outro || '¡Mucha suerte! ¡A jugar!');
-    var cadena = di('intro', I); activas.forEach(function (r, i) { cadena = cadena.then(function () { cards[i].classList.add('on'); try { cards[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) { } NS.fanfarriaCorta(); return di(r.id, txtVoz(r)); }); });
+    var cadena = di('intro', I); activas.forEach(function (r, i) { cadena = cadena.then(function () { cards[i].classList.add('on'); try { cards[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) { } if (!muchas) NS.fanfarriaCorta(); return muchas ? di('n_' + r.id, r.n + '.') : di(r.id, txtVoz(r)); }); });
     cadena.then(function () { cards.forEach(function (c) { c.classList.add('on'); }); return di('outro', F); }).then(function () { if (op.auto !== false && !salta) setTimeout(cierra, 600); });
     if (window.__NS_AUTO) setTimeout(cierra, window.__NS_AUTO);
   }); };
