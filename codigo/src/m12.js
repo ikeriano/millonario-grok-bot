@@ -1,4 +1,4 @@
-// Datos de la v1.2 de ¿Quién quiere ser millonario?: especiales, colores del logo, regidora y escenas.
+// Datos de la v1.2 de Quién quiere ser millonario: especiales, colores del logo, regidora y escenas.
 export const TEMAS_LOGO = { // halo, anillo, banda, oro (4 paradas), deco
   normal: { halo: ['#5a2a9a', '#2a0c5a'], anillo: '#3b1478', banda: '#1a0640', oro: ['#fff3b0', '#e8b830', '#a8740c', '#ffe27a'] },
   famosos: { halo: ['#9a2a7a', '#3a0a3a'], anillo: '#5a0a5a', banda: '#2a0428', oro: ['#ffffff', '#ffd0f0', '#c060a0', '#fff0ff'], deco: '★' },

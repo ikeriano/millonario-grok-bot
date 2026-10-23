@@ -32,6 +32,6 @@ export function dibujaLogo(size = 512) {
   g.font = `900 ${R * .26}px Arial Black, Impact, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
   g.lineWidth = R * .03; g.strokeStyle = '#5a3a00'; g.strokeText(BANDA, 0, R * .015, R * 1.7); g.fillStyle = oro(); g.fillText(BANDA, 0, R * .015, R * 1.7);
   g.restore();
-  g.font = `900 ${R * .3}px Georgia, serif`; g.fillStyle = 'rgba(255,230,140,.9)'; g.textAlign = 'center'; if (TL.deco === 'play') playPropio(g, 0, R * .45, R * .32); else g.fillText(TL.deco || '?', 0, R * .45);
+  g.font = `900 ${R * .3}px Georgia, serif`; g.fillStyle = 'rgba(255,230,140,.9)'; g.textAlign = 'center'; if (TL.deco === 'play') playPropio(g, 0, R * .45, R * .32); else { if (TL.deco && TL.deco !== '?') g.fillText(TL.deco, 0, R * .45); };
   return c;
 }

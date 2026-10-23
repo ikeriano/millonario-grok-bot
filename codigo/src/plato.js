@@ -4,7 +4,7 @@ import { PERSONAJES } from './datos.js';
 import { creaPersonaje } from './personajes.js';
 import { P3D, p3dOn } from './p3d_mi.js';
 // Plató 2020: azul oscuro, haces de luz, suelo dorado en espiral, consola en V, dos sillas, gradas y logo al fondo
-export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
+export function creaPlato(canvas, calidad = 'media', estilo = 'sb3') {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: calidad !== 'baja', preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, calidad === 'alta' ? 2 : 1)); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x01030e); scene.fog = new THREE.Fog(0x01030e, 22, 48);
@@ -121,9 +121,21 @@ export function creaPlato(canvas, calidad = 'media', estilo = '2020') {
     else if (cam.modo === 'libre') { const f = new THREE.Vector3(Math.sin(cam.yaw), 0, -Math.cos(cam.yaw)), r = new THREE.Vector3(-f.z, 0, f.x); camera.position.addScaledVector(f, -mueve.z * dt * 4).addScaledVector(r, mueve.x * dt * 4); camera.position.y = 1.7; cam.mira.copy(camera.position).add(new THREE.Vector3(Math.sin(cam.yaw) * Math.cos(cam.pitch), Math.sin(cam.pitch), -Math.cos(cam.yaw) * Math.cos(cam.pitch))); }
     camera.lookAt(cam.mira); renderer.render(scene, camera);
   }
-    const ESTILOS = { '2020': [0x2f7dff, 0x8fd0ff, 0x01030e, 0x3a8cff], '2005': [0x7a3cff, 0xd0a0ff, 0x06021a, 0x9a6aff], '1999': [0x1a5aff, 0xffd060, 0x000510, 0xffc040], virtual: [0x00e0ff, 0xff4ad0, 0x05001a, 0x40ffff], rojo: [0xc0102a, 0xff5a6a, 0x0c0104, 0xff2a3a] };
-  const aplicaEstilo = (e) => { const [c1, c2, fondo, haz] = ESTILOS[e] || ESTILOS['2020']; azul.color.setHex(c1); azulClaro.color.setHex(c2); scene.background.setHex(fondo); scene.fog.color.setHex(fondo); matHaz.color.setHex(haz); };
+  // ---------- plató «Scratch» (sb3): copia del escenario del juego clásico ----------
+  const sb3 = new THREE.Group(); sb3.visible = false; scene.add(sb3); const tl = new THREE.TextureLoader(), texs = {};
+  const tx = (n, flip) => { if (texs[n]) return texs[n]; const t = tl.load('img/sb3plato/' + n + '.jpg'); t.colorSpace = THREE.SRGBColorSpace; if (flip) { t.wrapS = THREE.RepeatWrapping; t.repeat.x = -1; } return (texs[n] = t); };
+  const matPared = new THREE.MeshBasicMaterial({ side: THREE.BackSide, fog: false });
+  const pared = new THREE.Mesh(new THREE.CylinderGeometry(16.6, 16.6, 10.5, 64, 1, true, Math.PI * .62, Math.PI * .76), matPared); pared.position.y = 4.4; sb3.add(pared);
+  const ledMat = new THREE.MeshBasicMaterial({ color: 0x48b8ff }); const ledG = new THREE.SphereGeometry(.09, 8, 6);
+  const leds = new THREE.InstancedMesh(ledG, ledMat, 48); const M4 = new THREE.Matrix4();
+  for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; M4.makeTranslation(Math.sin(a) * 7.7, 9.75, Math.cos(a) * 7.7); leds.setMatrixAt(i, M4); } sb3.add(leds);
+  const aroLed = new THREE.Mesh(new THREE.TorusGeometry(7.15, .06, 6, 128), ledMat); aroLed.rotation.x = -Math.PI / 2; aroLed.position.y = .05; sb3.add(aroLed);
+  const texSueloOrig = suelo.material.map; let estSb3 = 'azul';
+  const sb3Estado = (s) => { estSb3 = s === 'perde' ? 'rojo' : s === 'vence' ? 'vence' : 'azul'; if (!sb3.visible) return; matPared.map = tx('pared_' + estSb3, true); matPared.needsUpdate = true;
+    const ts = tx('suelo_' + estSb3); suelo.material.map = suelo.material.emissiveMap = ts; suelo.material.needsUpdate = true; ledMat.color.setHex(estSb3 === 'rojo' ? 0xff4050 : estSb3 === 'vence' ? 0xd080ff : 0x48b8ff); };
+    const ESTILOS = { sb3: [0x2f7dff, 0x8fd0ff, 0x000000, 0x3a8cff], '2020': [0x2f7dff, 0x8fd0ff, 0x01030e, 0x3a8cff], '2005': [0x7a3cff, 0xd0a0ff, 0x06021a, 0x9a6aff], '1999': [0x1a5aff, 0xffd060, 0x000510, 0xffc040], virtual: [0x00e0ff, 0xff4ad0, 0x05001a, 0x40ffff], rojo: [0xc0102a, 0xff5a6a, 0x0c0104, 0xff2a3a] };
+  const aplicaEstilo = (e) => { const [c1, c2, fondo, haz] = ESTILOS[e] || ESTILOS['2020']; azul.color.setHex(c1); azulClaro.color.setHex(c2); scene.background.setHex(fondo); scene.fog.color.setHex(fondo); matHaz.color.setHex(haz); const on = e === 'sb3'; sb3.visible = on; muro.visible = !on; if (on) sb3Estado(estSb3); else { suelo.material.map = suelo.material.emissiveMap = texSueloOrig; suelo.material.needsUpdate = true; } };
   aplicaEstilo(estilo);
   const ponLogo = (img) => { const t = new THREE.Texture(img); t.colorSpace = THREE.SRGBColorSpace; t.needsUpdate = true; logo.material.map = t; logo.material.needsUpdate = true; };
-  return { THREE, recreaFigura, aplicaEstilo, ponLogo, dePie, gradas: (v) => gradasPub.forEach(m => m.visible = v), renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
+  return { THREE, recreaFigura, aplicaEstilo, sb3Estado, ponLogo, dePie, gradas: (v) => gradasPub.forEach(m => m.visible = v), renderer, scene, camera, frame, plano, orbita, libre, cam, mueve, figuras, sillas, publico, PLANOS, toggleLuces: () => (luces = !luces), sentar };
 }

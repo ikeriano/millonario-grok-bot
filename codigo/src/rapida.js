@@ -147,7 +147,7 @@ export async function animaSondeo(sd, pc, quitadas, s) { const vivos = [0, 1, 2,
 export const LOGOS_CADENA = [['antena3hd', 'Antena 3 HD'], ['juego', 'Sin logo'], ['cuatro', 'Cuatro'], ['telecinco', 'Telecinco'], ['la2', 'La 2']];
 const LOGO_ARCH = { cuatro: 'cadena/cuatro.png', antena3hd: 'cadena/antena3_hd.jpg', telecinco: 'cadena/telecinco_blanco_contorno.png', la2: 'cadena/la2_blanco.png' };
 const NOM_CADENA = { cuatro: 'Cuatro', antena3hd: 'Antena 3', telecinco: 'Telecinco', la2: 'La 2' };
-const APROMOS = [['A continuación', '¿Quién quiere ser millonario?'], ['Esta noche', 'Nuevo programa de ¿Quién quiere ser millonario?'], ['Muy pronto', 'Programa especial Nochebuena'], ['No te lo pierdas', 'La Pregunta rápida: ¿quién se sentará en la silla?'], ['Mañana', 'Más ¿Quién quiere ser millonario?, con Leo Arrieta'], ['Próximamente', 'Especial Prime Time']];
+const APROMOS = [['A continuación', 'Quién quiere ser millonario'], ['Esta noche', 'Nuevo programa de Quién quiere ser millonario'], ['Muy pronto', 'Programa especial Nochebuena'], ['No te lo pierdas', 'La Pregunta rápida: ¿quién se sentará en la silla?'], ['Mañana', 'Más Quién quiere ser millonario, con Leo Arrieta'], ['Próximamente', 'Especial Prime Time']];
 let em = null, emT = 0, emK = 0, emT2 = 0;
 export function emision(on) {
   const { it } = D; clearInterval(emT); clearTimeout(emT2); if (!on || !it.emision) { if (em) em.style.display = 'none'; return; }

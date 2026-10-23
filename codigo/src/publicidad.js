@@ -1,6 +1,6 @@
 // Pausa publicitaria de Show Time TV: portada de ¡Ahora Caigo! 1.13 (showtime.js): misma pantalla, cortinillas y anuncios inventados.
 import { ST_DATOS } from './st_datos.js';
-export const CORTINILLAS = Object.assign({}, ST_DATOS.cortinillas, { volvemos: 'Volvemos con ¿Quién quiere ser millonario?' });
+export const CORTINILLAS = Object.assign({}, ST_DATOS.cortinillas, { volvemos: 'Volvemos con Quién quiere ser millonario' });
 export const CADENA = ST_DATOS.cadena || 'Show Time TV';
 export const ANUNCIOS_ST = ST_DATOS.anuncios;
 let F, hablar;
@@ -37,7 +37,7 @@ class StPantalla {
   cerrar() { removeEventListener('resize', this.tam); this.div.style.transition = 'opacity .3s'; this.div.style.opacity = '0'; setTimeout(() => this.div.remove(), 320); }
 }
 async function stCortinilla(P, tipo) {
-  const txt = { publicidad: ['PUBLICIDAD', ''], min1: ['VOLVEMOS EN', '1 MINUTO'], seg30: ['VOLVEMOS EN', '30 SEGUNDOS'], anuncios3: ['3', 'ANUNCIOS'], anuncio1: ['1', 'ANUNCIO'], volvemos: ['VOLVEMOS CON', '¿QUIÉN QUIERE SER MILLONARIO?'] }[tipo];
+  const txt = { publicidad: ['PUBLICIDAD', ''], min1: ['VOLVEMOS EN', '1 MINUTO'], seg30: ['VOLVEMOS EN', '30 SEGUNDOS'], anuncios3: ['3', 'ANUNCIOS'], anuncio1: ['1', 'ANUNCIO'], volvemos: ['VOLVEMOS CON', 'QUIÉN QUIERE SER MILLONARIO'] }[tipo];
   stJingle(tipo === 'volvemos' ? 'sale' : 'entra');
   P.escena((g, w, h, t) => {
     const gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#2a0a6a'); gr.addColorStop(0.6, '#8a1ab0'); gr.addColorStop(1, '#ff3a9a'); g.fillStyle = gr; g.fillRect(0, 0, w, h);

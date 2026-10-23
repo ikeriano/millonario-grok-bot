@@ -22,7 +22,7 @@ export const ESPECIALES = [
   { id: 'aniversario', emoji: '🎂', name: 'Aniversario', banner: 'ESPECIAL 25 AÑOS' },
 ];
 export const FRASES = {
-  saludo: ['¡Buenas noches y bienvenidos a ¿Quién quiere ser millonario?!', '¡Hola a todos! Esto es ¿Quién quiere ser millonario?, y yo soy Leo Arrieta.'],
+  saludo: ['¡Buenas noches y bienvenidos a Quién quiere ser millonario!', '¡Hola a todos! Esto es Quién quiere ser millonario, y yo soy Leo Arrieta.'],
   presenta: 'Esta noche nos acompaña un concursante que viene dispuesto a todo. ¡Un aplauso para él!',
   siéntate: 'Siéntate, ponte cómodo. Ya conoces las normas: quince preguntas, y una sola respuesta correcta en cada una.',
   seguro: 'El primer seguro está en la pregunta cinco. Pero en este formato eres tú quien elige el segundo seguro. ¿Dónde lo pones?',
@@ -37,7 +37,7 @@ export const FRASES = {
   cfamiliar: 'Comodín del acompañante: tu familiar baja de la grada y te ayuda a pensar.',
   planta: 'Te plantas. Respeto absoluto: te llevas lo que has ganado.',
   millon: '¡Increíble! ¡Acabas de ganar el gran premio! ¡Eres millonario!',
-  despedida: 'Esto ha sido todo por hoy. ¡Gracias por estar al otro lado! Hasta la próxima, en ¿Quién quiere ser millonario?',
+  despedida: 'Esto ha sido todo por hoy. ¡Gracias por estar al otro lado! Hasta la próxima, en Quién quiere ser millonario',
 };
 // Escenas: [quién, texto, cámara]
 const S = (id, titulo, pasos) => ({ id, titulo, pasos });
@@ -71,10 +71,10 @@ export const EXTRAS = {
   ],
 };
 export const PROMOS = [
-  { id: 'estanoche', titulo: 'Esta noche', lineas: ['Esta noche, a las diez…', 'Quince preguntas. Cuatro respuestas. Un millón de euros.', '¿Quién quiere ser millonario? Con Leo Arrieta.'] },
-  { id: 'casting', titulo: 'Casting', lineas: ['¿Te sabes la capital de Mongolia?', '¿Sabrías dónde poner tu segundo seguro?', 'Apúntate al casting de ¿Quién quiere ser millonario?'] },
-  { id: 'famosos', titulo: 'Especial famosos', lineas: ['Este sábado, edición especial con famosos.', 'Todo lo que ganen será para una ONG.', '¿Quién quiere ser millonario? Especial famosos.'] },
-  { id: 'vuelve', titulo: 'Vuelve el concurso', lineas: ['Las luces azules se encienden de nuevo.', 'Vuelve el concurso que todos quieren jugar desde el sofá.', 'Muy pronto, ¿Quién quiere ser millonario?'] },
+  { id: 'estanoche', titulo: 'Esta noche', lineas: ['Esta noche, a las diez…', 'Quince preguntas. Cuatro respuestas. Un millón de euros.', 'Quién quiere ser millonario. Con Leo Arrieta.'] },
+  { id: 'casting', titulo: 'Casting', lineas: ['¿Te sabes la capital de Mongolia?', '¿Sabrías dónde poner tu segundo seguro?', 'Apúntate al casting de Quién quiere ser millonario'] },
+  { id: 'famosos', titulo: 'Especial famosos', lineas: ['Este sábado, edición especial con famosos.', 'Todo lo que ganen será para una ONG.', 'Quién quiere ser millonario. Especial famosos.'] },
+  { id: 'vuelve', titulo: 'Vuelve el concurso', lineas: ['Las luces azules se encienden de nuevo.', 'Vuelve el concurso que todos quieren jugar desde el sofá.', 'Muy pronto, Quién quiere ser millonario'] },
   { id: 'leyendas', titulo: 'Leyendas', lineas: ['Ellos ya estuvieron en la silla caliente.', 'Ahora vuelven a por todo.', 'Especial leyendas. Solo aquí.'] },
 ];
 export const PROMOS_LEO = [
@@ -106,7 +106,7 @@ export const HISTORIA = [
 ];
 export const FRASES2 = {
   pubSale: 'Nos vamos a publicidad. ¡No se vayan, que volvemos enseguida!',
-  pubVuelve: '¡Ya estamos de vuelta! Seguimos con ¿Quién quiere ser millonario?',
+  pubVuelve: '¡Ya estamos de vuelta! Seguimos con Quién quiere ser millonario',
   apertura: ['¡Público, un aplauso muy fuerte, que empezamos!', 'Bienvenidos al plató más azul de la televisión.'],
   entraConc: 'Y ahora, recibimos a nuestro concursante. ¡Adelante, siéntate en la silla!',
   llamadaFin: 'Se acabó el tiempo de la llamada.',

@@ -1,4 +1,4 @@
-// ¿Quién quiere ser millonario? El juego 3D — juego de fans de Iker (estructura de menús de ¡Ahora Caigo! 1.13)
+// Quién quiere ser millonario: el juego 3D — juego de fans de Iker (estructura de menús de ¡Ahora Caigo! 1.13)
 import { creaPlato } from './plato.js';
 import { dibujaLogo } from './logo.js';
 import { PRESENTADOR, PERSONAJES, ERAS, ESPECIALES, FRASES, EXTRAS, PROMOS, PROMOS_LEO, ANUNCIOS, MONOLOGOS, HISTORIA, FRASES2 } from './datos.js';
@@ -14,7 +14,7 @@ import { creaPersonaje } from './personajes.js';
 import { TEMAS_LOGO, ESP_EXTRA, SALUDOS_EXISTENTES, LUCES_EXISTENTES, REGIDORA, PREGUNTAS_YT, YT_CONCURSANTES } from './m12.js';
 const PREG_YT = []; { let nivel = 1; for (const l of PREGUNTAS_YT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim()) continue; const [q, c, ...inc] = l.split('|'); PREG_YT.push({ nivel, q, c, inc }); } }
 let regOn = false;
-const VERSION = '1.13';
+const VERSION = '2.0';
 // ---------- v1.9: Normas sorpresa (lib en www/ns; apagadas por defecto: sin normas todo es exactamente igual) ----------
 const NSX = () => window.NS || null;
 const nsAct = () => { const N = NSX(); return !!(N && N.activas().length); };
@@ -38,7 +38,7 @@ export const PREGUNTAS = [];
 { let nivel = 1; for (const l of TXT.split('\n')) { const m = l.match(/^#(\d)/); if (m) { nivel = +m[1]; continue; } if (!l.trim() || l.startsWith('#')) continue; const [q, c, ...inc] = l.split('|'); PREGUNTAS.push({ nivel, q, c, inc }); } }
 const nivelDe = (i) => i < 3 ? 1 : i < 6 ? 2 : i < 10 ? 3 : i < 13 ? 4 : 5;
 // ---------------- ajustes ----------------
-const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', regidor: true, vcab3d: false, plato: '2020', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false, rapida: true, emision: true, autopromos: true, logoCadena: 'antena3hd' }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
+const it = Object.assign({ music: true, musicVol: .5, sfx: true, sfxVol: .8, publico: true, publicoVol: .7, gradas: true, voz: true, lee: true, leeVel: 'normal', chistes: true, monologo: true, quality: 'media', era: 'e2020', cabecera: 'cab3d', apertura: true, publicidad: true, copro: true, presSorpresa: false, especial: 'normal', regidor: true, vcab3d: false, plato: 'sb3', sonidosClasico: true, misPreguntas: true, escaleraSiempre: false, rapida: true, emision: true, autopromos: true, logoCadena: 'antena3hd' }, JSON.parse(localStorage.getItem('mm_opts') || '{}'));
 // v1.12: Antena 3 HD pasa a ser el logo de la cadena por defecto (una sola vez, también para quien ya tenía la 1.11)
 if (!localStorage.getItem('mm_v112')) { if (it.logoCadena === 'juego') it.logoCadena = 'antena3hd'; localStorage.setItem('mm_v112', '1'); localStorage.setItem('mm_opts', JSON.stringify(it)); }
 const guarda = () => localStorage.setItem('mm_opts', JSON.stringify(it));
@@ -102,7 +102,7 @@ function hablar(texto, quien = 'leo') {
 const callaVoz = () => { if (audioVoz) audioVoz.pause(); window.speechSynthesis && speechSynthesis.cancel(); };
 // ---------------- HUD ----------------
 const yn = {
-  bocadillo(quien, texto) { const b = en('bubble'); if (!texto) return b.classList.add('hidden'); b.querySelector('b').textContent = (PERSONAJES[quien] || PERSONAJES.leo).nombre; b.querySelector('span').textContent = texto; b.classList.remove('hidden'); b.style.left = '36%'; b.style.top = '8%'; b.style.transform = 'translateX(-50%)'; },
+  bocadillo(quien, texto) { const b = en('bubble'); if (!texto) return b.classList.add('hidden'); b.querySelector('b').textContent = (PERSONAJES[quien] || PERSONAJES.leo).nombre + (it.voz ? ' · voz TTS' : ''); b.querySelector('span').textContent = texto; b.classList.remove('hidden'); b.style.left = '36%'; b.style.top = '8%'; b.style.transform = 'translateX(-50%)'; },
   toast(t, ms = 1800) { const e = en('toast'); e.textContent = t; e.classList.remove('hidden'); clearTimeout(this._t); this._t = setTimeout(() => e.classList.add('hidden'), ms); },
   rotulo(t, sub = '') { const e = en('lower3'); if (!t) return e.classList.add('hidden'); e.innerHTML = `<div><b>${esc(t)}</b>${sub ? `<br><small>${esc(sub)}</small>` : ''}</div>`; e.classList.remove('hidden'); },
   actions(lista) { const e = en('actions'); e.innerHTML = ''; for (const a of lista || []) { const b = document.createElement('button'); b.className = 'btn ' + (a.cls || ''); b.textContent = a.label; b.onclick = (ev) => { ev.stopPropagation(); F.play('Tecla'); a.fn(); }; e.appendChild(b); } },
@@ -113,7 +113,7 @@ let plato = null, jt = null, Gr = 'title';
 class Cancel extends Error {}
 const sesion = () => { if (jt) jt.alive = false; callaVoz(); const s = { alive: true }; s.espera = (ms) => new Promise((r, x) => setTimeout(() => s.alive ? r() : x(new Cancel()), ms)); s.ok = () => { if (!s.alive) throw new Cancel(); }; jt = s; return s; };
 async function di(s, quien, texto, planoCam) { s.ok(); if (planoCam) plato.plano(planoCam); yn.bocadillo(quien, texto); await hablar(texto, quien); s.ok(); await s.espera(250); }
-function ii(modo, sub) {
+function ii(modo, sub) { try { plato && plato.sb3Estado && plato.sb3Estado('normal'); } catch (e) {}
   en('menu').classList.add('hidden'); en('topbar').classList.remove('hidden'); yn.limpia(); Mi = false; F.stopMusic(); K12.EX && K12.EX.ocioMenu(false); if (K12.EX && (modo === 'programa' || modo === 'promos' || modo === 'promosleo' || modo === 'promocadena')) K12.EX.bugMostrar();
   const s = sesion(); finRapida(); emision(modo !== 'programa' && modo !== 'clasico' && modo !== 'clasico2010' && modo !== 'camlibre');
   const M = { programa: modoPrograma, entrenamiento: modoPrograma, clasico: modoClasico, clasico2010: modoClasico2010, explorar: modoExplorar, paseo: modoExplorar, monologos: modoMonologo, camlibre: async (s) => { en('topbar').classList.add('hidden'); await camaraLibre(s); Lt('main'); }, oculta: modoEscena, tomas: modoEscena, fuera: modoEscena, promos: modoPromo, promosleo: modoPromo, promocadena: modoPromo, publicidad: modoPublicidad, historia: modoHistoria };
@@ -262,7 +262,7 @@ async function juegaPregunta(s, o) {
     if (k === 'llamada' || k === 'familiar') {
       F.play('Comodin'); const acierta = Math.random() < (nsFx('amigo', false) ? .95 : (1 - i * .045)), dice = acierta ? correcta : az([0, 1, 2, 3].filter(x => !quitadas.has(x)));
       const cast = castingDe(1); const quienN = k === 'llamada' ? (cast ? cast.nombre : me.amigo) : me.familiar;
-      if (k === 'llamada') { await di(s, 'leo', FRASES.cllamada, 'pres'); yn.rotulo('📞 ' + quienN, `Llamada · ${nsFx('llamada', 30)} segundos`); await cuentaAtras(s, nsFx('llamada', 30), async () => { await di(s, 'leo', `Hola, ${quienN}. Te llamamos desde ¿Quién quiere ser millonario? Tu amigo tiene una pregunta.`, 'pres'); await di(s, 'conc', p.q, 'silla'); await di(s, 'encarna', `${az(['Creo que es', 'Yo diría', 'Estoy casi seguro de que es', 'Ni idea, pero me suena'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); }); yn.rotulo(); await di(s, 'leo', FRASES2.llamadaFin, 'pres'); }
+      if (k === 'llamada') { await di(s, 'leo', FRASES.cllamada, 'pres'); yn.rotulo('📞 ' + quienN, `Llamada · ${nsFx('llamada', 30)} segundos`); await cuentaAtras(s, nsFx('llamada', 30), async () => { await di(s, 'leo', `Hola, ${quienN}. Te llamamos desde Quién quiere ser millonario. Tu amigo tiene una pregunta.`, 'pres'); await di(s, 'conc', p.q, 'silla'); await di(s, 'encarna', `${az(['Creo que es', 'Yo diría', 'Estoy casi seguro de que es', 'Ni idea, pero me suena'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); }); yn.rotulo(); await di(s, 'leo', FRASES2.llamadaFin, 'pres'); }
       else { await di(s, 'leo', FRASES.cfamiliar, 'pres'); const fam = plato.figuras.encarna; plato.dePie(fam, -1.6, .25, 1.2, Math.PI / 2); yn.rotulo('👪 ' + quienN, 'Comodín del acompañante'); await di(s, 'encarna', `${az(['Yo creo que es', 'Me suena mucho', 'Ponla, que es'])} la ${'ABCD'[dice]}: ${resp[dice]}.`, 'silla'); fam.visible = false; yn.rotulo(); }
     }
     ocupado = false;
@@ -287,18 +287,18 @@ async function juegaPregunta(s, o) {
   F.play('Mal'); await s.espera(1500); m.innerHTML = ''; return 'mal';
 }
 function votos(c, i, quitadas, pro) { const acierto = pro || Math.max(.3, .85 - i * .04); let v = [0, 1, 2, 3].map(k => quitadas.has(k) ? 0 : k === c ? acierto * 100 : Math.random() * 30); const t = v.reduce((a, b) => a + b, 0); v = v.map(x => Math.round(x / t * 100)); v[c] += 100 - v.reduce((a, b) => a + b, 0); return v; }
-async function final(s, premio, era, bueno, hucha = 0) {
+async function final(s, premio, era, bueno, hucha = 0) { try { plato && plato.sb3Estado && plato.sb3Estado(bueno ? 'vence' : 'perde'); } catch (e) {}
   premio += hucha;
-  F.stopMusic(); const cast = castingDe(); const m = en('mq'); m.innerHTML = `<div class="cheque"><small>PÁGUESE A ${esc((cast ? cast.nombre : nombreJugador()).toUpperCase())}</small>${fmt(premio, era, true)}<small>¿Quién quiere ser millonario? · ${esc(era.nombre)}</small></div>`;
+  F.stopMusic(); const cast = castingDe(); const m = en('mq'); m.innerHTML = `<div class="cheque"><small>PÁGUESE A ${esc((cast ? cast.nombre : nombreJugador()).toUpperCase())}</small>${fmt(premio, era, true)}<small>Quién quiere ser millonario · ${esc(era.nombre)}</small></div>`;
   plato.plano('dos', 2); if (bueno) F.aplauso(3);
-  { const t = `Te llevas ${fmt(premio, era, true)}. ¡Enhorabuena!`; if (nsAct() && !VOZ[fnv(t)]) { if (hucha) NSX().aviso('🐷 Hucha de las normas: +' + fmt(hucha, era)); s.ok(); yn.bocadillo('leo', t); await hablar(NS_TXT.premio); s.ok(); await s.espera(400); } else await di(s, 'leo', t); }
+  { const t = premio > 0 ? `Te llevas ${fmt(premio, era, true)}. ¡Enhorabuena!` : 'Hoy te vas sin premio, pero ha sido un placer tenerte aquí.'; if (nsAct() && !VOZ[fnv(t)]) { if (hucha) NSX().aviso('🐷 Hucha de las normas: +' + fmt(hucha, era)); s.ok(); yn.bocadillo('leo', t); await hablar(NS_TXT.premio); s.ok(); await s.espera(400); } else await di(s, 'leo', t); }
   F.playMusic('despedida'); await di(s, 'leo', FRASES.despedida, 'wide'); m.innerHTML = '';
   if (regOn) { regOn = false; await regidor(s, 'fin'); }
   nsTermina(); await creditos(s); plato.orbita(); F.playMusic('menu');
   yn.actions([{ label: 'Jugar otra vez', cls: 'gold', fn: () => ii('programa') }, { label: 'Menú', fn: () => Lt('play') }]);
 }
 async function creditos(s) {
-  const c = en('credits'), r = en('creditsRoll'); r.innerHTML = [['¿Quién quiere ser millonario? El juego', ''], ['Presenta', me.presentador], ['Concursante', (castingDe() || {}).nombre || nombreJugador()], ['Idea y juego', 'Iker'], ['Voces', 'Piper TTS'], ['Motor 3D', 'Three.js']].map(([a, b]) => `<p><b>${esc(a)}</b><br>${esc(b)}</p>`).join('');
+  const c = en('credits'), r = en('creditsRoll'); r.innerHTML = [['Quién quiere ser millonario: el juego', ''], ['Presenta', me.presentador], ['Concursante', (castingDe() || {}).nombre || nombreJugador()], ['Idea y juego', 'Iker'], ['Voces', 'Piper TTS'], ['Motor 3D', 'Three.js']].map(([a, b]) => `<p><b>${esc(a)}</b><br>${esc(b)}</p>`).join('');
   c.classList.remove('hidden'); plato.plano('cenital', 4); await s.espera(5000).finally(() => c.classList.add('hidden'));
 }
 // ---------- otros modos ----------
@@ -397,8 +397,8 @@ function filaRecursos() {
   const n = document.createElement('p'); n.className = 'onote'; n.innerHTML = (it.sonidosClasico ? '✅ Sonidos y músicas: los del Clásico (Scratch) incluidos en esta copia' : '⬜ Sonidos del Clásico desactivados: música sintetizada') + (propios ? `<br>✅ ${propios} sonidos propios cargados` : '') + (RC.cache.logo ? '<br>✅ Logo propio' : '<br>✅ Logo: el del juego (dibujado)');
   w.append(r1, r2, filaSi('🎼 Usar los sonidos del Clásico', 'sonidosClasico', () => { Mi = false; XA(); Lt('options'); }), n); return w;
 }
-const PLATO_NOTA = { '2020': 'El plató de 2020: azul oscuro, haces de luz y logo morado y dorado. Prueba también el «Plató virtual».', '2005': 'Luces moradas y lilas, como en la etapa de Antena 3.', '1999': 'Azul y oro, como en los tiempos de las pesetas.', virtual: 'Plató virtual: neón cian y magenta.' };
-function filaPlato() { const w = document.createElement('div'); const n = nota(PLATO_NOTA[it.plato]); w.append(filaOpc('🏟️ Plató', 'plato', [['2020', '2020-2025'], ['2005', 'Antena 3 2005-08'], ['1999', 'Telecinco 1999'], ['virtual', 'Plató virtual']], v => { plato.aplicaEstilo(v); n.textContent = PLATO_NOTA[v]; }, 'rowPlato'), n); return w; }
+const PLATO_NOTA = { sb3: 'El mismo escenario que el juego clásico: pantallas azules curvas, aros dorados, suelo con cintas y aro de LED (rojo si fallas).', '2020': 'El plató de 2020: azul oscuro, haces de luz y logo morado y dorado. Prueba también el «Plató virtual».', '2005': 'Luces moradas y lilas, como en la etapa de Antena 3.', '1999': 'Azul y oro, como en los tiempos de las pesetas.', virtual: 'Plató virtual: neón cian y magenta.' };
+function filaPlato() { const w = document.createElement('div'); const n = nota(PLATO_NOTA[it.plato]); w.append(filaOpc('🏟️ Plató', 'plato', [['sb3', 'Como el clásico (Scratch)'], ['2020', '2020-2025'], ['2005', 'Antena 3 2005-08'], ['1999', 'Telecinco 1999'], ['virtual', 'Plató virtual']], v => { plato.aplicaEstilo(v); n.textContent = PLATO_NOTA[v]; }, 'rowPlato'), n); return w; }
 function optMisPreguntas() { const a = document.createElement('div'); a.className = 'ocustom'; const e = document.createElement('div'); e.className = 'olabel'; e.textContent = '❓ Mis preguntas'; const n = document.createElement('div'); n.className = 'orow obtns'; n.appendChild(boton('✏️ Gestionar mis preguntas', () => Lt('mispreguntas'), true)); a.append(e, n, nota(`Escribe tus propias preguntas (${misPreguntas().length} guardadas) con su nivel de dificultad; se mezclan con las 300 del juego. Se quedan solo en este dispositivo.`)); return a; }
 function aplicaLogo() { const b = RC.cache.logo; if (!b) return; const img = new Image(); img.onload = () => plato.ponLogo(img); img.src = URL.createObjectURL(b); }
 function logoMenu(size) { const b = RC.cache.logo; if (b) { const i = new Image(); i.src = URL.createObjectURL(b); i.style.cssText = 'max-width:100%;max-height:60vh;border-radius:50%'; return i; } return dibujaLogo(size); }
@@ -416,14 +416,14 @@ function Lt(a = 'main') {
   const o = document.createElement('div'); o.className = 'mtag'; o.textContent = t.id === 'normal' ? 'EL JUEGO · 3D' : t.emoji + ' ' + bannerDe(t); i.appendChild(o);
   const r = document.createElement('div'); r.className = 'col ui';
   if (a === 'main') {
-    r.append(ei('Jugar', 'Programa completo, entrenamiento, clásico…', 'gold', () => Lt('play')), ei('Promos', 'Promos 3D con Leo Arrieta: cabecera, apertura, casting, esta noche…', '', () => Lt('promos')), ei('Promos de Leo', `${me.presentador} presenta ¿Quién quiere ser millonario? en el plató: próximo programa, seguro, consola`, '', () => Lt('promosleo')),
+    r.append(ei('Jugar', 'Programa completo, entrenamiento, clásico…', 'gold', () => Lt('play')), ei('Promos', 'Promos 3D con Leo Arrieta: cabecera, apertura, casting, esta noche…', '', () => Lt('promos')), ei('Promos de Leo', `${me.presentador} presenta Quién quiere ser millonario en el plató: próximo programa, seguro, consola`, '', () => Lt('promosleo')),
       ei('Publicidad', `Pausa de ${CADENA}: anuncios inventados, cortinillas y promos de la cadena`, '', () => Lt('publicidad')), ei('Cámara oculta', 'Bromas a Leo en el plató… ¡Inocente, inocente!', '', () => Lt('oculta')), ei('Tomas falsas', 'Lapsus, comodines rebeldes y «¡Corten!»', '', () => Lt('tomas')), ei('Fuera de cámaras', 'Maquillaje, ensayos, técnicos y la pausa', '', () => Lt('fuera')),
       ei('Paseo', 'Pasea por el plató y sube a la grada', '', () => ii('paseo')), ei('Casting', 'Apúntate y sal como concursante en las partidas', '', () => Lt('casting')), ei('Elige el valor de cada pregunta', 'Coloca los 15 premios de la escalera', '', () => Lt('escalera')),
       ei('Cámara libre', 'Vuela por el plató 3D, marca puntos y graba tu propia cabecera', '', () => ii('camlibre')),
-      ei('Opciones', 'Sonido, calidad gráfica, pantalla completa', '', () => Lt('options')), ei('La historia de ¿Quién quiere ser millonario?', `${me.presentador} te cuenta la historia del programa`, 'hist', () => Lt('historia')), ei('Cómo se juega', 'Las reglas del concurso', '', () => Lt('help')), ei('Créditos', '', '', () => Lt('credits')));
+      ei('Opciones', 'Sonido, calidad gráfica, pantalla completa', '', () => Lt('options')), ei('La historia de Quién quiere ser millonario', `${me.presentador} te cuenta la historia del programa`, 'hist', () => Lt('historia')), ei('Cómo se juega', 'Las reglas del concurso', '', () => Lt('help')), ei('Créditos', '', '', () => Lt('credits')));
     if (!APP) r.append(ei('Instalar app', 'Juega sin conexión desde tu pantalla de inicio', 'inst', () => { yc ? yc.prompt() : yn.toast('Usa «Añadir a pantalla de inicio» en el menú del navegador', 3000); }));
   } else if (a === 'play') {
-    r.append(ei('Programa completo', 'Cabecera, apertura, 15 preguntas, comodines, cheque y despedida', 'gold', () => ii('programa')), ei('Entrenamiento', 'Juega sin cabecera ni publicidad, elige la escalera', '', () => Lt('train')), ei('Clásico', 'El juego original de Scratch', '', () => ii('clasico')), ...(hayClasico2010 ? [ei('Modo clásico 2010', '¿Quién quiere ser millonario? 2010: el juego de móvil original, en español', '', () => ii('clasico2010'))] : []), ei('Explorar el plató', 'Pasea libremente por el plató 3D', '', () => ii('explorar')), ei('Monólogos del presentador', 'Sus números de humor: con el público, al teléfono y las normas', '', () => Lt('monologos')));
+    r.append(ei('Programa completo', 'Cabecera, apertura, 15 preguntas, comodines, cheque y despedida', 'gold', () => ii('programa')), ei('Entrenamiento', 'Juega sin cabecera ni publicidad, elige la escalera', '', () => Lt('train')), ei('Clásico', 'El juego original de Scratch', '', () => ii('clasico')), ...(hayClasico2010 ? [ei('Modo clásico 2010', 'Quién quiere ser millonario 2010: el juego de móvil original, en español', '', () => ii('clasico2010'))] : []), ei('Explorar el plató', 'Pasea libremente por el plató 3D', '', () => ii('explorar')), ei('Monólogos del presentador', 'Sus números de humor: con el público, al teléfono y las normas', '', () => Lt('monologos')));
     r.appendChild(Pa('Programa especial')); const u = document.createElement('div'); u.className = 'themes';
     for (const h of ESPECIALES) { const d = document.createElement('button'); d.className = 'tbtn' + (h.id === it.especial ? ' sel' : ''); d.innerHTML = `<span>${h.emoji}</span>${h.name}`; d.onclick = (f) => { f.stopPropagation(); F.play('Tecla'); it.especial = h.id; guarda(); lucesEspecial(); sting(h.id); Lt('play'); }; u.appendChild(d); }
     r.append(u, Ia('main'));
@@ -437,13 +437,13 @@ function Lt(a = 'main') {
     if (a === 'tomas' && window.Ep3000) r.appendChild(ei(window.Ep3000.titulo, window.Ep3000.sub, 'gold', () => window.Ep3000.abrir()));
     menuEscenas(a, r); r.appendChild(ei('▶ Ver todas seguidas', EXTRAS[a].length + ' escenas', 'gold', () => ii(a, 'todas'))); for (const x of EXTRAS[a]) r.appendChild(ei(x.titulo, x.pasos.length + ' frases', '', () => ii(a, x.id))); r.appendChild(Ia('main'));
   } else if (a === 'promos') {
-    r.appendChild(Pa('Promos')); r.appendChild(caja(`Promos de ¿Quién quiere ser millonario? en 3D, en tiempo real, con nuestro presentador virtual <b>${esc(me.presentador)}</b> (personajes virtuales, sin personas reales).`));
+    r.appendChild(Pa('Promos')); r.appendChild(caja(`Promos de Quién quiere ser millonario en 3D, en tiempo real, con nuestro presentador virtual <b>${esc(me.presentador)}</b> (personajes virtuales, sin personas reales).`));
     r.append(ei('🎬 Cabecera del programa', 'La cabecera de cada programa', '', () => ii('promos', 'cabecera')), ei('🎬 Apertura del programa', 'Plató, público, Leo entra y el concursante a la silla', '', () => ii('promos', 'apertura')), ei('🎥 Cabecera 3D con tu vídeo', 'Tu vídeo en las pantallas, la pared curva y el panel flotante del plató', '', () => ii('promos', 'videocab')));
     for (const x of PROMOS) r.appendChild(ei('📺 ' + x.titulo, x.lineas[0], x.id === 'estanoche' ? 'gold' : '', () => ii('promos', x.id)));
     const zp = document.createElement('div'); zp.className = 'col'; r.appendChild(zp); entradasPromos(ei, ii).then(L => zp.append(...L));
     r.appendChild(Ia('main'));
   } else if (a === 'promosleo') {
-    r.appendChild(Pa('Promos de Leo')); r.appendChild(caja(`Promos en 3D en el plató: nuestro presentador virtual <b>${esc(me.presentador)}</b> presenta ¿Quién quiere ser millonario? en ${CADENA}. (Personaje virtual, voz sintética.)`));
+    r.appendChild(Pa('Promos de Leo')); r.appendChild(caja(`Promos en 3D en el plató: nuestro presentador virtual <b>${esc(me.presentador)}</b> presenta Quién quiere ser millonario en ${CADENA}. (Personaje virtual, voz sintética.)`));
     for (const x of PROMOS_LEO) r.appendChild(ei('🎤 ' + x.titulo, x.lineas[0], x.id === 'pl1' ? 'gold' : '', () => ii('promosleo', x.id))); r.appendChild(Ia('main'));
   } else if (a === 'publicidad') {
     r.appendChild(Pa('Publicidad · ' + CADENA)); r.appendChild(caja(`Pausa publicitaria de <b>${CADENA}</b> con anuncios <b>inventados</b> (marcas y productos de broma) y promos de la cadena. También puede salir en mitad del Programa completo.`));
@@ -459,7 +459,7 @@ function Lt(a = 'main') {
     for (const v of MONOLOGOS) { const g = document.createElement('button'); g.className = 'tbtn'; g.innerHTML = `<span>${ic[v.tipo]}</span><b>${esc(v.titulo)}</b><small>${nm[v.tipo]}</small>`; g.onclick = (m) => { m.stopPropagation(); F.play('Tecla'); ii('monologos', v.id); }; d.appendChild(g); }
     r.append(d, nota(`${me.presentador} es un presentador virtual inventado con voz sintética genérica. Toca el bocadillo para pasar de frase, o el plató para saltar el monólogo.`, 'mtext onote2'), Ia('play'));
   } else if (a === 'casting') {
-    r.appendChild(Pa('Casting')); r.appendChild(caja('¡Apúntate al casting de <b>¿Quién quiere ser millonario?</b>! Rellena tu ficha y podrás jugar como concursante, con tu nombre, tu profesión y tu avatar; los apuntados también contestan al <b>comodín de la llamada</b>. Se guarda solo en este dispositivo.'));
+    r.appendChild(Pa('Casting')); r.appendChild(caja('¡Apúntate al casting de <b>Quién quiere ser millonario</b>! Rellena tu ficha y podrás jugar como concursante, con tu nombre, tu profesión y tu avatar; los apuntados también contestan al <b>comodín de la llamada</b>. Se guarda solo en este dispositivo.'));
     const f = caja(''); const campo = (id, et, tipo = 'text', ph = '', max = 24) => { const l = document.createElement('label'); l.style.cssText = 'display:block;margin:6px 0 2px;font-weight:700'; l.textContent = et; const i2 = document.createElement('input'); i2.type = tipo; i2.id = id; i2.placeholder = ph; i2.maxLength = max; i2.style.cssText = 'width:100%;box-sizing:border-box;padding:8px 10px;border-radius:10px;border:2px solid #3a6aff;background:#fff;color:#111;font:16px system-ui'; i2.addEventListener('keydown', ev => ev.stopPropagation()); i2.addEventListener('pointerup', ev => ev.stopPropagation()); f.append(l, i2); return i2; };
     const iN = campo('cNombre', 'Nombre', 'text', 'Tu nombre', 18), iE = campo('cEdad', 'Edad', 'number', '25', 3), iC = campo('cCiudad', 'Ciudad', 'text', 'Tu ciudad', 24), iP = campo('cProf', 'Profesión', 'text', 'A qué te dedicas', 40), iF = campo('cFrase', 'Tu frase', 'text', '¡Voy a por el millón!', 80);
     const colores = ['#2a6aff', '#e8102a', '#ff7a1a', '#3ac85a', '#ffd21a', '#d04aff', '#ff5fb0', '#1a1a1a', '#ffffff'], pieles = ['#f6d2b8', '#e0a880', '#a8704a', '#6a4028', '#e8eef8'];
@@ -513,14 +513,14 @@ function Lt(a = 'main') {
     f.appendChild(boton('➕ Guardar pregunta', () => { if (!q.value.trim() || !c.value.trim() || !i1.value.trim() || !i2.value.trim() || !i3.value.trim()) return yn.toast('Rellena todos los campos'); L2.push({ nivel: nv, q: q.value.trim(), c: c.value.trim(), inc: [i1.value.trim(), i2.value.trim(), i3.value.trim()] }); localStorage.setItem('mm_mispreg', JSON.stringify(L2)); Lt('mispreguntas'); }, true));
     r.appendChild(f); const lis = caja(`<b>Guardadas (${L2.length})</b>`); L2.forEach((p, k) => { const d = document.createElement('div'); d.style.cssText = 'display:flex;gap:8px;align-items:center;margin:4px 0'; d.innerHTML = `<span>N${p.nivel} · ${esc(p.q)} <i>(${esc(p.c)})</i></span>`; d.appendChild(boton('🗑️', () => { L2.splice(k, 1); localStorage.setItem('mm_mispreg', JSON.stringify(L2)); Lt('mispreguntas'); })); lis.appendChild(d); }); r.append(lis, Ia('options'));
   } else if (a === 'historia') {
-    r.classList.add('text'); r.append(Ia('main'), Pa('La historia de ¿Quién quiere ser millonario?'), ei('▶ Que me la cuente Leo', 'Recorrido narrado por el plató', 'gold', () => ii('historia')));
+    r.classList.add('text'); r.append(Ia('main'), Pa('La historia de Quién quiere ser millonario'), ei('▶ Que me la cuente Leo', 'Recorrido narrado por el plató', 'gold', () => ii('historia')));
     const u = document.createElement('div'); u.className = 'mtext'; u.innerHTML = HISTORIA.map(([y, t2, d]) => `<p><b>${esc(y)} · ${esc(t2)}</b><br>${esc(d)}</p>`).join(''); r.append(u);
   } else if (a === 'help') {
     r.classList.add('text'); r.append(Ia('main'), Pa('Cómo se juega')); const u = document.createElement('div'); u.className = 'mtext';
     u.innerHTML = `<p><b>Objetivo:</b> responder bien a <b>15 preguntas</b> de dificultad creciente para ganar el gran premio.</p><p><b>Respuestas:</b> toca A, B, C o D. Desde la pregunta 5, ${esc(me.presentador)} te preguntará si es tu última respuesta.</p><p><b>Seguros:</b> en 2005–2007 y 1999–2001 están en las preguntas 5 y 10. Desde 2020 solo el primero es fijo (pregunta 5) y <b>tú eliges el segundo</b> antes de empezar.</p><p><b>Comodines:</b> 50:50 (quita dos incorrectas), público (gráfico de barras con los votos), llamada (<b>30 segundos</b> con reloj) y, desde 2020, el comodín del acompañante.</p><p><b>Plantarse:</b> puedes retirarte con lo ganado en cualquier momento. Si fallas, te llevas el último seguro alcanzado.</p><p><b>Controles 3D:</b> ☰ vuelve al menú, 👁 cambia la cámara, 💡 apaga o enciende los haces de luz. «Saltar» pasa la cabecera.</p>`; r.append(u);
   } else if (a === 'credits') {
     r.classList.add('text'); r.append(Ia('main'), Pa('Créditos')); const u = document.createElement('div'); u.className = 'mtext';
-    u.innerHTML = `<p><b>Idea y juego</b><br>Iker</p><p><b>Presentador virtual</b><br>${esc(me.presentador)} (personaje inventado)</p><p><b>Voz</b><br>Piper TTS (es_ES-davefx-medium y otras), voces sintéticas genéricas</p><p><b>Motor 3D</b><br>Three.js (MIT)</p><p><b>Menús, publicidad de ${CADENA} y personajes</b><br>Basados en «¡Ahora Caigo! 3D» 1.13 de Iker</p><p><b>Modo Clásico y sonidos</b><br>Juego de Scratch «Quem Quer Ser Um Milionário - Jogo 2025 remix», empaquetado con TurboWarp Packager</p><p class="small">Versión ${VERSION}</p><p class="small">Juego de fans sin ánimo de lucro. «¿Quién quiere ser millonario?» es un formato de sus respectivos propietarios; este juego no está afiliado ni respaldado por ellos.</p>`; r.append(u);
+    u.innerHTML = `<p><b>Idea y juego</b><br>Iker</p><p><b>Presentador virtual</b><br>${esc(me.presentador)} (personaje inventado)</p><p><b>Voz</b><br>Piper «voz TTS» (Piper: es_ES-davefx-medium y otras), voces sintéticas genéricas, sin clonar la voz de nadie</p><p><b>Motor 3D</b><br>Three.js (MIT)</p><p><b>Menús, publicidad de ${CADENA} y personajes</b><br>Basados en «¡Ahora Caigo! 3D» 1.13 de Iker</p><p><b>Modo Clásico y sonidos</b><br>Juego de Scratch «Quem Quer Ser Um Milionário - Jogo 2025 remix», empaquetado con TurboWarp Packager</p><p class="small">Versión ${VERSION}</p><p class="small">Juego de fans sin ánimo de lucro. «Quién quiere ser millonario» es un formato de sus respectivos propietarios; este juego no está afiliado ni respaldado por ellos.</p>`; r.append(u);
   }
   const l = document.createElement('div'); l.className = 'mver'; l.textContent = 'v' + VERSION; n.appendChild(l); n.append(i, r); e.appendChild(n);
 }
@@ -531,8 +531,8 @@ async function arranca() {
   await Promise.all([rcCarga(), castingCarga()]); initPublicidad(F, hablar);
   const mq = document.createElement('div'); mq.id = 'mq'; en('hud').appendChild(mq);
   for (const e of ESPECIALES) { if (SALUDOS_EXISTENTES[e.id]) e.saludo = SALUDOS_EXISTENTES[e.id]; if (LUCES_EXISTENTES[e.id]) e.luz = LUCES_EXISTENTES[e.id]; }
-  instalaV12({ ESPECIALES, extra: ESP_EXTRA, temasLogo: TEMAS_LOGO, it, guarda, F, plato: null, RC, rcGuarda, rcBorra, pideArchivo, boton, nota, caja, ei, ii, Lt, yn, di, colocaPersonaje, dibujaLogo, pref: 'mm', colorCss: '#e8b830', colorFondo: '#1a0a4a', hashtagDef: '#QuienQuiereSerMillonario', ledHT: { pos: [0, 6.2, -9], w: 7 }, musicas: [['menu', 'Tema principal'], ['cabecera', 'Cabecera'], ['pregunta', 'Pregunta'], ['tension', 'Tensión'], ['despedida', 'Despedida']], enMenu: () => Mi && Gr === 'main' && !en('menu').classList.contains('hidden'), tituloOriginal: '¿Quién quiere ser millonario?', regidor: REGIDORA, colorMarco: 0x8a4aff,
-    escenas: { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: '¿Quién quiere ser millonario?' }, cam: { P: 'pres', C: 'silla' }, camDef: 'wide' } });
+  instalaV12({ ESPECIALES, extra: ESP_EXTRA, temasLogo: TEMAS_LOGO, it, guarda, F, plato: null, RC, rcGuarda, rcBorra, pideArchivo, boton, nota, caja, ei, ii, Lt, yn, di, colocaPersonaje, dibujaLogo, pref: 'mm', colorCss: '#e8b830', colorFondo: '#1a0a4a', hashtagDef: '#QuienQuiereSerMillonario', ledHT: { pos: [0, 6.2, -9], w: 7 }, musicas: [['menu', 'Tema principal'], ['cabecera', 'Cabecera'], ['pregunta', 'Pregunta'], ['tension', 'Tensión'], ['despedida', 'Despedida']], enMenu: () => Mi && Gr === 'main' && !en('menu').classList.contains('hidden'), tituloOriginal: 'Quién quiere ser millonario', regidor: REGIDORA, colorMarco: 0x8a4aff,
+    escenas: { roles: { P: 'leo', R: 'pili', T: 'chema', M: 'marga', J: 'ramon', C: 'conc' }, nombres: { P: 'Leo', R: 'Pili', T: 'Chema', M: 'Marga', J: 'jefe', C: 'concursante', SHOW: 'Quién quiere ser millonario' }, cam: { P: 'pres', C: 'silla' }, camDef: 'wide' } });
   ordenEspeciales135(ESPECIALES);
   plato = creaPlato(en('c3d'), it.quality, it.plato); instalaRapida({ plato, F, di, hablar, yn, en, esc, mezcla, it, guarda, anda, RC, creaPersonaje, filaSiNo, filaOpc, nota }); window.__miPlato = plato; K12.plato = plato; K12.yn = yn; instalaExtras(); lucesEspecial(); plato.gradas(it.gradas); aplicaLogo();
   let last = performance.now(); let fr = 0, ft = performance.now(); const loop = (t) => { fr++; if (t - ft > 1000) { fps = fr * 1000 / (t - ft); fr = 0; ft = t; } plato.frame(Math.min(.05, (t - last) / 1000)); last = t; requestAnimationFrame(loop); }; requestAnimationFrame(loop);
@@ -554,14 +554,14 @@ async function arranca() {
 arranca();
 
 // ---------- «Mi cabecera 3D» (mc3d/mc3d.js): la IA analiza tu vídeo y lo vuelve a rodar en el plató 3D del juego ----------
-if (window.MC3D) MC3D.config({ app: 'millonario', nombre: "¿Quién quiere ser millonario?", titulo: "¿Quién quiere ser millonario?", hashtagDef: '#Millonario', sintoniaJuego: () => { F.playMusic('cabecera'); return () => F.stopMusic(); }, logo: () => null,
-  palabrasLogo: ["millonario", "ahora", "caigo"], creditos: () => ["Juego creado por Iker", "Presenta: {PRES} (presentador virtual)", "Formato original: ¿Quién quiere ser millonario?"].map(x => x.replace('{PRES}', me.presentador || '')),
+if (window.MC3D) MC3D.config({ app: 'millonario', nombre: "Quién quiere ser millonario", titulo: "Quién quiere ser millonario", hashtagDef: '#Millonario', sintoniaJuego: () => { F.playMusic('cabecera'); return () => F.stopMusic(); }, logo: () => null,
+  palabrasLogo: ["millonario", "ahora", "caigo"], creditos: () => ["Juego creado por Iker", "Presenta: {PRES} (presentador virtual)", "Formato original: Quién quiere ser millonario"].map(x => x.replace('{PRES}', me.presentador || '')),
   recrear: (pl, op) => { let propia = false, modo0 = null; const P3 = plato, V0 = a => [a.x, a.y, a.z], PL = P3.PLANOS || {};
     const w = PL.wide || [new P3.THREE.Vector3(0, 5, 14), new P3.THREE.Vector3(0, 1.5, 0)], c = w[1], R0 = Math.max(5, w[0].distanceTo(w[1]) * 0.75);
     const dL = PL.logo ? PL.logo[0].distanceTo(PL.logo[1]) : 0, lpos = PL.logo ? PL.logo[1].clone().lerp(PL.logo[0], 0.3).add(new P3.THREE.Vector3(0, -dL * 0.2, 0)) : null; // letras debajo del emblema, sin tapar su rótulo
     const lg = PL.logo ? [V0(lpos), V0(lpos.clone().add(PL.logo[1].clone().sub(PL.logo[0])))] : null, lc = PL.logo ? [V0(PL.logo[0]), V0(PL.logo[1])] : null;
     const pub = ['grada', 'publico', 'transeuntes', 'expertos'].filter(k => PL[k]).map(k => V0(PL[k][1]));
-    return MC3D.recrearGenerico({ THREE: P3.THREE, scene: P3.scene, camera: P3.camera, mira: P3.cam.mira, centro: [c.x, Math.max(1.2, c.y), c.z], radio: R0, altura: Math.max(2.6, w[0].y * 0.8), texto: "¿Quién quiere ser millonario?",
+    return MC3D.recrearGenerico({ THREE: P3.THREE, scene: P3.scene, camera: P3.camera, mira: P3.cam.mira, centro: [c.x, Math.max(1.2, c.y), c.z], radio: R0, altura: Math.max(2.6, w[0].y * 0.8), texto: "Quién quiere ser millonario",
       concursantes: () => Object.entries(P3.figuras).filter(([k, f]) => f.visible && k !== 'leo').map(([, f]) => V0(f.position)),
       presentador: () => P3.figuras['leo'] ? V0(P3.figuras['leo'].position) : [c.x, 0, c.z], publico: () => pub, logo: lg, logoCam: lc,
       antes: () => { if (!op.ctx || !op.ctx.sess) { propia = true; sesion(); en('menu').classList.add('hidden'); F.stopAll && F.stopAll(); typeof colocaBase === 'function' && colocaBase(); } F.stopMusic && F.stopMusic(); },
